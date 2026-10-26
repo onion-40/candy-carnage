@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://g1ucg4fd4k67"]
+
+[ext_resource type="Script" uid="uid://bqipwrbsqoedg" path="res://Tower.gd" id="1_wd6hp"]
+
+[node name="Towers" type="Node2D" unique_id=1501200458]
+script = ExtResource("1_wd6hp")
+
+[node name="Body" type="Polygon2D" parent="." unique_id=1527430392]
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=162020024]

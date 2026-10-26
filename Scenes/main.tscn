@@ -1,61 +1,17 @@
 [gd_scene format=3 uid="uid://bde73uw6nvb7o"]
 
-[sub_resource type="Curve2D" id="Curve2D_7u77a"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -16, 104, 0, 0, 0, 0, 18.773933, 104.28229, 0, 0, 0, 0, 536, 112, 0, 0, 0, 0, 760, 128, 0, 0, 0, 0, 1032, 152, 0, 0, 0, 0, 1104, 216, 0, 0, 0, 0, 1104, 256, 0, 0, 0, 0, 1080, 296, 0, 0, 0, 0, 912, 336, 0, 0, 0, 0, 818.94885, 340.64307, 0, 0, 0, 0, 630.313, 353.50464, 0, 0, 0, 0, 475.97452, 356.71997, 0, 0, 0, 0, 308.77457, 372.79694, 0, 0, 0, 0, 168, 400, 0, 0, 0, 0, 126.56943, 457.4687, 0, 0, 0, 0, 128, 528, 0, 0, 0, 0, 176, 568, 0, 0, 0, 0, 288, 568, 0, 0, 0, 0, 416, 568, 0, 0, 0, 0, 490.97964, 571.0789, 0, 0, 0, 0, 607.8053, 575.3661, 0, 0, 0, 0, 756.7848, 581.7969, 0, 0, 0, 0, 856, 576, 0, 0, 0, 0, 904, 600, 0, 0, 0, 0, 952, 640, 0, 0, 0, 0, 965.5409, 668.2769, 0, 0, 0, 0, 976, 736)
-}
-point_count = 27
+[ext_resource type="PackedScene" uid="uid://cnqasxkoa17kc" path="res://Scenes/Map.tscn" id="1_8gbba"]
+[ext_resource type="PackedScene" uid="uid://p8wm07gne2lx" path="res://Scenes/Enemies.tscn" id="2_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://g1ucg4fd4k67" path="res://Scenes/Towers.tscn" id="3_kry3j"]
 
 [node name="Main" type="Node2D" unique_id=295096930]
 
-[node name="Map" type="Node2D" parent="." unique_id=138581092]
+[node name="Map" parent="." unique_id=247315767 instance=ExtResource("1_8gbba")]
 
-[node name="Background" type="Polygon2D" parent="Map" unique_id=351890170]
-position = Vector2(480, 248)
-color = Color(0.395, 0.79, 0.59908336, 1)
-polygon = PackedVector2Array(800, -248, -480, -248, -480, 472, 800, 472)
-uv = PackedVector2Array(-192, -8, -336, 16, -200, 72, -80, 40)
-
-[node name="EnemyPath" type="Path2D" parent="Map" unique_id=1621977831]
-position = Vector2(-8, 24)
-curve = SubResource("Curve2D_7u77a")
-
-[node name="RoadVisual" type="Line2D" parent="Map" unique_id=1792484778]
-points = PackedVector2Array(0, 128, 472, 136, 616, 136, 720, 144, 616, 136, 800, 152, 800, 152, 912, 160, 1008, 176, 1080, 216, 1096, 272, 1088, 328, 1016, 360, 952, 368, 904, 368, 784, 368, 648, 368, 576, 376, 440, 384, 312, 392, 200, 416, 144, 440, 112, 480, 112, 520, 120, 552, 152, 576, 184, 584, 232, 584, 288, 584, 344, 584, 408, 592, 464, 592, 512, 592, 568, 592, 680, 592, 760, 592, 800, 592, 824, 592, 840, 600, 864, 608, 896, 624, 920, 640, 944, 672, 952, 696, 952, 720, 952, 744)
-width = 90.0
-default_color = Color(0.9971667, 1, 0.83, 1)
-
-[node name="Spawnpoint" type="Marker2D" parent="Map" unique_id=1329686473]
-position = Vector2(-24, 128)
-
-[node name="Basepoint" type="Marker2D" parent="Map" unique_id=525697719]
-position = Vector2(968, 760)
-
-[node name="TowerSpots" type="Node2D" parent="Map" unique_id=1527668836]
-position = Vector2(176, -120)
-
-[node name="Spot 1" type="Marker2D" parent="Map/TowerSpots" unique_id=1613165457]
-position = Vector2(24, 360)
-
-[node name="Spot2" type="Marker2D" parent="Map/TowerSpots" unique_id=1946156558]
-position = Vector2(400, 376)
-
-[node name="Spot3" type="Marker2D" parent="Map/TowerSpots" unique_id=530945045]
-position = Vector2(248, 608)
-
-[node name="Spot4" type="Marker2D" parent="Map/TowerSpots" unique_id=519798624]
-position = Vector2(976, 216)
-
-[node name="Spot5" type="Marker2D" parent="Map/TowerSpots" unique_id=51096965]
-position = Vector2(640, 608)
-
-[node name="Spot6" type="Marker2D" parent="Map/TowerSpots" unique_id=183292600]
-position = Vector2(888, 776)
-
-[node name="Enemies" type="Node2D" parent="." unique_id=2103639824]
+[node name="Enemies" parent="." unique_id=1169386622 instance=ExtResource("2_jjvhh")]
 position = Vector2(344, -104)
 
-[node name="Towers" type="Node2D" parent="." unique_id=110408642]
+[node name="Towers" parent="." unique_id=1501200458 instance=ExtResource("3_kry3j")]
 position = Vector2(264, -184)
 
 [node name="SpecialCharacters" type="Node2D" parent="." unique_id=655742771]
