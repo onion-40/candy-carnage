@@ -4,9 +4,12 @@ extends Node2D
 const TOWER_SCENE = preload("res://scenes/Towers.tscn")
 const ENEMY_SCENE = preload("res://scenes/Enemies.tscn")
 const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/SpecialCharacters.tscn")
+signal player_health_changed(current_hp: int, max_hp: int)
+signal game_over
 
 @export var deployment_start_delay: float = 10.0
 @export var special_cooldown: float = 15.0
+@export var max_player_hp: int = 100
 
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var spawn_timer: Timer = $EnemySpawnTimer
@@ -14,6 +17,8 @@ const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/SpecialCharacters.tscn")
 @onready var deployment_start_timer: Timer = $DeploymentStartTimer
 @onready var special_cooldown_timer: Timer = $SpecialCoolddownTimer
 @onready var deployment_preview: Polygon2D = $DeploymentPreview
+var player_hp: int = 100
+var is_game_over: bool = false
 
 var selected_spot: Marker2D = null
 var can_deploy_special: bool = false
@@ -21,6 +26,9 @@ var choosing_deployment_location: bool = false
 
 
 func _ready() -> void:
+	player_hp = max_player_hp
+	player_health_changed.emit(player_hp, max_player_hp)
+	
 	for spot in tower_spots.get_children():
 		if spot is Marker2D:
 			spot.set_meta("occupied", false)
@@ -48,6 +56,25 @@ func _ready() -> void:
 	special_cooldown_timer.timeout.connect(_on_special_cooldown_finished)
 
 	_create_deployment_preview()
+
+
+# =====================================
+# PLAYER HP SYSTEM
+# =====================================
+func _on_enemy_reached_base(damage: int) -> void:
+	if(is_game_over):
+		return
+	
+	player_hp = max(0, player_hp - damage)
+	player_health_changed.emit(player_hp, max_player_hp)
+	
+	print("HP: ", player_hp, "/", max_player_hp)
+	
+	if player_hp <= 0:
+		is_game_over = true
+		spawn_timer.stop()
+		game_over.emit()
+		print("GAME OVER! The base has been destroyed.")
 
 
 # =====================================
@@ -86,8 +113,13 @@ func _spawn_enemy() -> void:
 	if enemy_path.curve.get_baked_length() <= 0.0:
 		push_warning("EnemyPath curve is empty. Add points to the path.")
 		return
+		
+	if enemy_path.curve.get_baked_length() <= 0.0:
+		push_warning("EnemyPath curve is empty. Add points to the path.")
+		return
 
 	var enemy = ENEMY_SCENE.instantiate()
+	enemy.reached_base.connect(_on_enemy_reached_base)
 	enemy_path.add_child(enemy)
 
 
