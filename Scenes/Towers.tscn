@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://g1ucg4fd4k67"]
 
-[ext_resource type="Script" uid="uid://bqipwrbsqoedg" path="res://Tower.gd" id="1_wd6hp"]
+[ext_resource type="Script" uid="uid://ct4aybvx0drpe" path="res://Scripts/Scenes/Towers.gd" id="1_wd6hp"]
 
 [node name="Towers" type="Node2D" unique_id=1501200458]
 script = ExtResource("1_wd6hp")
 
 [node name="Body" type="Polygon2D" parent="." unique_id=1527430392]
+position = Vector2(72, 0)
+polygon = PackedVector2Array(-166.08392, -65.539406, -97.91606, -65.539406, -97.91606, -6.460594, -166.08392, -6.460594)
+uv = PackedVector2Array(-192, -88, -64, -88, -64, 16, -192, 16)
 
 [node name="AttackTimer" type="Timer" parent="." unique_id=162020024]

@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Candy Carnage"
-run/main_scene="uid://dssdob1kmknfy"
+run/main_scene="uid://bde73uw6nvb7o"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+ResourceManager="*uid://b7ty26f4pbqmr"
 
 [display]
 
