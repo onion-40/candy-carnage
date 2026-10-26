@@ -13,7 +13,7 @@ var attack_range: float
 var damage: int
 var attack_interval: float
 var is_sold: bool = false
-var build_spot: Marker2D
+var build_spot: Area2D
 
 @onready var attack_timer: Timer = $AttackTimer
 @onready var body: Polygon2D = $Body
@@ -169,7 +169,6 @@ func find_nearest_enemy() -> Node2D:
 			nearest_enemy = enemy
 
 	return nearest_enemy
-
 
 func _on_selection_area_input_event(
 	viewport: Node,
