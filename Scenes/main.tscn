@@ -3,6 +3,30 @@
 [ext_resource type="PackedScene" uid="uid://cnqasxkoa17kc" path="res://Scenes/Map.tscn" id="1_8gbba"]
 [ext_resource type="PackedScene" uid="uid://p8wm07gne2lx" path="res://Scenes/Enemies.tscn" id="2_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://g1ucg4fd4k67" path="res://Scenes/Towers.tscn" id="3_kry3j"]
+[ext_resource type="Script" uid="uid://liaq03gdcccy" path="res://Scenes/tower_information.gd" id="4_jjvhh"]
+[ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="5_kry3j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41ke1"]
+content_margin_left = 25.0
+content_margin_top = 25.0
+content_margin_right = 25.0
+content_margin_bottom = 25.0
+bg_color = Color(0.60784316, 0.47843137, 0.7490196, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i6558"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.6064114, 0.47736657, 0.7489121, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [node name="Main" type="Node2D" unique_id=295096930]
 
@@ -22,3 +46,115 @@ position = Vector2(-16, -48)
 position = Vector2(96, -184)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=594782264]
+
+[node name="TowerInformation" type="PanelContainer" parent="UI" unique_id=1176694789]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -282.0
+offset_top = -168.0
+offset_right = -11.0
+offset_bottom = 174.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_41ke1")
+script = ExtResource("4_jjvhh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/TowerInformation" unique_id=1267824022]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CloseButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=539067282]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "X"
+flat = true
+alignment = 2
+text_overrun_behavior = 1
+
+[node name="TowerName" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=536312716]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Eyecing - Laser Tower"
+
+[node name="TowerLevel" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=1335638192]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Level 1/3
+"
+
+[node name="TowerStats" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=2094449366]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Damage: 6
+Range: 140
+"
+
+[node name="UpgradeCost" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=95164993]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Upgrade Cost: 5 Bones, 2 Eyes
+"
+
+[node name="UpgradeButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1478025024]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "UPGRADE TOWER"
+
+[node name="SellButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=353303708]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "SELL TOWER"
+
+[node name="BottomHUD" type="PanelContainer" parent="UI" unique_id=394023048]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -431.0
+offset_top = -130.0
+offset_right = 431.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_i6558")
+script = ExtResource("5_kry3j")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/BottomHUD" unique_id=180391323]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TowerSelection" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1013028664]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="LaserButton" type="Button" parent="UI/BottomHUD/HBoxContainer/TowerSelection" unique_id=914881112]
+custom_minimum_size = Vector2(150, 90)
+layout_mode = 2
+text = "Laser Tower"
+
+[node name="CannonButton" type="Button" parent="UI/BottomHUD/HBoxContainer/TowerSelection" unique_id=231461069]
+custom_minimum_size = Vector2(150, 90)
+layout_mode = 2
+text = "Heavy Cannon"
+
+[node name="ResourceList" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=2142574579]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BonesLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=1147830520]
+layout_mode = 2
+text = "Bones: 25"
+
+[node name="OrgansLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=1793141202]
+layout_mode = 2
+text = "Organs: 15"
+
+[node name="EyeballsLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=201943819]
+layout_mode = 2
+text = "Eyeballs: 5"
