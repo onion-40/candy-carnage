@@ -1,4 +1,3 @@
-
 extends PathFollow2D
 
 signal defeated(reward: int)
@@ -11,14 +10,12 @@ signal reached_base(damage: int)
 
 var health: int
 
-
 func _ready() -> void:
 	health = max_health
 	add_to_group("enemies")
 
 	loop = false
 	rotates = false
-
 
 func _process(delta: float) -> void:
 	progress += move_speed * delta

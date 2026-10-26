@@ -26,6 +26,7 @@ var choosing_deployment_location: bool = false
 
 func _ready() -> void:
 	player_hp = max_player_hp
+	player_health_changed.connect(update_health_bar)
 	player_health_changed.emit(player_hp, max_player_hp)
 	
 	for spot in tower_spots.get_children():
@@ -114,7 +115,7 @@ func _spawn_enemy() -> void:
 		return
 
 	if enemy_path.curve.get_baked_length() <= 0.0:
-		push_warning("EnemyPath curve is empty. Add points to the path.")
+		push_warning("EnemyPatth curve is empty. Add points to the path.")
 		return
 
 	var enemy = ENEMY_SCENE.instantiate()
@@ -303,3 +304,8 @@ func _create_deployment_preview() -> void:
 	deployment_preview.color = Color(1.0, 0.2, 0.2, 0.25)
 	deployment_preview.visible = false
 	deployment_preview.z_index = 10
+
+func update_health_bar(current_hp: int, max_hp: int) -> void:
+	var health_bar = get_tree().current_scene.get_node("UI/HealthBar")
+	health_bar.max_value = max_hp
+	health_bar.value = current_hp
