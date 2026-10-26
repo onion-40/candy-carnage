@@ -91,3 +91,9 @@ polygon = PackedVector2Array(-127.999985, -95.99999, 8, -96, 8.0000305, 8.000008
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="EnemySpawnTimer" type="Timer" parent="." unique_id=1517007706]
+
+[node name="DeploymentStartTimer" type="Timer" parent="." unique_id=1835504337]
+
+[node name="SpecialCoolddownTimer" type="Timer" parent="." unique_id=1430919574]
+
+[node name="DeploymentPreview" type="Polygon2D" parent="." unique_id=1844144699]

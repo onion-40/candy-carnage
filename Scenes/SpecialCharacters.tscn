@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://do75dorlxuvn1"]
+
+[node name="SpecialCharacters" type="Node2D" unique_id=932325363]
+
+[node name="Body" type="Polygon2D" parent="." unique_id=413082617]
+position = Vector2(16, 176)
+color = Color(0.90433323, 0.18, 1, 1)
+polygon = PackedVector2Array(-215.26129, -49.68173, -192.73871, -49.68173, -186.30368, -33.594162, -192.73871, -20.72411, -215.26129, -20.72411, -221.69632, -33.594162)
+uv = PackedVector2Array(-248, -80, -160, -80, -136, -40, -176, 0, -232, 0, -256, -32)
+
+[node name="AOEVisual" type="Polygon2D" parent="." unique_id=170024375]
+position = Vector2(-40, 160)
+color = Color(1, 0.29000002, 0.29000002, 0.39607844)
+polygon = PackedVector2Array(-168, -80, -120, -80, -88, -64, -72, -40, -72, -8, -80, 16, -96, 32, -120, 40, -168, 40, -192, 32, -208, 16, -216, -8, -216, -40, -200, -64)
+uv = PackedVector2Array(-168, -80, -120, -80, -88, -64, -72, -40, -72, -8, -80, 16, -96, 32, -120, 40, -168, 40, -200, 32, -216, 0, -216, -40, -200, -64, -184, -72)
+
+[node name="DurationTimer" type="Timer" parent="." unique_id=1948639100]
