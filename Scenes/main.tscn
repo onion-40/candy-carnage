@@ -1,8 +1,23 @@
 [gd_scene format=3 uid="uid://bde73uw6nvb7o"]
 
+[sub_resource type="Curve2D" id="Curve2D_7u77a"]
+
 [node name="Main" type="Node2D" unique_id=295096930]
 
 [node name="Map" type="Node2D" parent="." unique_id=138581092]
+
+[node name="Background" type="Polygon2D" parent="Map" unique_id=351890170]
+
+[node name="EnemyPath" type="Path2D" parent="Map" unique_id=1621977831]
+curve = SubResource("Curve2D_7u77a")
+
+[node name="RoadVisual" type="Line2D" parent="Map" unique_id=1792484778]
+
+[node name="Spawnpoint" type="Marker2D" parent="Map" unique_id=1329686473]
+
+[node name="Basepoint" type="Marker2D" parent="Map" unique_id=525697719]
+
+[node name="TowerSpots" type="Node2D" parent="Map" unique_id=1527668836]
 
 [node name="Enemies" type="Node2D" parent="." unique_id=2103639824]
 
