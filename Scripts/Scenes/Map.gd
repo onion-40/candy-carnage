@@ -2,8 +2,7 @@
 extends Node2D
 
 const TOWER_SCENE = preload("res://scenes/Towers.tscn")
-
-@export var enemy_scene: PackedScene
+const ENEMY_SCENE = preload("res://scenes/Enemies.tscn")
 
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var spawn_timer: Timer = $EnemySpawnTimer
@@ -13,14 +12,46 @@ var selected_spot: Marker2D = null
 
 
 func _ready() -> void:
+	for spot in tower_spots.get_children():
+		if spot is Marker2D:
+			spot.set_meta("occupied", false)
+			_create_spot_visual(spot)
+
+	spawn_timer.wait_time = 0.5
+	spawn_timer.one_shot = false
 	spawn_timer.timeout.connect(_spawn_enemy)
 	spawn_timer.start()
 
-	for spot in tower_spots.get_children():
-		spot.set_meta("occupied", false)
-
+	# Temporary test tower.
 	if tower_spots.get_child_count() > 0:
-		build_laser_at(tower_spots.get_child(0))
+		var first_spot = tower_spots.get_child(0) as Marker2D
+
+		if first_spot != null:
+			build_laser_at(first_spot)
+
+
+# =====================================
+# TOWER SPOT VISUALS
+# =====================================
+
+func _create_spot_visual(spot: Marker2D) -> void:
+	if spot.has_node("SpotVisual"):
+		return
+
+	var visual = Polygon2D.new()
+	visual.name = "SpotVisual"
+
+	visual.polygon = PackedVector2Array([
+		Vector2(-18, -18),
+		Vector2(18, -18),
+		Vector2(18, 18),
+		Vector2(-18, 18)
+	])
+
+	visual.color = Color(0.2, 0.8, 0.3, 0.65)
+	visual.z_index = -1
+
+	spot.add_child(visual)
 
 
 # =====================================
@@ -28,14 +59,16 @@ func _ready() -> void:
 # =====================================
 
 func _spawn_enemy() -> void:
-	if enemy_scene == null:
+	if enemy_path.curve == null:
+		push_warning("EnemyPath has no Curve2D.")
 		return
 
-	var enemies = enemy_scene.instantiate()
+	if enemy_path.curve.get_baked_length() <= 0.0:
+		push_warning("EnemyPath curve is empty. Add points to the path.")
+		return
 
-	# Enemies must be children of EnemyPath
-	# because Enemy uses PathFollow2D.
-	enemy_path.add_child(enemies)
+	var enemy = ENEMY_SCENE.instantiate()
+	enemy_path.add_child(enemy)
 
 
 # =====================================
@@ -57,11 +90,10 @@ func build_tower_at(spot: Marker2D, type: int) -> bool:
 				cost["organs"],
 				cost["eyeballs"]
 			):
+				tower.build_spot = spot
 				add_child(tower)
 
 				tower.global_position = spot.global_position
-				tower.build_spot = spot
-
 				spot.set_meta("occupied", true)
 				success = true
 			else:
@@ -125,8 +157,10 @@ func upgrade_tower(tower: Node) -> bool:
 
 func sell_tower(tower: Node) -> void:
 	if is_instance_valid(tower):
+		var spot = tower.build_spot
+
 		if tower.has_method("sell"):
 			tower.sell()
 
-		if selected_spot == tower.build_spot:
+		if selected_spot == spot:
 			selected_spot = null
