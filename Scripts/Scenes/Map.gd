@@ -1,4 +1,3 @@
-
 extends Node2D
 
 const TOWER_SCENE = preload("res://scenes/Towers.tscn")
@@ -20,7 +19,7 @@ signal game_over
 var player_hp: int = 100
 var is_game_over: bool = false
 
-var selected_spot: Marker2D = null
+var selected_spot: Area2D = null
 var can_deploy_special: bool = false
 var choosing_deployment_location: bool = false
 
@@ -30,9 +29,13 @@ func _ready() -> void:
 	player_health_changed.emit(player_hp, max_player_hp)
 	
 	for spot in tower_spots.get_children():
-		if spot is Marker2D:
+		if spot is Area2D:
 			spot.set_meta("occupied", false)
 			_create_spot_visual(spot)
+			
+			# Connect click input signal for each spot
+			if not spot.is_connected("input_event", _on_spot_input_event.bind(spot)):
+				spot.input_event.connect(_on_spot_input_event.bind(spot))
 
 	spawn_timer.wait_time = 1
 	spawn_timer.one_shot = false
@@ -41,7 +44,7 @@ func _ready() -> void:
 
 	# Temporary test tower.
 	if tower_spots.get_child_count() > 0:
-		var first_spot = tower_spots.get_child(0) as Marker2D
+		var first_spot = tower_spots.get_child(0) as Area2D # Fixed from Marker2D to Area2D
 
 		if first_spot != null:
 			build_laser_at(first_spot)
@@ -81,7 +84,7 @@ func _on_enemy_reached_base(damage: int) -> void:
 # TOWER SPOT VISUALS
 # =====================================
 
-func _create_spot_visual(spot: Marker2D) -> void:
+func _create_spot_visual(spot: Area2D) -> void:
 	if spot.has_node("SpotVisual"):
 		return
 
@@ -113,10 +116,6 @@ func _spawn_enemy() -> void:
 	if enemy_path.curve.get_baked_length() <= 0.0:
 		push_warning("EnemyPath curve is empty. Add points to the path.")
 		return
-		
-	if enemy_path.curve.get_baked_length() <= 0.0:
-		push_warning("EnemyPath curve is empty. Add points to the path.")
-		return
 
 	var enemy = ENEMY_SCENE.instantiate()
 	enemy.reached_base.connect(_on_enemy_reached_base)
@@ -127,7 +126,7 @@ func _spawn_enemy() -> void:
 # TOWER CONSTRUCTION
 # =====================================
 
-func build_tower_at(spot: Marker2D, type: int) -> bool:
+func build_tower_at(spot: Area2D, type: int) -> bool:
 	var success = false
 
 	if is_instance_valid(spot):
@@ -145,20 +144,34 @@ func build_tower_at(spot: Marker2D, type: int) -> bool:
 				tower.build_spot = spot
 				add_child(tower)
 
+				# Force it right to the Area2D's global position
 				tower.global_position = spot.global_position
+				
 				spot.set_meta("occupied", true)
 				success = true
+				
+				# Hide visual spot indicator when occupied
+				if spot.has_node("SpotVisual"):
+					spot.get_node("SpotVisual").visible = false
 			else:
-				tower.free()
+				tower.queue_free()
 
 	return success
 
+# Handles click detection directly from the Area2D spots
+func _on_spot_input_event(_viewport: Node, event: InputEvent, _shape_idx: int, spot: Area2D) -> void:
+	if spot.get_meta("occupied", false):
+		return
+		
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		select_spot(spot)
+		build_laser_on_selected_spot()
 
-func build_laser_at(spot: Marker2D) -> bool:
+func build_laser_at(spot: Area2D) -> bool:
 	return build_tower_at(spot, 0)
 
 
-func build_cannon_at(spot: Marker2D) -> bool:
+func build_cannon_at(spot: Area2D) -> bool:
 	return build_tower_at(spot, 1)
 
 
@@ -166,7 +179,7 @@ func build_cannon_at(spot: Marker2D) -> bool:
 # TOWER SPOT SELECTION
 # =====================================
 
-func select_spot(spot: Marker2D) -> void:
+func select_spot(spot: Area2D) -> void:
 	if is_instance_valid(spot):
 		selected_spot = spot
 
