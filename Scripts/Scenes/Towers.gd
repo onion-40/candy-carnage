@@ -1,3 +1,4 @@
+
 extends Node2D
 
 enum TowerType {
@@ -17,38 +18,80 @@ var build_spot: Marker2D
 @onready var attack_timer: Timer = $AttackTimer
 @onready var body: Polygon2D = $Body
 
+
 func _ready() -> void:
+	if body.polygon.is_empty():
+		body.polygon = PackedVector2Array([
+			Vector2(-15, -15),
+			Vector2(15, -15),
+			Vector2(15, 15),
+			Vector2(-15, 15)
+		])
+
 	apply_stats()
+
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 	attack_timer.start()
+
 
 func get_build_cost() -> Dictionary:
 	var cost = {}
 
 	match tower_type:
 		TowerType.LASER:
-			cost = {"bones": 15, "organs": 5, "eyeballs": 0}
+			cost = {
+				"bones": 15,
+				"organs": 5,
+				"eyeballs": 0
+			}
+
 		TowerType.HEAVY_CANNON:
-			cost = {"bones": 25, "organs": 7, "eyeballs": 0}
+			cost = {
+				"bones": 25,
+				"organs": 7,
+				"eyeballs": 0
+			}
 
 	return cost
 
+
 func get_upgrade_cost() -> Dictionary:
-	var cost = {"bones": 0, "organs": 0, "eyeballs": 0}
+	var cost = {
+		"bones": 0,
+		"organs": 0,
+		"eyeballs": 0
+	}
 
 	if level == 1:
 		if tower_type == TowerType.LASER:
-			cost = {"bones": 15, "organs": 10, "eyeballs": 0}
+			cost = {
+				"bones": 15,
+				"organs": 10,
+				"eyeballs": 0
+			}
 		else:
-			cost = {"bones": 35, "organs": 12, "eyeballs": 0}
+			cost = {
+				"bones": 35,
+				"organs": 12,
+				"eyeballs": 0
+			}
 
 	elif level == 2:
 		if tower_type == TowerType.LASER:
-			cost = {"bones": 20, "organs": 15, "eyeballs": 0}
+			cost = {
+				"bones": 20,
+				"organs": 15,
+				"eyeballs": 0
+			}
 		else:
-			cost = {"bones": 50, "organs": 18, "eyeballs": 2}
+			cost = {
+				"bones": 50,
+				"organs": 18,
+				"eyeballs": 2
+			}
 
 	return cost
+
 
 func upgrade() -> bool:
 	var success = false
@@ -67,13 +110,13 @@ func upgrade() -> bool:
 
 	return success
 
+
 func sell() -> void:
 	if not is_sold:
 		is_sold = true
 
 		var cost = get_build_cost()
 
-		# Refund 50% of original build cost, rounded down.
 		ResourceManager.add_resources(
 			int(cost["bones"] / 2),
 			int(cost["organs"] / 2),
@@ -85,12 +128,14 @@ func sell() -> void:
 
 		queue_free()
 
+
 func apply_stats() -> void:
 	if tower_type == TowerType.LASER:
 		attack_range = 220.0 + (level - 1) * 20.0
 		damage = 8 + (level - 1) * 5
 		attack_interval = 0.6
 		body.color = Color(0.1, 0.4, 1.0)
+
 	else:
 		attack_range = 150.0 + (level - 1) * 10.0
 		damage = 25 + (level - 1) * 15
@@ -99,11 +144,13 @@ func apply_stats() -> void:
 
 	attack_timer.wait_time = attack_interval
 
+
 func _on_attack_timer_timeout() -> void:
 	var target = find_nearest_enemy()
 
 	if target != null:
 		target.take_damage(damage)
+
 
 func find_nearest_enemy() -> Node2D:
 	var nearest_enemy: Node2D = null

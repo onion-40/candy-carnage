@@ -7,9 +7,9 @@ signal inventory_changed(
 	eyeballs: int
 )
 
-var bones: int = 30
-var organs: int = 15
-var eyeballs: int = 3
+var bones: int = 100
+var organs: int = 100
+var eyeballs: int = 5
 
 
 func add_resources(
@@ -21,11 +21,7 @@ func add_resources(
 	organs += organ_amount
 	eyeballs += eyeball_amount
 
-	inventory_changed.emit(
-		bones,
-		organs,
-		eyeballs
-	)
+	inventory_changed.emit(bones, organs, eyeballs)
 
 
 func can_afford(
@@ -47,21 +43,12 @@ func spend_resources(
 ) -> bool:
 	var success = false
 
-	if can_afford(
-		bone_cost,
-		organ_cost,
-		eyeball_cost
-	):
+	if can_afford(bone_cost, organ_cost, eyeball_cost):
 		bones -= bone_cost
 		organs -= organ_cost
 		eyeballs -= eyeball_cost
 
-		inventory_changed.emit(
-			bones,
-			organs,
-			eyeballs
-		)
-
+		inventory_changed.emit(bones, organs, eyeballs)
 		success = true
 
 	return success
