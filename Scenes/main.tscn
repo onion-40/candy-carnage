@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cnqasxkoa17kc" path="res://Scenes/Map.tscn" id="1_8gbba"]
 [ext_resource type="PackedScene" uid="uid://p8wm07gne2lx" path="res://Scenes/Enemies.tscn" id="2_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://g1ucg4fd4k67" path="res://Scenes/Towers.tscn" id="3_kry3j"]
+[ext_resource type="PackedScene" uid="uid://do75dorlxuvn1" path="res://Scenes/SpecialCharacters.tscn" id="4_21xkr"]
 [ext_resource type="Script" uid="uid://liaq03gdcccy" path="res://Scenes/tower_information.gd" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="5_kry3j"]
 
@@ -42,8 +43,8 @@ base_damage = null
 [node name="Towers" parent="." unique_id=1501200458 instance=ExtResource("3_kry3j")]
 position = Vector2(-16, -48)
 
-[node name="SpecialCharacters" type="Node2D" parent="." unique_id=655742771]
-position = Vector2(96, -184)
+[node name="SpecialCharacters" parent="." unique_id=932325363 instance=ExtResource("4_21xkr")]
+position = Vector2(96, -96)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=594782264]
 

@@ -3,12 +3,21 @@ extends Node2D
 
 const TOWER_SCENE = preload("res://scenes/Towers.tscn")
 const ENEMY_SCENE = preload("res://scenes/Enemies.tscn")
+const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/SpecialCharacters.tscn")
+
+@export var deployment_start_delay: float = 10.0
+@export var special_cooldown: float = 15.0
 
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var spawn_timer: Timer = $EnemySpawnTimer
 @onready var tower_spots: Node2D = $TowerSpots
+@onready var deployment_start_timer: Timer = $DeploymentStartTimer
+@onready var special_cooldown_timer: Timer = $SpecialCoolddownTimer
+@onready var deployment_preview: Polygon2D = $DeploymentPreview
 
 var selected_spot: Marker2D = null
+var can_deploy_special: bool = false
+var choosing_deployment_location: bool = false
 
 
 func _ready() -> void:
@@ -28,6 +37,17 @@ func _ready() -> void:
 
 		if first_spot != null:
 			build_laser_at(first_spot)
+			
+	deployment_start_timer.one_shot = true
+	deployment_start_timer.wait_time = deployment_start_delay
+	deployment_start_timer.timeout.connect(_on_deployment_start_ready)
+	deployment_start_timer.start()
+	
+	special_cooldown_timer.one_shot = true
+	special_cooldown_timer.wait_time = special_cooldown
+	special_cooldown_timer.timeout.connect(_on_special_cooldown_finished)
+
+	_create_deployment_preview()
 
 
 # =====================================
@@ -164,3 +184,77 @@ func sell_tower(tower: Node) -> void:
 
 		if selected_spot == spot:
 			selected_spot = null
+			
+			
+# =====================================
+# SPECIAL CHARACTER DEPLOYMENT
+# =====================================
+
+func _process(_delta: float) -> void:
+	if choosing_deployment_location:
+		deployment_preview.global_position = get_global_mouse_position()
+		
+
+func _on_deployment_start_ready() -> void:
+	can_deploy_special = true
+	print("Special character deployment is ready!")
+	
+func _on_special_cooldown_finished() -> void:
+	can_deploy_special = true
+	print("Special Character cooldown finished!")
+	
+func begin_special_placement() -> void:
+	if not can_deploy_special:
+		print("Special character is not ready yet.")
+		return
+	
+	if choosing_deployment_location:
+		return
+	
+	choosing_deployment_location = true
+	deployment_preview.visible = true
+	
+func _unhandled_input(event: InputEvent) -> void:
+	if not choosing_deployment_location:
+		return
+	
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_deploy_special_character(get_global_mouse_position())
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			_cancel_special_placement()
+			
+func _deploy_special_character(location: Vector2) -> void:
+	if not can_deploy_special:
+		return
+	
+	var character = SPECIAL_CHARACTER_SCENE.instantiate()
+	
+	add_child(character)
+	character.global_position = location
+	character.activate()
+	
+	can_deploy_special = false
+	choosing_deployment_location = false
+	deployment_preview.visible = false
+	
+	special_cooldown_timer.wait_time = special_cooldown
+	special_cooldown_timer.start()
+	
+func _cancel_special_placement() -> void:
+	choosing_deployment_location = false
+	deployment_preview.visible = false
+	
+func _create_deployment_preview() -> void:
+	var points = PackedVector2Array()
+	var radius = 150.0
+	var segments = 48
+	
+	for i in range(segments):
+		var angle = TAU * float(i) / float(segments)
+		points.append(Vector2(cos(angle), sin(angle)) * radius)
+		
+	deployment_preview.polygon = points
+	deployment_preview.color = Color(1.0, 0.2, 0.2, 0.25)
+	deployment_preview.visible = false
+	deployment_preview.z_index = 10
