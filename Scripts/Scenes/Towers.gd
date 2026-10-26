@@ -169,3 +169,15 @@ func find_nearest_enemy() -> Node2D:
 			nearest_enemy = enemy
 
 	return nearest_enemy
+
+
+func _on_selection_area_input_event(
+	viewport: Node,
+	event: InputEvent,
+	shape_idx: int
+) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			print("Tower clicked: ", name)
+
+			get_tree().call_group("tower_selection", "select_tower", self)

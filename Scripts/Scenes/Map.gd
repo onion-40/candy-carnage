@@ -17,7 +17,7 @@ func _ready() -> void:
 			spot.set_meta("occupied", false)
 			_create_spot_visual(spot)
 
-	spawn_timer.wait_time = 0.5
+	spawn_timer.wait_time = 1
 	spawn_timer.one_shot = false
 	spawn_timer.timeout.connect(_spawn_enemy)
 	spawn_timer.start()
@@ -42,10 +42,10 @@ func _create_spot_visual(spot: Marker2D) -> void:
 	visual.name = "SpotVisual"
 
 	visual.polygon = PackedVector2Array([
-		Vector2(-18, -18),
-		Vector2(18, -18),
-		Vector2(18, 18),
-		Vector2(-18, 18)
+		Vector2(-25, -25),
+		Vector2(25, -25),
+		Vector2(25, 25),
+		Vector2(-25, 25)
 	])
 
 	visual.color = Color(0.2, 0.8, 0.3, 0.65)
