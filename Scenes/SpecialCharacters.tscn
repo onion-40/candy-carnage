@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://do75dorlxuvn1"]
 
+[ext_resource type="Script" uid="uid://bfutegbitg7q5" path="res://Scenes/special_characters.gd" id="1_7jrx0"]
+
 [node name="SpecialCharacters" type="Node2D" unique_id=932325363]
+script = ExtResource("1_7jrx0")
 
 [node name="Body" type="Polygon2D" parent="." unique_id=413082617]
 position = Vector2(16, 176)
