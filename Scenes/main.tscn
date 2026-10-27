@@ -48,7 +48,7 @@ position = Vector2(344, -104)
 position = Vector2(-16, -48)
 
 [node name="SpecialCharacters" parent="." unique_id=932325363 instance=ExtResource("4_21xkr")]
-position = Vector2(96, -96)
+position = Vector2(-232, 16)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=594782264]
 
@@ -131,6 +131,12 @@ script = ExtResource("5_kry3j")
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/BottomHUD" unique_id=180391323]
 layout_mode = 2
 theme_override_constants/separation = 22
+
+[node name="SpecialTimerContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1624181972]
+layout_mode = 2
+
+[node name="SpecialTimerLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/SpecialTimerContainer" unique_id=1903001743]
+layout_mode = 2
 
 [node name="SpecialCharButton" type="Button" parent="UI/BottomHUD/HBoxContainer" unique_id=1319516445]
 custom_minimum_size = Vector2(110, 90)
