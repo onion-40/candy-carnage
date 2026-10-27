@@ -89,6 +89,20 @@ func get_upgrade_cost() -> Dictionary:
 				"organs": 18,
 				"eyeballs": 2
 			}
+	
+	elif level == 3:
+		if tower_type == TowerType.LASER:
+			cost = {
+				"bones": 35,
+				"organs": 20,
+				"eyeballs": 2
+			}
+		else:
+			cost = {
+				"bones": 50,
+				"organs": 25,
+				"eyeballs": 4
+			}
 
 	return cost
 
