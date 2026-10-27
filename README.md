@@ -29,7 +29,8 @@ It's a native desktop game, so there is no URL or port.
 - Towers shoot the nearest enemy in range. A killed enemy drops a random body part: bones (60%), organs (35%) or eyeballs (5%). It goes straight into your resources at the bottom right.
 - **Click a tower** to open its panel, then **Upgrade** (up to level 3) or **Sell** (refunds half the build cost).
 - **Click the Special Character Button** to enable special character ability/deployment.
-- **Select an area to deploy special character using your cursor**
+- **Use your cursor to choose where to deploy your special character**
+- **Click on the chosen area** to deploy your special character
 
 Work in Progress: 
 - HP label for Special Character 
