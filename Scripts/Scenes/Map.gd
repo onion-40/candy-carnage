@@ -151,22 +151,24 @@ func build_tower_at(spot: Area2D, type: int) -> bool:
 				spot.set_meta("occupied", true)
 				success = true
 				
-				# Hide visual spot indicator when occupied
-				if spot.has_node("SpotVisual"):
-					spot.get_node("SpotVisual").visible = false
-			else:
-				tower.queue_free()
+				# Hide the entire tower spot after building
+				spot.visible = false
+				spot.input_pickable = false
 
 	return success
 
 # Handles click detection directly from the Area2D spots
-func _on_spot_input_event(_viewport: Node, event: InputEvent, _shape_idx: int, spot: Area2D) -> void:
+func _on_spot_input_event(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int,
+	spot: Area2D
+) -> void:
 	if spot.get_meta("occupied", false):
 		return
-		
+
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		select_spot(spot)
-		build_laser_on_selected_spot()
 
 func build_laser_at(spot: Area2D) -> bool:
 	return build_tower_at(spot, 0)
@@ -228,9 +230,13 @@ func sell_tower(tower: Node) -> void:
 		if tower.has_method("sell"):
 			tower.sell()
 
+		if is_instance_valid(spot):
+			spot.set_meta("occupied", false)
+			spot.visible = true
+			spot.input_pickable = true
+
 		if selected_spot == spot:
 			selected_spot = null
-			
 			
 # =====================================
 # SPECIAL CHARACTER DEPLOYMENT

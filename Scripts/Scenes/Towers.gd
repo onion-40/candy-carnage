@@ -136,11 +136,13 @@ func apply_stats() -> void:
 		attack_interval = 0.6
 		body.color = Color(0.1, 0.4, 1.0)
 
-	else:
+	elif tower_type == TowerType.HEAVY_CANNON:
 		attack_range = 150.0 + (level - 1) * 10.0
 		damage = 25 + (level - 1) * 15
 		attack_interval = 1.5
 		body.color = Color(1.0, 0.2, 0.1)
+	else:
+		return
 
 	attack_timer.wait_time = attack_interval
 
