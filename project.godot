@@ -29,6 +29,10 @@ window/stretch/mode="viewport"
 
 project/assembly_name="Candy Carnage"
 
+[editor]
+
+movie_writer/movie_file="/Users/Nigella/Videos/Godot"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
