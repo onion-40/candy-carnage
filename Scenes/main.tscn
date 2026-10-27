@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://do75dorlxuvn1" path="res://Scenes/SpecialCharacters.tscn" id="4_21xkr"]
 [ext_resource type="Script" uid="uid://liaq03gdcccy" path="res://Scenes/tower_information.gd" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="5_kry3j"]
+[ext_resource type="PackedScene" uid="uid://dwm1ogo4gq0a" path="res://Scenes/WaveHUD.tscn" id="7_6bp64"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41ke1"]
 content_margin_left = 25.0
@@ -187,3 +188,5 @@ offset_bottom = 44.0
 grow_horizontal = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_21xkr")
 value = 100.0
+
+[node name="WaveHUD" parent="UI" unique_id=236326957 instance=ExtResource("7_6bp64")]

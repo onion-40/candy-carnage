@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dwm1ogo4gq0a"]
+
+[ext_resource type="Script" uid="uid://fh0spe7term0" path="res://WaveHUD.gd" id="1_230xb"]
+
+[node name="WaveHUD" type="PanelContainer" unique_id=236326957]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_230xb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=141460696]
+layout_mode = 2
+
+[node name="WaveLabel" type="Label" parent="VBoxContainer" unique_id=898374295]
+layout_mode = 2
+
+[node name="EnemyLabel" type="Label" parent="VBoxContainer" unique_id=1861920618]
+layout_mode = 2
+
+[node name="TimerLabel" type="Label" parent="VBoxContainer" unique_id=1748942749]
+layout_mode = 2
