@@ -59,13 +59,6 @@ func _ready() -> void:
 
 	start_next_wave()
 
-	# Temporary test tower.
-	if tower_spots.get_child_count() > 0:
-		var first_spot = tower_spots.get_child(0) as Area2D # Fixed from Marker2D to Area2D
-
-		if first_spot != null:
-			build_laser_at(first_spot)
-			
 	deployment_start_timer.one_shot = true
 	deployment_start_timer.wait_time = deployment_start_delay
 	deployment_start_timer.timeout.connect(_on_deployment_start_ready)
