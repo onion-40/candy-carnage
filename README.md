@@ -24,3 +24,8 @@ A 2D tower-defense prototype made with Godot 4.7.
 Work in Progress: 
 - HP label for Special Character 
 - Additional Shape and Color Shift in tower type upgrades
+
+## UPDATE 1.2
+- **Added 3 more waves to test game difficulty**
+- Nerfed towers to make current enemies harder to kill
+- Gave enemies more HP for testing purposes
