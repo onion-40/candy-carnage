@@ -2,24 +2,13 @@
 
 A 2D tower-defense prototype made with Godot 4.7.
 
+## Note: Candy Carnage is still in prototyping phase, so most elements are still in blobs and squares.
+
 ## Run it
 
-1. Install [Godot 4.7](https://godotengine.org/download) (standard build, not .NET). On macOS you can use `brew install --cask godot`.
-2. Clone the repo:
-   ```bash
-   git clone git@github.com:onion-40/candy-carnage.git
-   ```
-3. Open Godot, click **Import**, select `candy-carnage/project.godot`, then press **F5**.
-
-Or run it straight from a terminal:
-
-```bash
-cd candy-carnage
-godot --path .      # play
-godot -e --path .   # open the editor
-```
-
-It's a native desktop game, so there is no URL or port.
+1. **Download this repo as ZIP**
+2. Extract the ZIP file to be able to access the .exe file
+3. Play and Enjoy :)
 
 ## How to play
 
