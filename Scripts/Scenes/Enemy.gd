@@ -3,7 +3,7 @@ extends PathFollow2D
 signal defeated(reward: int)
 signal reached_base(damage: int)
 
-@export var max_health: int = 30
+@export var max_health: int = 75
 @export var move_speed: float = 100.0
 @export var reward: int = 5
 @export var base_damage: int = 5
