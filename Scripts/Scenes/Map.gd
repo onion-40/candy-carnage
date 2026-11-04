@@ -9,9 +9,9 @@ signal game_over
 @export var deployment_start_delay: float = 10.0
 @export var special_cooldown: float = 15.0
 @export var max_player_hp: int = 100
-@export var total_waves: int = 3
+@export var total_waves: int = 6
 @export var enemies_per_wave: int = 5
-@export var enemies_added_per_wave: int = 3
+@export var enemies_added_per_wave: int = 5
 @export var spawn_interval: float = 1.5
 @export var wave_break: float = 5.0
 
