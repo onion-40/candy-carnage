@@ -7,9 +7,22 @@ signal inventory_changed(
 	eyeballs: int
 )
 
-var bones: int = 100
-var organs: int = 100
-var eyeballs: int = 5
+const START_BONES: int = 100
+const START_ORGANS: int = 100
+const START_EYEBALLS: int = 5
+
+var bones: int = START_BONES
+var organs: int = START_ORGANS
+var eyeballs: int = START_EYEBALLS
+
+
+# Autoloads survive scene reloads, so a restart must reset the inventory.
+func reset() -> void:
+	bones = START_BONES
+	organs = START_ORGANS
+	eyeballs = START_EYEBALLS
+
+	inventory_changed.emit(bones, organs, eyeballs)
 
 
 func add_resources(

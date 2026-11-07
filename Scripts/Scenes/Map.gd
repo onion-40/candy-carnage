@@ -1,7 +1,7 @@
 extends Node2D
 
-const TOWER_SCENE = preload("res://scenes/Towers.tscn")
-const ENEMY_SCENE = preload("res://scenes/Enemies.tscn")
+const TOWER_SCENE = preload("res://Scenes/Towers.tscn")
+const ENEMY_SCENE = preload("res://Scenes/Enemies.tscn")
 const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/SpecialCharacters.tscn")
 signal player_health_changed(current_hp: int, max_hp: int)
 signal game_over
@@ -20,6 +20,7 @@ var player_hp: int = 100
 var is_game_over: bool = false
 
 var selected_spot: Area2D = null
+var selected_build_type: int = 0 # 0 = laser, 1 = heavy cannon (Towers.TowerType)
 var can_deploy_special: bool = false
 var choosing_deployment_location: bool = false
 
@@ -165,7 +166,11 @@ func _on_spot_input_event(_viewport: Node, event: InputEvent, _shape_idx: int, s
 		
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		select_spot(spot)
-		build_laser_on_selected_spot()
+		build_tower_at(spot, selected_build_type)
+
+
+func set_build_type(type: int) -> void:
+	selected_build_type = type
 
 func build_laser_at(spot: Area2D) -> bool:
 	return build_tower_at(spot, 0)
@@ -266,8 +271,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_deploy_special_character(get_global_mouse_position())
+			# Stop the same click from also building on a tower spot.
+			get_viewport().set_input_as_handled()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			_cancel_special_placement()
+			get_viewport().set_input_as_handled()
 			
 func _deploy_special_character(location: Vector2) -> void:
 	if not can_deploy_special:

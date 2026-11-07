@@ -26,6 +26,8 @@ func _ready() -> void:
 
 	_create_circle(aoe_visual, aoe_radius)
 	aoe_visual.color = Color(1.0, 0.2, 0.2, 0.2)
+	# Only show the AoE zone while the character is actually deployed.
+	aoe_visual.visible = false
 
 	duration_timer.one_shot = true
 	duration_timer.wait_time = deployment_duration
@@ -38,6 +40,7 @@ func activate() -> void:
 
 	is_deployed = true
 	effect_timer = 0.0
+	aoe_visual.visible = true
 
 	duration_timer.wait_time = deployment_duration
 	duration_timer.start()
