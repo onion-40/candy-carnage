@@ -12,10 +12,10 @@ A 2D tower-defense prototype made with Godot 4.7.
 
 ## How to play
 
-- Enemies follow the road. Each one that reaches the end takes HP from your base. At 0 HP it's game over.
-- **Left-click a blue tower spot** to place a tower.
-- Select which tower to choose in the bottom HUD (Laser costs 15 bones and 5 organs, Cannon cost 17 bones and 7 organs)
-- Towers shoot the nearest enemy in range. A killed enemy drops a random body part: bones (60%), organs (35%) or eyeballs (5%). It goes straight into your resources at the bottom right.
+- Enemies follow the road. Each one that reaches the end takes HP from your base. At 0 HP it's game over, and **Restart** starts a new game.
+- The game has 6 waves. Survive all of them to win.
+- **Left-click a blue tower spot** to select it, then pick a tower in the bottom HUD to build it there (Laser costs 15 bones and 5 organs, Cannon costs 25 bones and 7 organs).
+- Towers shoot the nearest enemy in range. A killed enemy drops a random body part on the ground: bones (60%), organs (35%) or eyeballs (5%). **Click it to collect it**, otherwise it is collected automatically after 8 seconds.
 - **Click a tower** to open its panel, then **Upgrade** (up to level 3) or **Sell** (refunds half the build cost).
 - **Click the Special Character Button** to enable special character ability/deployment.
 - **Use your cursor to choose where to deploy your special character**
