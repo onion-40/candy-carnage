@@ -9,7 +9,7 @@ size = Vector2(67, 60)
 script = ExtResource("1_wd6hp")
 
 [node name="Body" type="Polygon2D" parent="." unique_id=1527430392]
-position = Vector2(72.5, 0)
+position = Vector2(132, 36)
 polygon = PackedVector2Array(-166.08392, -65.539406, -97.91606, -65.539406, -97.91606, -6.460594, -166.08392, -6.460594)
 uv = PackedVector2Array(-192, -88, -64, -88, -64, 16, -192, 16)
 
@@ -18,7 +18,6 @@ uv = PackedVector2Array(-192, -88, -64, -88, -64, 16, -192, 16)
 [node name="SelectionArea" type="Area2D" parent="." unique_id=1123681613]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionArea" unique_id=743401285]
-position = Vector2(-60, -36)
 shape = SubResource("RectangleShape2D_41ke1")
 
 [connection signal="input_event" from="SelectionArea" to="." method="_on_selection_area_input_event"]

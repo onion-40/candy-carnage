@@ -9,6 +9,11 @@ signal game_over
 @export var deployment_start_delay: float = 10.0
 @export var special_cooldown: float = 15.0
 @export var max_player_hp: int = 100
+@export var total_waves: int = 6
+@export var enemies_per_wave: int = 5
+@export var enemies_added_per_wave: int = 5
+@export var spawn_interval: float = 1.5
+@export var wave_break: float = 5.0
 
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var spawn_timer: Timer = $EnemySpawnTimer
@@ -16,17 +21,24 @@ signal game_over
 @onready var deployment_start_timer: Timer = $DeploymentStartTimer
 @onready var special_cooldown_timer: Timer = $SpecialCoolddownTimer
 @onready var deployment_preview: Polygon2D = $DeploymentPreview
+@onready var wave_break_timer: Timer = $WaveBreakTimer
+
 var player_hp: int = 100
 var is_game_over: bool = false
 
 var selected_spot: Area2D = null
-var selected_build_type: int = 0 # 0 = laser, 1 = heavy cannon (Towers.TowerType)
 var can_deploy_special: bool = false
 var choosing_deployment_location: bool = false
+
+var current_wave: int = 0
+var enemies_to_spawn: int = 0
+var enemies_alive: int = 0
+var wave_in_progress: bool = false
 
 
 func _ready() -> void:
 	player_hp = max_player_hp
+	player_health_changed.connect(update_health_bar)
 	player_health_changed.emit(player_hp, max_player_hp)
 	
 	for spot in tower_spots.get_children():
@@ -38,18 +50,15 @@ func _ready() -> void:
 			if not spot.is_connected("input_event", _on_spot_input_event.bind(spot)):
 				spot.input_event.connect(_on_spot_input_event.bind(spot))
 
-	spawn_timer.wait_time = 1
-	spawn_timer.one_shot = false
+	spawn_timer.wait_time = spawn_interval
+	spawn_timer.one_shot = true
 	spawn_timer.timeout.connect(_spawn_enemy)
-	spawn_timer.start()
 
-	# Temporary test tower.
-	if tower_spots.get_child_count() > 0:
-		var first_spot = tower_spots.get_child(0) as Area2D # Fixed from Marker2D to Area2D
+	wave_break_timer.one_shot = true
+	wave_break_timer.timeout.connect(start_next_wave)
 
-		if first_spot != null:
-			build_laser_at(first_spot)
-			
+	start_next_wave()
+
 	deployment_start_timer.one_shot = true
 	deployment_start_timer.wait_time = deployment_start_delay
 	deployment_start_timer.timeout.connect(_on_deployment_start_ready)
@@ -78,6 +87,8 @@ func _on_enemy_reached_base(damage: int) -> void:
 		is_game_over = true
 		spawn_timer.stop()
 		game_over.emit()
+		spawn_timer.stop()
+		wave_break_timer.stop()
 		print("GAME OVER! The base has been destroyed.")
 
 
@@ -110,6 +121,9 @@ func _create_spot_visual(spot: Area2D) -> void:
 # =====================================
 
 func _spawn_enemy() -> void:
+	if is_game_over:
+		return
+
 	if enemy_path.curve == null:
 		push_warning("EnemyPath has no Curve2D.")
 		return
@@ -118,10 +132,60 @@ func _spawn_enemy() -> void:
 		push_warning("EnemyPath curve is empty. Add points to the path.")
 		return
 
+	if enemies_to_spawn <= 0:
+		return
+
 	var enemy = ENEMY_SCENE.instantiate()
+
+	enemy.defeated.connect(_on_enemy_defeated)
 	enemy.reached_base.connect(_on_enemy_reached_base)
+	enemy.tree_exited.connect(_on_enemy_removed)
+
 	enemy_path.add_child(enemy)
 
+	enemies_to_spawn -= 1
+	enemies_alive += 1
+
+	if enemies_to_spawn > 0:
+		spawn_timer.start()
+	else:
+		print("All enemies for Wave ", current_wave, " have spawned.")
+
+func start_next_wave() -> void:
+	if is_game_over:
+		return
+
+	if current_wave >= total_waves:
+		wave_in_progress = false
+		print("VICTORY! All waves completed.")
+		return
+
+	current_wave += 1
+	enemies_to_spawn = enemies_per_wave + (current_wave - 1) * enemies_added_per_wave
+	wave_in_progress = true
+
+	print("Wave ", current_wave, " started! Enemies: ", enemies_to_spawn)
+
+	spawn_timer.wait_time = spawn_interval
+	spawn_timer.start()
+
+
+func _on_enemy_defeated(_reward: int) -> void:
+	pass
+
+
+func _on_enemy_removed() -> void:
+	enemies_alive = max(0, enemies_alive - 1)
+
+	if enemies_to_spawn == 0 and enemies_alive == 0 and wave_in_progress:
+		wave_in_progress = false
+		print("Wave ", current_wave, " cleared!")
+
+		if current_wave < total_waves:
+			print("Next wave starts in ", wave_break, " seconds.")
+			wave_break_timer.start(wave_break)
+		else:
+			print("VICTORY! All waves completed.")
 
 # =====================================
 # TOWER CONSTRUCTION
@@ -151,26 +215,24 @@ func build_tower_at(spot: Area2D, type: int) -> bool:
 				spot.set_meta("occupied", true)
 				success = true
 				
-				# Hide visual spot indicator when occupied
-				if spot.has_node("SpotVisual"):
-					spot.get_node("SpotVisual").visible = false
-			else:
-				tower.queue_free()
+				# Hide the entire tower spot after building
+				spot.visible = false
+				spot.input_pickable = false
 
 	return success
 
 # Handles click detection directly from the Area2D spots
-func _on_spot_input_event(_viewport: Node, event: InputEvent, _shape_idx: int, spot: Area2D) -> void:
+func _on_spot_input_event(
+	_viewport: Node,
+	event: InputEvent,
+	_shape_idx: int,
+	spot: Area2D
+) -> void:
 	if spot.get_meta("occupied", false):
 		return
-		
+
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		select_spot(spot)
-		build_tower_at(spot, selected_build_type)
-
-
-func set_build_type(type: int) -> void:
-	selected_build_type = type
 
 func build_laser_at(spot: Area2D) -> bool:
 	return build_tower_at(spot, 0)
@@ -232,9 +294,13 @@ func sell_tower(tower: Node) -> void:
 		if tower.has_method("sell"):
 			tower.sell()
 
+		if is_instance_valid(spot):
+			spot.set_meta("occupied", false)
+			spot.visible = true
+			spot.input_pickable = true
+
 		if selected_spot == spot:
 			selected_spot = null
-			
 			
 # =====================================
 # SPECIAL CHARACTER DEPLOYMENT
@@ -311,3 +377,8 @@ func _create_deployment_preview() -> void:
 	deployment_preview.color = Color(1.0, 0.2, 0.2, 0.25)
 	deployment_preview.visible = false
 	deployment_preview.z_index = 10
+
+func update_health_bar(current_hp: int, max_hp: int) -> void:
+	var health_bar = get_tree().current_scene.get_node("UI/HealthBar")
+	health_bar.max_value = max_hp
+	health_bar.value = current_hp

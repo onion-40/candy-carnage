@@ -1,4 +1,3 @@
-
 extends PathFollow2D
 
 const BODY_PART_SCRIPT = preload("res://Scripts/Scenes/BodyPart.gd")
@@ -6,13 +5,12 @@ const BODY_PART_SCRIPT = preload("res://Scripts/Scenes/BodyPart.gd")
 signal defeated(reward: int)
 signal reached_base(damage: int)
 
-@export var max_health: int = 30
+@export var max_health: int = 75
 @export var move_speed: float = 100.0
 @export var reward: int = 5
 @export var base_damage: int = 1
 
 var health: int
-
 
 func _ready() -> void:
 	health = max_health
@@ -20,7 +18,6 @@ func _ready() -> void:
 
 	loop = false
 	rotates = false
-
 
 func _process(delta: float) -> void:
 	progress += move_speed * delta
