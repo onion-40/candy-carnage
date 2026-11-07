@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://liaq03gdcccy" path="res://Scenes/tower_information.gd" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="5_kry3j"]
 [ext_resource type="Script" path="res://Scenes/game_over_screen.gd" id="6_gmovr"]
+[ext_resource type="PackedScene" uid="uid://dwm1ogo4gq0a" path="res://Scenes/WaveHUD.tscn" id="7_6bp64"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41ke1"]
 content_margin_left = 25.0
@@ -24,11 +25,19 @@ content_margin_left = 16.0
 content_margin_top = 16.0
 content_margin_right = 12.0
 content_margin_bottom = 12.0
-bg_color = Color(0.6064114, 0.47736657, 0.7489121, 1)
+bg_color = Color(0.60784316, 0.47843137, 0.7490196, 0.91764706)
 corner_radius_top_left = 18
 corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21xkr"]
+bg_color = Color(0.0115433065, 0.3884842, 1.92523e-07, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Main" type="Node2D" unique_id=295096930]
 
@@ -36,16 +45,12 @@ corner_radius_bottom_left = 18
 
 [node name="Enemies" parent="." unique_id=1169386622 instance=ExtResource("2_jjvhh")]
 position = Vector2(344, -104)
-max_health = null
-move_speed = null
-reward = null
-base_damage = null
 
 [node name="Towers" parent="." unique_id=1501200458 instance=ExtResource("3_kry3j")]
 position = Vector2(-16, -48)
 
 [node name="SpecialCharacters" parent="." unique_id=932325363 instance=ExtResource("4_21xkr")]
-position = Vector2(96, -96)
+position = Vector2(-232, 16)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=594782264]
 
@@ -127,7 +132,19 @@ script = ExtResource("5_kry3j")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/BottomHUD" unique_id=180391323]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 22
+
+[node name="SpecialTimerContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1624181972]
+layout_mode = 2
+
+[node name="SpecialTimerLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/SpecialTimerContainer" unique_id=1903001743]
+layout_mode = 2
+
+[node name="SpecialCharButton" type="Button" parent="UI/BottomHUD/HBoxContainer" unique_id=1319516445]
+custom_minimum_size = Vector2(110, 90)
+layout_mode = 2
+text = "Special 
+Character"
 
 [node name="TowerSelection" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1013028664]
 layout_mode = 2
@@ -144,19 +161,10 @@ custom_minimum_size = Vector2(150, 90)
 layout_mode = 2
 text = "Heavy Cannon"
 
-[node name="SpecialButton" type="Button" parent="UI/BottomHUD/HBoxContainer/TowerSelection" unique_id=1606381147]
-custom_minimum_size = Vector2(150, 90)
-layout_mode = 2
-text = "Special"
-
 [node name="ResourceList" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=2142574579]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme_override_constants/separation = 4
-
-[node name="HPLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=1288190462]
-layout_mode = 2
-text = "HP: 100 / 100"
 
 [node name="BonesLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=1147830520]
 layout_mode = 2
@@ -201,3 +209,17 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "RESTART"
+
+[node name="HealthBar" type="ProgressBar" parent="UI" unique_id=434133851]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -125.0
+offset_top = 17.0
+offset_right = 125.0
+offset_bottom = 44.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_21xkr")
+value = 100.0
+
+[node name="WaveHUD" parent="UI" unique_id=236326957 instance=ExtResource("7_6bp64")]

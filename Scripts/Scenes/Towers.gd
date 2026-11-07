@@ -89,6 +89,20 @@ func get_upgrade_cost() -> Dictionary:
 				"organs": 18,
 				"eyeballs": 2
 			}
+	
+	elif level == 3:
+		if tower_type == TowerType.LASER:
+			cost = {
+				"bones": 35,
+				"organs": 20,
+				"eyeballs": 2
+			}
+		else:
+			cost = {
+				"bones": 50,
+				"organs": 25,
+				"eyeballs": 4
+			}
 
 	return cost
 
@@ -132,15 +146,17 @@ func sell() -> void:
 func apply_stats() -> void:
 	if tower_type == TowerType.LASER:
 		attack_range = 220.0 + (level - 1) * 20.0
-		damage = 8 + (level - 1) * 5
+		damage = 8 + (level - 1) * 2
 		attack_interval = 0.6
 		body.color = Color(0.1, 0.4, 1.0)
 
-	else:
+	elif tower_type == TowerType.HEAVY_CANNON:
 		attack_range = 150.0 + (level - 1) * 10.0
-		damage = 25 + (level - 1) * 15
+		damage = 25 + (level - 1) * 10
 		attack_interval = 1.5
 		body.color = Color(1.0, 0.2, 0.1)
+	else:
+		return
 
 	attack_timer.wait_time = attack_interval
 

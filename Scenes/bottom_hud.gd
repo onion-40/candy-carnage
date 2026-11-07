@@ -1,16 +1,14 @@
-
 extends PanelContainer
 
 @onready var bones_label: Label = $HBoxContainer/ResourceList/BonesLabel
 @onready var organs_label: Label = $HBoxContainer/ResourceList/OrgansLabel
 @onready var eyeballs_label: Label = $HBoxContainer/ResourceList/EyeballsLabel
-@onready var hp_label: Label = $HBoxContainer/ResourceList/HPLabel
+@onready var special_character_button: Button = $HBoxContainer/SpecialCharButton
+@onready var special_timer_label: Label = $HBoxContainer/SpecialTimerContainer/SpecialTimerLabel
 @onready var laser_button: Button = $HBoxContainer/TowerSelection/LaserButton
 @onready var cannon_button: Button = $HBoxContainer/TowerSelection/CannonButton
-@onready var special_button: Button = $HBoxContainer/TowerSelection/SpecialButton
 
-var map: Node = null
-
+var map: Node2D
 
 func _ready() -> void:
 	ResourceManager.inventory_changed.connect(update_resources)
@@ -19,41 +17,15 @@ func _ready() -> void:
 		ResourceManager.organs,
 		ResourceManager.eyeballs
 	)
+	
+	laser_button.pressed.connect(_on_laser_button_pressed)
+	cannon_button.pressed.connect(_on_cannon_button_pressed)
 
-	# Map is an earlier sibling of UI, so it is already ready here.
-	map = owner.get_node_or_null("Map")
-
-	# Laser / Cannon act as a radio group: the pressed one is what a spot click builds.
-	var tower_group = ButtonGroup.new()
-
-	for button in [laser_button, cannon_button]:
-		button.toggle_mode = true
-		button.button_group = tower_group
-
-	laser_button.button_pressed = true
-	laser_button.pressed.connect(_on_tower_button_pressed.bind(0))
-	cannon_button.pressed.connect(_on_tower_button_pressed.bind(1))
-	special_button.pressed.connect(_on_special_button_pressed)
-
-	if map:
-		map.player_health_changed.connect(update_hp)
-		update_hp(map.player_hp, map.max_player_hp)
-
+	special_character_button.pressed.connect(_on_special_character_button_pressed)
+	map = get_tree().current_scene.get_node("Map")
 
 func _process(_delta: float) -> void:
-	if map == null:
-		return
-
-	if map.choosing_deployment_location:
-		special_button.disabled = true
-		special_button.text = "Special\nClick the map"
-	elif map.can_deploy_special:
-		special_button.disabled = false
-		special_button.text = "Special\nReady!"
-	else:
-		special_button.disabled = true
-		special_button.text = "Special\n%ds" % ceili(_special_time_left())
-
+	_update_special_timer_display()
 
 func update_resources(
 	bone_amount: int,
@@ -64,23 +36,36 @@ func update_resources(
 	organs_label.text = "Organs: %d" % organ_amount
 	eyeballs_label.text = "Eyeballs: %d" % eyeball_amount
 
+func _on_special_character_button_pressed() -> void:
+	map.begin_special_placement()
 
-func update_hp(current_hp: int, max_hp: int) -> void:
-	hp_label.text = "HP: %d / %d" % [current_hp, max_hp]
+func _update_special_timer_display() -> void:
+	if not is_instance_valid(map):
+		return
+
+	if map.choosing_deployment_location:
+		special_timer_label.text = "Choose Deployment Location"
+
+	elif map.can_deploy_special:
+		special_timer_label.text = "Special Character: READY!"
+
+	elif map.deployment_start_timer.time_left > 0:
+		var remaining = map.deployment_start_timer.time_left
+		special_timer_label.text = "Initial Delay: %.1f s" % remaining
+
+	elif map.special_cooldown_timer.time_left > 0:
+		var remaining = map.special_cooldown_timer.time_left
+		special_timer_label.text = "Cooldown: %.1f s" % remaining
+
+	else:
+		special_timer_label.text = "Special Character: NOT READY"
 
 
-func _on_tower_button_pressed(type: int) -> void:
-	if map:
-		map.set_build_type(type)
+func _on_laser_button_pressed() -> void:
+	if is_instance_valid(map):
+		map.build_laser_on_selected_spot()
 
 
-func _on_special_button_pressed() -> void:
-	if map:
-		map.begin_special_placement()
-
-
-func _special_time_left() -> float:
-	if not map.deployment_start_timer.is_stopped():
-		return map.deployment_start_timer.time_left
-
-	return map.special_cooldown_timer.time_left
+func _on_cannon_button_pressed() -> void:
+	if is_instance_valid(map):
+		map.build_cannon_on_selected_spot()
