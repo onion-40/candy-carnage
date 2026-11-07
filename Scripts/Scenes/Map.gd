@@ -175,6 +175,11 @@ func _on_enemy_defeated(_reward: int) -> void:
 
 
 func _on_enemy_removed() -> void:
+	# tree_exited also fires when the whole scene is torn down (quit, Restart);
+	# those exits are not kills and the wave timer is already leaving the tree.
+	if not wave_break_timer.is_inside_tree():
+		return
+
 	enemies_alive = max(0, enemies_alive - 1)
 
 	if enemies_to_spawn == 0 and enemies_alive == 0 and wave_in_progress:
@@ -218,6 +223,9 @@ func build_tower_at(spot: Area2D, type: int) -> bool:
 				# Hide the entire tower spot after building
 				spot.visible = false
 				spot.input_pickable = false
+			else:
+				# Never added to the tree, so it must be freed by hand.
+				tower.free()
 
 	return success
 
