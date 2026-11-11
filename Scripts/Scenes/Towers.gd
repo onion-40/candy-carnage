@@ -162,6 +162,27 @@ func apply_stats() -> void:
 		return
 
 	attack_timer.wait_time = attack_interval
+	queue_redraw() # range circle follows upgrades
+
+
+# =====================================
+# RANGE PREVIEW (shown while the tower panel is open)
+# =====================================
+
+var range_visible: bool = false
+
+
+func set_range_visible(value: bool) -> void:
+	range_visible = value
+	queue_redraw()
+
+
+func _draw() -> void:
+	if not range_visible:
+		return
+
+	draw_circle(Vector2.ZERO, attack_range, Color(1, 1, 1, 0.08))
+	draw_arc(Vector2.ZERO, attack_range, 0.0, TAU, 64, Color(1, 1, 1, 0.5), 2.0)
 
 
 func _on_attack_timer_timeout() -> void:
