@@ -80,9 +80,10 @@ func _on_enemy_reached_base(damage: int) -> void:
 	
 	player_hp = max(0, player_hp - damage)
 	player_health_changed.emit(player_hp, max_player_hp)
-	
+	_show_base_hit()
+
 	print("HP: ", player_hp, "/", max_player_hp)
-	
+
 	if player_hp <= 0:
 		is_game_over = true
 		spawn_timer.stop()
@@ -390,3 +391,40 @@ func update_health_bar(current_hp: int, max_hp: int) -> void:
 	var health_bar = get_tree().current_scene.get_node("UI/HealthBar")
 	health_bar.max_value = max_hp
 	health_bar.value = current_hp
+
+
+# =====================================
+# BASE HIT FEEDBACK
+# =====================================
+
+var base_hit_overlay: ColorRect = null
+var shake_tween: Tween = null
+
+
+# Red screen flash + small shake of the map when an enemy gets through.
+func _show_base_hit() -> void:
+	if base_hit_overlay == null:
+		var layer = CanvasLayer.new()
+		layer.layer = 5
+		add_child(layer)
+
+		base_hit_overlay = ColorRect.new()
+		base_hit_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+		base_hit_overlay.color = Color(1.0, 0.0, 0.0, 0.0)
+		base_hit_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		layer.add_child(base_hit_overlay)
+
+	base_hit_overlay.color.a = 0.25
+	var flash_tween = base_hit_overlay.create_tween()
+	flash_tween.tween_property(base_hit_overlay, "color:a", 0.0, 0.3)
+
+	if shake_tween and shake_tween.is_valid():
+		shake_tween.kill()
+
+	shake_tween = create_tween()
+
+	for i in range(4):
+		var offset = Vector2(randf_range(-6, 6), randf_range(-6, 6))
+		shake_tween.tween_property(self, "position", offset, 0.04)
+
+	shake_tween.tween_property(self, "position", Vector2.ZERO, 0.04)
