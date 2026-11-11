@@ -415,13 +415,17 @@ func _show_base_hit() -> void:
 		layer.add_child(base_hit_overlay)
 
 	base_hit_overlay.color.a = 0.25
+	# Both tweens keep running while paused: the hit that ends the game
+	# pauses the tree, and a frozen tween would leave the screen red.
 	var flash_tween = base_hit_overlay.create_tween()
+	flash_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	flash_tween.tween_property(base_hit_overlay, "color:a", 0.0, 0.3)
 
 	if shake_tween and shake_tween.is_valid():
 		shake_tween.kill()
 
 	shake_tween = create_tween()
+	shake_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 
 	for i in range(4):
 		var offset = Vector2(randf_range(-6, 6), randf_range(-6, 6))
