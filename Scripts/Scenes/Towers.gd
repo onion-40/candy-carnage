@@ -8,6 +8,9 @@ enum TowerType {
 
 @export var tower_type: TowerType = TowerType.LASER
 
+const LASER_COLOR: Color = Color(0.4, 0.9, 1.0)
+const CANNON_FLASH_COLOR: Color = Color(1.0, 0.75, 0.2)
+
 var level: int = 1
 var attack_range: float
 var damage: int
@@ -165,7 +168,68 @@ func _on_attack_timer_timeout() -> void:
 	var target = find_nearest_enemy()
 
 	if target != null:
+		# Read the position first: a killed enemy frees itself.
+		var target_position = target.global_position
 		target.take_damage(damage)
+		_show_attack(target_position)
+
+
+# =====================================
+# ATTACK EFFECTS
+# =====================================
+
+func _show_attack(target_position: Vector2) -> void:
+	if tower_type == TowerType.LASER:
+		_show_laser(target_position)
+	else:
+		_show_cannon_flash(target_position)
+
+
+# A short beam from the tower to the target that fades out.
+func _show_laser(target_position: Vector2) -> void:
+	var beam = Line2D.new()
+	beam.top_level = true # points are in world coordinates
+	beam.z_index = 10
+	beam.width = 3.0 + level
+	beam.default_color = LASER_COLOR
+	beam.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	beam.end_cap_mode = Line2D.LINE_CAP_ROUND
+	beam.points = PackedVector2Array([global_position, target_position])
+	add_child(beam)
+
+	var tween = beam.create_tween()
+	tween.tween_property(beam, "modulate:a", 0.0, 0.15)
+	tween.tween_callback(beam.queue_free)
+
+
+# A muzzle flash on the tower and a bigger blast on the target.
+func _show_cannon_flash(target_position: Vector2) -> void:
+	_spawn_flash(global_position, 14.0, 0.15)
+	_spawn_flash(target_position, 22.0 + level * 4.0, 0.25)
+
+
+func _spawn_flash(at: Vector2, radius: float, duration: float) -> void:
+	var points = PackedVector2Array()
+	var segments = 16
+
+	for i in range(segments):
+		var angle = TAU * float(i) / float(segments)
+		points.append(Vector2(cos(angle), sin(angle)) * radius)
+
+	var flash = Polygon2D.new()
+	flash.top_level = true
+	flash.z_index = 10
+	flash.polygon = points
+	flash.color = CANNON_FLASH_COLOR
+	add_child(flash)
+	flash.global_position = at
+	flash.scale = Vector2(0.4, 0.4)
+
+	var tween = flash.create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(flash, "scale", Vector2.ONE, duration)
+	tween.tween_property(flash, "modulate:a", 0.0, duration)
+	tween.chain().tween_callback(flash.queue_free)
 
 
 func find_nearest_enemy() -> Node2D:
