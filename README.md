@@ -7,7 +7,7 @@ A 2D tower-defense prototype made with Godot 4.7.
 ## Run it
 
 1. **Download this repo as ZIP**
-2. Extract the ZIP file to be able to access the .exe file
+2. Extract the ZIP file to access the .exe file
 3. Play and Enjoy :)
 
 ## How to play
