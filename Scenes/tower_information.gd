@@ -20,16 +20,27 @@ func _ready() -> void:
 	sell_button.pressed.connect(_on_sell_pressed)
 
 func _on_close_pressed() -> void:
-	selected_tower = null
+	_set_selected_tower(null)
 	hide()
 
 func select_tower(tower: Node2D) -> void:
 	if not is_instance_valid(tower):
 		return
 
-	selected_tower = tower
+	_set_selected_tower(tower)
 	_refresh_panel()
 	show()
+
+
+# Only the selected tower shows its range circle.
+func _set_selected_tower(tower: Node2D) -> void:
+	if is_instance_valid(selected_tower) and selected_tower.has_method("set_range_visible"):
+		selected_tower.set_range_visible(false)
+
+	selected_tower = tower
+
+	if is_instance_valid(selected_tower) and selected_tower.has_method("set_range_visible"):
+		selected_tower.set_range_visible(true)
 
 
 func _refresh_panel() -> void:
@@ -79,5 +90,5 @@ func _on_sell_pressed() -> void:
 
 	if map and map.has_method("sell_tower"):
 		map.sell_tower(selected_tower)
-		selected_tower = null
+		_set_selected_tower(null)
 		hide()
