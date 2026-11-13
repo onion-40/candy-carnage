@@ -7,8 +7,8 @@ signal inventory_changed(
 	eyeballs: int
 )
 
-const START_BONES: int = 100
-const START_ORGANS: int = 100
+const START_BONES: int = 30
+const START_ORGANS: int = 15
 const START_EYEBALLS: int = 5
 
 var bones: int = START_BONES

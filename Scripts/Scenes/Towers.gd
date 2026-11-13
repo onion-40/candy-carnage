@@ -149,7 +149,7 @@ func sell() -> void:
 func apply_stats() -> void:
 	if tower_type == TowerType.LASER:
 		attack_range = 220.0 + (level - 1) * 20.0
-		damage = 8 + (level - 1) * 2
+		damage = 10 + (level - 1) * 2
 		attack_interval = 0.6
 		body.color = Color(0.1, 0.4, 1.0)
 
