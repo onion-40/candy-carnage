@@ -14,6 +14,8 @@ signal game_over
 @export var enemies_added_per_wave: int = 5
 @export var spawn_interval: float = 1.5
 @export var wave_break: float = 5.0
+@export var starting_enemy_health: int = 50
+@export var enemy_health_increase_per_wave: int = 10
 
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var spawn_timer: Timer = $EnemySpawnTimer
@@ -137,6 +139,8 @@ func _spawn_enemy() -> void:
 		return
 
 	var enemy = ENEMY_SCENE.instantiate()
+	
+	enemy.max_health = starting_enemy_health + ((current_wave - 1) * enemy_health_increase_per_wave)
 
 	enemy.defeated.connect(_on_enemy_defeated)
 	enemy.reached_base.connect(_on_enemy_reached_base)
