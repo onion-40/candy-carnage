@@ -5,7 +5,7 @@ const BODY_PART_SCRIPT = preload("res://Scripts/Scenes/BodyPart.gd")
 signal defeated(reward: int)
 signal reached_base(damage: int)
 
-@export var max_health: int = 50
+@export var max_health: int = 35
 @export var move_speed: float = 100.0
 @export var reward: int = 5
 @export var base_damage: int = 1
