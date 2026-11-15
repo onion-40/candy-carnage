@@ -19,6 +19,14 @@ func _ready() -> void:
 	upgrade_button.pressed.connect(_on_upgrade_pressed)
 	sell_button.pressed.connect(_on_sell_pressed)
 
+	# Loot picked up while the panel is open can make the upgrade affordable.
+	ResourceManager.inventory_changed.connect(_on_inventory_changed)
+
+
+func _on_inventory_changed(_bones: int, _organs: int, _eyeballs: int) -> void:
+	if visible:
+		_refresh_panel()
+
 func _on_close_pressed() -> void:
 	_set_selected_tower(null)
 	hide()
@@ -61,6 +69,12 @@ func _refresh_panel() -> void:
 		selected_tower.attack_interval
 	]
 
+	if selected_tower.level >= 3:
+		upgrade_cost_label.text = "Max level reached"
+		upgrade_button.text = "MAX LEVEL"
+		upgrade_button.disabled = true
+		return
+
 	var cost = selected_tower.get_upgrade_cost()
 	upgrade_cost_label.text = "Upgrade Cost:\n%d Bones, %d Organs, %d Eyeballs" % [
 		cost["bones"],
@@ -68,7 +82,14 @@ func _refresh_panel() -> void:
 		cost["eyeballs"]
 	]
 
-	upgrade_button.disabled = selected_tower.level >= 3
+	# Greyed out when unaffordable, otherwise the click silently does nothing.
+	var affordable = ResourceManager.can_afford(
+		cost["bones"],
+		cost["organs"],
+		cost["eyeballs"]
+	)
+	upgrade_button.text = "UPGRADE TOWER" if affordable else "NOT ENOUGH RESOURCES"
+	upgrade_button.disabled = not affordable
 
 
 func _on_upgrade_pressed() -> void:

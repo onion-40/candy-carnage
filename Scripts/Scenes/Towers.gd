@@ -38,9 +38,14 @@ func _ready() -> void:
 
 
 func get_build_cost() -> Dictionary:
+	return build_cost_for(tower_type)
+
+
+# Static so the HUD can show prices without instancing a tower.
+static func build_cost_for(type: int) -> Dictionary:
 	var cost = {}
 
-	match tower_type:
+	match type:
 		TowerType.LASER:
 			cost = {
 				"bones": 15,
