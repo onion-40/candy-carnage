@@ -283,6 +283,4 @@ func _on_selection_area_input_event(
 ) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			print("Tower clicked: ", name)
-
 			get_tree().call_group("tower_selection", "select_tower", self)

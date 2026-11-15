@@ -14,7 +14,6 @@ var attack_timer: float = 0.0
 func activate() -> void: 
 	is_active = true
 	attack_timer = 0.0
-	print("Special character activated!")
 
 	await get_tree().create_timer(lifetime).timeout
 
@@ -49,5 +48,3 @@ func attack_nearest_enemy() -> void:
 
 	if nearest_enemy != null:
 		nearest_enemy.take_damage(attack_damage)
-		print("Attacked enemy! Damage dealt: ", attack_damage)
-		print("Enemy HP after attack: ", nearest_enemy.health)
