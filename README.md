@@ -12,8 +12,10 @@ A 2D tower-defense prototype made with Godot 4.7.
 
 ## How to play
 
+A **How to Play** popup opens when the game starts. Reopen it any time with the **?** button in the top-right corner.
+
 - Enemies follow the road. Each one that reaches the end takes HP from your base. At 0 HP it's game over, and **Restart** starts a new game.
-- The game has 6 waves. Survive all of them to win.
+- The game has 6 waves. Survive all of them to reach the **Victory** screen, then **Play Again** to start over.
 - **Left-click a blue tower spot** to select it (it turns yellow), then pick a tower in the bottom HUD to build it there (Laser costs 15 bones and 5 organs, Cannon costs 25 bones and 7 organs). A greyed-out button means you can't afford it yet.
 - Towers shoot the nearest enemy in range. A killed enemy drops a random body part on the ground: bones (60%), organs (35%) or eyeballs (5%). **Click it to collect it**, otherwise it is collected automatically after 8 seconds.
 - **Click a tower** to open its panel, then **Upgrade** (up to level 3) or **Sell** (refunds half the build cost).
@@ -35,3 +37,8 @@ Work in Progress:
 - The Upgrade button shows "NOT ENOUGH RESOURCES" or "MAX LEVEL" instead of silently doing nothing
 - The selected tower spot is highlighted
 - Moved the 6th tower spot out from under the bottom HUD, where it couldn't be clicked
+
+## UPDATE 1.3.2 (playtest build)
+- Victory screen when all 6 waves are cleared, with waves cleared, base HP left and a Play Again button
+- How to Play popup on launch (the game waits until you close it), reopenable with the ? button
+- Code cleanup: removed debug logs and unused files
