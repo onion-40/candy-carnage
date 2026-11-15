@@ -6,9 +6,9 @@ A 2D tower-defense prototype made with Godot 4.7.
 
 ## Run it
 
-1. Open the [latest release](https://github.com/onion-40/candy-carnage/releases/latest)
-2. Download **Candy Carnage.exe** from the Assets section
-3. Run it, play and enjoy :)
+1. **Download this repo as ZIP**
+2. Extract the ZIP file to access the .exe file (**Candy Carnage.exe**)
+3. Play and Enjoy :)
 
 ## How to play
 
@@ -35,4 +35,3 @@ Work in Progress:
 - The Upgrade button shows "NOT ENOUGH RESOURCES" or "MAX LEVEL" instead of silently doing nothing
 - The selected tower spot is highlighted
 - Moved the 6th tower spot out from under the bottom HUD, where it couldn't be clicked
-- The game is now downloaded from GitHub Releases instead of the repo ZIP
