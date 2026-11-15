@@ -224,6 +224,9 @@ func build_tower_at(spot: Area2D, type: int) -> bool:
 				
 				spot.set_meta("occupied", true)
 				success = true
+
+				if selected_spot == spot:
+					select_spot(null)
 				
 				# Hide the entire tower spot after building
 				spot.visible = false
@@ -259,9 +262,19 @@ func build_cannon_at(spot: Area2D) -> bool:
 # TOWER SPOT SELECTION
 # =====================================
 
+const SPOT_SELECTED_MODULATE: Color = Color(1.6, 1.6, 0.6)
+
+
+# The selected spot is tinted so the player sees where the next build goes.
+# Passing null clears the selection.
 func select_spot(spot: Area2D) -> void:
-	if is_instance_valid(spot):
-		selected_spot = spot
+	if is_instance_valid(selected_spot):
+		selected_spot.modulate = Color.WHITE
+
+	selected_spot = spot if is_instance_valid(spot) else null
+
+	if selected_spot:
+		selected_spot.modulate = SPOT_SELECTED_MODULATE
 
 
 func build_laser_on_selected_spot() -> bool:
@@ -313,7 +326,7 @@ func sell_tower(tower: Node) -> void:
 			spot.input_pickable = true
 
 		if selected_spot == spot:
-			selected_spot = null
+			select_spot(null)
 			
 # =====================================
 # SPECIAL CHARACTER DEPLOYMENT

@@ -94,7 +94,7 @@ uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.0
 polygon = PackedVector2Array(-50, -47, 62, -43, 62, 29, -44, 31)
 
 [node name="Spot6" type="Area2D" parent="TowerSpots" unique_id=1925645619]
-position = Vector2(888, 776)
+position = Vector2(1014, 600)
 
 [node name="SpotVisual6" type="Polygon2D" parent="TowerSpots/Spot6" unique_id=757307729]
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
