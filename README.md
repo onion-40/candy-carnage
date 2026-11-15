@@ -41,4 +41,5 @@ Work in Progress:
 ## UPDATE 1.3.2 (playtest build)
 - Victory screen when all 6 waves are cleared, with waves cleared, base HP left and a Play Again button
 - How to Play popup on launch (the game waits until you close it), reopenable with the ? button
+- Enemies now deal 2 damage to the base (was 1): you could win 6 waves without building a single tower
 - Code cleanup: removed debug logs and unused files

@@ -8,7 +8,7 @@ signal reached_base(damage: int)
 @export var max_health: int = 35
 @export var move_speed: float = 100.0
 @export var reward: int = 5
-@export var base_damage: int = 1
+@export var base_damage: int = 2
 
 var health: int
 
