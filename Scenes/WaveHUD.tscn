@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dwm1ogo4gq0a"]
 
-[ext_resource type="Script" uid="uid://fh0spe7term0" path="res://WaveHUD.gd" id="1_230xb"]
+[ext_resource type="Script" uid="uid://fh0spe7term0" path="res://Scenes/WaveHUD.gd" id="1_230xb"]
 
 [node name="WaveHUD" type="PanelContainer" unique_id=236326957]
 offset_right = 40.0
