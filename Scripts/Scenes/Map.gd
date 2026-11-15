@@ -5,6 +5,7 @@ const ENEMY_SCENE = preload("res://Scenes/Enemies.tscn")
 const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/SpecialCharacters.tscn")
 signal player_health_changed(current_hp: int, max_hp: int)
 signal game_over
+signal victory
 
 @export var deployment_start_delay: float = 10.0
 @export var special_cooldown: float = 15.0
@@ -27,6 +28,7 @@ signal game_over
 
 var player_hp: int = 100
 var is_game_over: bool = false
+var is_victory: bool = false
 
 var selected_spot: Area2D = null
 var can_deploy_special: bool = false
@@ -194,8 +196,13 @@ func _on_enemy_removed() -> void:
 		if current_wave < total_waves:
 			print("Next wave starts in ", wave_break, " seconds.")
 			wave_break_timer.start(wave_break)
-		else:
+		elif not is_game_over:
+			# The last enemy can drop HP to 0 as it is removed: a loss wins over a win.
+			is_victory = true
+			deployment_preview.visible = false
+			choosing_deployment_location = false
 			print("VICTORY! All waves completed.")
+			victory.emit()
 
 # =====================================
 # TOWER CONSTRUCTION
