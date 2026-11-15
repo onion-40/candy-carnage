@@ -1,5 +1,7 @@
 extends PanelContainer
 
+const TOWER_SCRIPT = preload("res://Scripts/Scenes/Towers.gd")
+
 @onready var bones_label: Label = $HBoxContainer/ResourceList/BonesLabel
 @onready var organs_label: Label = $HBoxContainer/ResourceList/OrgansLabel
 @onready var eyeballs_label: Label = $HBoxContainer/ResourceList/EyeballsLabel
@@ -35,6 +37,33 @@ func update_resources(
 	bones_label.text = "Bones: %d" % bone_amount
 	organs_label.text = "Organs: %d" % organ_amount
 	eyeballs_label.text = "Eyeballs: %d" % eyeball_amount
+	_update_build_button(laser_button, "Laser Tower", TOWER_SCRIPT.TowerType.LASER)
+	_update_build_button(cannon_button, "Heavy Cannon", TOWER_SCRIPT.TowerType.HEAVY_CANNON)
+
+
+# Shows the price on the button and greys it out when the player can't pay,
+# otherwise a refused build looks like a broken button.
+func _update_build_button(button: Button, title: String, type: int) -> void:
+	var cost = TOWER_SCRIPT.build_cost_for(type)
+	button.text = "%s\n%s" % [title, format_cost(cost)]
+	button.disabled = not ResourceManager.can_afford(
+		cost["bones"],
+		cost["organs"],
+		cost["eyeballs"]
+	)
+
+
+static func format_cost(cost: Dictionary) -> String:
+	var parts = []
+
+	if cost["bones"] > 0:
+		parts.append("%d Bones" % cost["bones"])
+	if cost["organs"] > 0:
+		parts.append("%d Organs" % cost["organs"])
+	if cost["eyeballs"] > 0:
+		parts.append("%d Eyes" % cost["eyeballs"])
+
+	return ", ".join(parts)
 
 func _on_special_character_button_pressed() -> void:
 	map.begin_special_placement()
