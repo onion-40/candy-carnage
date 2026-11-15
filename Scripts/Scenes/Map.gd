@@ -86,15 +86,11 @@ func _on_enemy_reached_base(damage: int) -> void:
 	player_health_changed.emit(player_hp, max_player_hp)
 	_show_base_hit()
 
-	print("HP: ", player_hp, "/", max_player_hp)
-
 	if player_hp <= 0:
 		is_game_over = true
 		spawn_timer.stop()
-		game_over.emit()
-		spawn_timer.stop()
 		wave_break_timer.stop()
-		print("GAME OVER! The base has been destroyed.")
+		game_over.emit()
 
 
 # =====================================
@@ -144,7 +140,6 @@ func _spawn_enemy() -> void:
 	
 	enemy.max_health = starting_enemy_health + ((current_wave - 1) * enemy_health_increase_per_wave)
 
-	enemy.defeated.connect(_on_enemy_defeated)
 	enemy.reached_base.connect(_on_enemy_reached_base)
 	enemy.tree_exited.connect(_on_enemy_removed)
 
@@ -155,8 +150,6 @@ func _spawn_enemy() -> void:
 
 	if enemies_to_spawn > 0:
 		spawn_timer.start()
-	else:
-		print("All enemies for Wave ", current_wave, " have spawned.")
 
 func start_next_wave() -> void:
 	if is_game_over:
@@ -164,21 +157,14 @@ func start_next_wave() -> void:
 
 	if current_wave >= total_waves:
 		wave_in_progress = false
-		print("VICTORY! All waves completed.")
 		return
 
 	current_wave += 1
 	enemies_to_spawn = enemies_per_wave + (current_wave - 1) * enemies_added_per_wave
 	wave_in_progress = true
 
-	print("Wave ", current_wave, " started! Enemies: ", enemies_to_spawn)
-
 	spawn_timer.wait_time = spawn_interval
 	spawn_timer.start()
-
-
-func _on_enemy_defeated(_reward: int) -> void:
-	pass
 
 
 func _on_enemy_removed() -> void:
@@ -191,17 +177,14 @@ func _on_enemy_removed() -> void:
 
 	if enemies_to_spawn == 0 and enemies_alive == 0 and wave_in_progress:
 		wave_in_progress = false
-		print("Wave ", current_wave, " cleared!")
 
 		if current_wave < total_waves:
-			print("Next wave starts in ", wave_break, " seconds.")
 			wave_break_timer.start(wave_break)
 		elif not is_game_over:
 			# The last enemy can drop HP to 0 as it is removed: a loss wins over a win.
 			is_victory = true
 			deployment_preview.visible = false
 			choosing_deployment_location = false
-			print("VICTORY! All waves completed.")
 			victory.emit()
 
 # =====================================
@@ -346,15 +329,12 @@ func _process(_delta: float) -> void:
 
 func _on_deployment_start_ready() -> void:
 	can_deploy_special = true
-	print("Special character deployment is ready!")
 	
 func _on_special_cooldown_finished() -> void:
 	can_deploy_special = true
-	print("Special Character cooldown finished!")
 	
 func begin_special_placement() -> void:
 	if not can_deploy_special:
-		print("Special character is not ready yet.")
 		return
 	
 	if choosing_deployment_location:
