@@ -7,6 +7,8 @@ extends PanelContainer
 @onready var upgrade_cost_label: Label = $VBoxContainer/UpgradeCost
 @onready var upgrade_button: Button = $VBoxContainer/UpgradeButton
 @onready var sell_button: Button = $VBoxContainer/SellButton
+@onready var repair_button: Button = $VBoxContainer/RepairButton
+@onready var repair_progress_bar: ProgressBar = $VBoxContainer/RepairProgressBar
 
 var selected_tower: Node2D = null
 
@@ -18,6 +20,8 @@ func _ready() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 	upgrade_button.pressed.connect(_on_upgrade_pressed)
 	sell_button.pressed.connect(_on_sell_pressed)
+	repair_button.button_down.connect(_on_repair_button_down)
+	repair_button.button_up.connect(_on_repair_button_up)
 
 	# Loot picked up while the panel is open can make the upgrade affordable.
 	ResourceManager.inventory_changed.connect(_on_inventory_changed)
@@ -46,6 +50,9 @@ func _set_selected_tower(tower: Node2D) -> void:
 		selected_tower.set_range_visible(false)
 
 	selected_tower = tower
+	repair_progress_bar.value = 0
+	repair_progress_bar.hide()
+	repair_button.text = "HOLD TO REPAIR"
 
 	if is_instance_valid(selected_tower) and selected_tower.has_method("set_range_visible"):
 		selected_tower.set_range_visible(true)
@@ -56,6 +63,11 @@ func _refresh_panel() -> void:
 		hide()
 		return
 
+	repair_button.disabled = (
+		selected_tower.time_left >= selected_tower.max_lifetime
+		or selected_tower.is_repairing
+	)
+	
 	var tower_type_name = "Laser Tower"
 
 	if selected_tower.tower_type == 1:
@@ -91,6 +103,19 @@ func _refresh_panel() -> void:
 	upgrade_button.text = "UPGRADE TOWER" if affordable else "NOT ENOUGH RESOURCES"
 	upgrade_button.disabled = not affordable
 
+func _process(_delta: float) -> void:
+	if not is_instance_valid(selected_tower): return
+	if selected_tower.is_repairing:
+		var progress = (
+			selected_tower.repair_held_time /
+			selected_tower.repair_duration) * 100.0
+		repair_progress_bar.value = clamp(progress, 0.0, 100.0)
+		repair_progress_bar.show()
+		repair_button.text = "REPAIRING..."
+	else:
+		repair_progress_bar.value = 0
+		repair_progress_bar.hide()
+		repair_button.text = "HOLD TO REPAIR"
 
 func _on_upgrade_pressed() -> void:
 	if not is_instance_valid(selected_tower):
@@ -113,3 +138,18 @@ func _on_sell_pressed() -> void:
 		map.sell_tower(selected_tower)
 		_set_selected_tower(null)
 		hide()
+
+func _on_repair_button_down() -> void:
+	if is_instance_valid(selected_tower):
+		selected_tower.begin_repair()
+
+
+func _on_repair_button_up() -> void:
+	if is_instance_valid(selected_tower):
+		selected_tower.end_repair()
+
+	repair_progress_bar.value = 0
+	repair_progress_bar.hide()
+	repair_button.text = "HOLD TO REPAIR"
+
+	_refresh_panel()

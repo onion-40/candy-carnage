@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://cnqasxkoa17kc" path="res://Scenes/Map.tscn" id="1_8gbba"]
 [ext_resource type="Script" uid="uid://liaq03gdcccy" path="res://Scenes/tower_information.gd" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="5_kry3j"]
-[ext_resource type="Script" path="res://Scenes/game_over_screen.gd" id="6_gmovr"]
+[ext_resource type="Script" uid="uid://d36s1hgw7srlt" path="res://Scenes/game_over_screen.gd" id="6_gmovr"]
 [ext_resource type="PackedScene" uid="uid://dwm1ogo4gq0a" path="res://Scenes/WaveHUD.tscn" id="7_6bp64"]
-[ext_resource type="Script" path="res://Scenes/victory_screen.gd" id="8_vctry"]
-[ext_resource type="Script" path="res://Scenes/how_to_play.gd" id="9_howto"]
+[ext_resource type="Script" uid="uid://rln2sh71lq43" path="res://Scenes/victory_screen.gd" id="8_vctry"]
+[ext_resource type="Script" uid="uid://b7udtmxic72u7" path="res://Scenes/how_to_play.gd" id="9_howto"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41ke1"]
 content_margin_left = 25.0
@@ -105,6 +105,14 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 17
 text = "SELL TOWER"
 
+[node name="RepairButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1629869088]
+layout_mode = 2
+text = "HOLD TO REPAIR"
+
+[node name="RepairProgressBar" type="ProgressBar" parent="UI/TowerInformation/VBoxContainer" unique_id=720635341]
+visible = false
+layout_mode = 2
+
 [node name="BottomHUD" type="PanelContainer" parent="UI" unique_id=394023048]
 anchors_preset = 7
 anchor_left = 0.5
@@ -185,8 +193,8 @@ script = ExtResource("6_gmovr")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverScreen" unique_id=420881716]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 16
+alignment = 1
 
 [node name="Title" type="Label" parent="UI/GameOverScreen/VBoxContainer" unique_id=1973506221]
 layout_mode = 2
@@ -214,7 +222,7 @@ value = 100.0
 
 [node name="WaveHUD" parent="UI" unique_id=236326957 instance=ExtResource("7_6bp64")]
 
-[node name="VictoryScreen" type="Control" parent="UI"]
+[node name="VictoryScreen" type="Control" parent="UI" unique_id=379256304]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -224,7 +232,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_vctry")
 
-[node name="HowToPlay" type="Control" parent="UI"]
+[node name="HowToPlay" type="Control" parent="UI" unique_id=908107822]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
