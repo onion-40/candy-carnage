@@ -2,11 +2,11 @@ extends PanelContainer
 
 const TOWER_SCRIPT = preload("res://Scripts/Scenes/Towers.gd")
 
-@onready var bones_label: Label = $HBoxContainer/ResourceList/BonesLabel
-@onready var organs_label: Label = $HBoxContainer/ResourceList/OrgansLabel
-@onready var eyeballs_label: Label = $HBoxContainer/ResourceList/EyeballsLabel
-@onready var special_character_button: Button = $HBoxContainer/SpecialCharButton
-@onready var special_timer_label: Label = $HBoxContainer/SpecialTimerContainer/SpecialTimerLabel
+@onready var bones_label: Label = $HBoxContainer/ResourceContainer/ResourceList/BonesLabel
+@onready var organs_label: Label = $HBoxContainer/ResourceContainer/ResourceList/OrgansLabel
+@onready var eyeballs_label: Label = $HBoxContainer/ResourceContainer/ResourceList/EyeballsLabel
+@onready var special_character_button: Button = $HBoxContainer/VBoxContainer/SpecialCharButton
+@onready var special_timer_label: Label = $HBoxContainer/VBoxContainer/SpecialTimerContainer/SpecialTimerLabel
 @onready var laser_button: Button = $HBoxContainer/TowerSelection/LaserButton
 @onready var cannon_button: Button = $HBoxContainer/TowerSelection/CannonButton
 
@@ -73,10 +73,10 @@ func _update_special_timer_display() -> void:
 		return
 
 	if map.choosing_deployment_location:
-		special_timer_label.text = "Choose Deployment Location"
+		special_timer_label.text = "DEPLOYING"
 
 	elif map.can_deploy_special:
-		special_timer_label.text = "Special Character: READY!"
+		special_timer_label.text = "READY!"
 
 	elif map.deployment_start_timer.time_left > 0:
 		var remaining = map.deployment_start_timer.time_left

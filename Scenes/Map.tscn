@@ -4,9 +4,9 @@
 
 [sub_resource type="Curve2D" id="Curve2D_7u77a"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -16, 104, 0, 0, 0, 0, 18.773933, 104.28229, 0, 0, 0, 0, 536, 112, 0, 0, 0, 0, 760, 128, 0, 0, 0, 0, 1032, 152, 0, 0, 0, 0, 1104, 216, 0, 0, 0, 0, 1104, 256, 0, 0, 0, 0, 1080, 296, 0, 0, 0, 0, 912, 336, 0, 0, 0, 0, 818.94885, 340.64307, 0, 0, 0, 0, 630.313, 353.50464, 0, 0, 0, 0, 475.97452, 356.71997, 0, 0, 0, 0, 308.77457, 372.79694, 0, 0, 0, 0, 168, 400, 0, 0, 0, 0, 126.56943, 457.4687, 0, 0, 0, 0, 128, 528, 0, 0, 0, 0, 176, 568, 0, 0, 0, 0, 288, 568, 0, 0, 0, 0, 416, 568, 0, 0, 0, 0, 490.97964, 571.0789, 0, 0, 0, 0, 607.8053, 575.3661, 0, 0, 0, 0, 756.7848, 581.7969, 0, 0, 0, 0, 856, 576, 0, 0, 0, 0, 904, 600, 0, 0, 0, 0, 952, 640, 0, 0, 0, 0, 965.5409, 668.2769, 0, 0, 0, 0, 976, 736)
+"points": PackedVector2Array(0, 0, 0, 0, -19, 81, 0, 0, 0, 0, 23, 85, 0, 0, 0, 0, 117, 87, 0, 0, 0, 0, 534, 94, 0, 0, 0, 0, 763, 92, 0, 0, 0, 0, 884, 107, 0, 0, 0, 0, 960, 165, 0, 0, 0, 0, 968, 224, 0, 0, 0, 0, 942, 277, 0, 0, 0, 0, 892, 298, 0, 0, 0, 0, 820, 317, 0, 0, 0, 0, 646, 329, 0, 0, 0, 0, 449, 334, 0, 0, 0, 0, 241, 312, 0, 0, 0, 0, 129, 343, 0, 0, 0, 0, 86, 417, 0, 0, 0, 0, 117, 499, 0, 0, 0, 0, 194, 533, 0, 0, 0, 0, 308, 539, 0, 0, 0, 0, 409, 540, 0, 0, 0, 0, 527, 540, 0, 0, 0, 0, 663, 539, 0, 0, 0, 0, 791, 536, 0, 0, 0, 0, 887, 534, 0, 0, 0, 0, 928, 595, 0, 0, 0, 0, 926, 657, 0, 0, 0, 0, 923, 697, 0, 0, 0, 0, 917, 732)
 }
-point_count = 27
+point_count = 28
 
 [node name="Map" type="Node2D" unique_id=247315767]
 script = ExtResource("1_7yn8b")
@@ -22,9 +22,9 @@ position = Vector2(-8, 24)
 curve = SubResource("Curve2D_7u77a")
 
 [node name="RoadVisual" type="Line2D" parent="EnemyPath" unique_id=225370499]
-position = Vector2(8, -24)
-points = PackedVector2Array(0, 128, 472, 136, 616, 136, 720, 144, 616, 136, 800, 152, 800, 152, 912, 160, 1008, 176, 1080, 216, 1096, 272, 1088, 328, 1016, 360, 952, 368, 904, 368, 784, 368, 648, 368, 576, 376, 440, 384, 312, 392, 200, 416, 144, 440, 112, 480, 112, 520, 120, 552, 152, 576, 184, 584, 232, 584, 288, 584, 344, 584, 408, 592, 464, 592, 512, 592, 568, 592, 680, 592, 760, 592, 800, 592, 824, 592, 840, 600, 864, 608, 896, 624, 920, 640, 944, 672, 952, 696, 952, 720, 952, 744)
-width = 90.0
+position = Vector2(7, -59)
+points = PackedVector2Array(-12, 139, 480, 140, 620, 144, 731, 144, 849, 157, 908, 177, 947, 215, 973, 268, 967, 295, 953, 311, 920, 341, 870, 361, 793, 376, 673, 382, 570, 381, 440, 384, 301, 371, 211, 365, 143, 383, 102, 420, 80, 456, 86, 529, 105, 564, 152, 582, 246, 591, 408, 592, 464, 592, 512, 592, 568, 592, 680, 592, 760, 592, 800, 592, 855, 591, 885, 592, 912, 621, 915, 668, 916, 782)
+width = 70.0
 default_color = Color(0.9971667, 1, 0.83, 1)
 
 [node name="Spawnpoint" type="Marker2D" parent="." unique_id=368093591]
@@ -37,19 +37,20 @@ position = Vector2(968, 760)
 position = Vector2(176, -120)
 
 [node name="Spot 1" type="Area2D" parent="TowerSpots" unique_id=2087351000]
-position = Vector2(24, 360)
+position = Vector2(-12, 321)
 
 [node name="SpotVisual" type="Polygon2D" parent="TowerSpots/Spot 1" unique_id=2111016405]
+position = Vector2(0, 1)
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
 polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot 1" unique_id=602957720]
-position = Vector2(48, 8)
+position = Vector2(49, 12)
 polygon = PackedVector2Array(-99, -53, 8, -49, 10, 26, -102, 29)
 
 [node name="Spot2" type="Area2D" parent="TowerSpots" unique_id=1621219341]
-position = Vector2(400, 376)
+position = Vector2(360, 345)
 
 [node name="SpotVisual2" type="Polygon2D" parent="TowerSpots/Spot2" unique_id=2137973629]
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
@@ -57,54 +58,60 @@ polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot2" unique_id=2024332708]
-position = Vector2(1, 6)
+position = Vector2(8, 10)
 polygon = PackedVector2Array(-59, -54, -60, 27, 48, 27, 52, -52)
 
 [node name="Spot3" type="Area2D" parent="TowerSpots" unique_id=1594441110]
-position = Vector2(248, 608)
+position = Vector2(51, 565)
 
 [node name="SpotVisual3" type="Polygon2D" parent="TowerSpots/Spot3" unique_id=912947380]
+position = Vector2(-1, 1)
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
 polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot3" unique_id=156237745]
+position = Vector2(1, 16.000011)
+scale = Vector2(1, 0.9910714)
 polygon = PackedVector2Array(-55, -48, 48, -48, 45, 22, -57, 21)
 
 [node name="Spot4" type="Area2D" parent="TowerSpots" unique_id=1931615020]
-position = Vector2(976, 216)
+position = Vector2(855, 210)
 
 [node name="SpotVisual4" type="Polygon2D" parent="TowerSpots/Spot4" unique_id=1242529457]
+position = Vector2(2, -1)
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
 polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot4" unique_id=518153689]
-position = Vector2(-8, 16)
+position = Vector2(-8, 10)
 polygon = PackedVector2Array(-46, -49, 59, -49, 60, 22, -45, 23)
 
 [node name="Spot5" type="Area2D" parent="TowerSpots" unique_id=255735884]
-position = Vector2(640, 608)
+position = Vector2(612, 592)
 
 [node name="SpotVisual5" type="Polygon2D" parent="TowerSpots/Spot5" unique_id=1100856899]
+position = Vector2(0, -17)
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
 polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot5" unique_id=819079759]
+position = Vector2(-7, 0)
 polygon = PackedVector2Array(-50, -47, 62, -43, 62, 29, -44, 31)
 
 [node name="Spot6" type="Area2D" parent="TowerSpots" unique_id=1925645619]
-position = Vector2(1014, 600)
+position = Vector2(847, 505)
 
 [node name="SpotVisual6" type="Polygon2D" parent="TowerSpots/Spot6" unique_id=757307729]
-position = Vector2(-6, -56)
+position = Vector2(1, 1)
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
 polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot6" unique_id=798454240]
-position = Vector2(-22, -48)
+position = Vector2(-16, 18)
 polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
 
 [node name="EnemySpawnTimer" type="Timer" parent="." unique_id=1517007706]
