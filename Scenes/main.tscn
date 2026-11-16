@@ -13,7 +13,7 @@ content_margin_left = 25.0
 content_margin_top = 25.0
 content_margin_right = 25.0
 content_margin_bottom = 25.0
-bg_color = Color(0.60784316, 0.47843137, 0.7490196, 1)
+bg_color = Color(0.55300546, 0.43429998, 0.6825022, 0.90588236)
 corner_radius_top_left = 18
 corner_radius_top_right = 18
 corner_radius_bottom_right = 18
@@ -24,11 +24,18 @@ content_margin_left = 16.0
 content_margin_top = 16.0
 content_margin_right = 12.0
 content_margin_bottom = 12.0
-bg_color = Color(0.60784316, 0.47843137, 0.7490196, 0.91764706)
+bg_color = Color(0.60784316, 0.47843137, 0.7490196, 0)
 corner_radius_top_left = 18
 corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05a8c"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.004019165, 0.004019165, 0.004019165, 0.5176471)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21xkr"]
 bg_color = Color(0.0115433065, 0.3884842, 1.92523e-07, 1)
@@ -37,6 +44,13 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s486e"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.030482212, 0.030482212, 0.030482212, 0.4745098)
 
 [node name="Main" type="Node2D" unique_id=295096930]
 
@@ -60,11 +74,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_41ke1")
 script = ExtResource("4_jjvhh")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/TowerInformation" unique_id=1267824022]
+custom_minimum_size = Vector2(0, 420)
 layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="CloseButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=539067282]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 16
 text = "X"
 flat = true
@@ -97,16 +113,19 @@ text = "Upgrade Cost: 5 Bones, 2 Eyes
 
 [node name="UpgradeButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1478025024]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 17
 text = "UPGRADE TOWER"
 
 [node name="SellButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=353303708]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 17
 text = "SELL TOWER"
 
 [node name="RepairButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1629869088]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "HOLD TO REPAIR"
 
 [node name="RepairProgressBar" type="ProgressBar" parent="UI/TowerInformation/VBoxContainer" unique_id=720635341]
@@ -119,10 +138,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -431.0
-offset_top = -130.0
-offset_right = 431.0
-offset_bottom = -11.0
+offset_left = -630.0
+offset_top = -120.0
+offset_right = 157.0
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_i6558")
@@ -132,47 +151,57 @@ script = ExtResource("5_kry3j")
 layout_mode = 2
 theme_override_constants/separation = 22
 
-[node name="SpecialTimerContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1624181972]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=845649566]
 layout_mode = 2
 
-[node name="SpecialTimerLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/SpecialTimerContainer" unique_id=1903001743]
+[node name="SpecialCharButton" type="Button" parent="UI/BottomHUD/HBoxContainer/VBoxContainer" unique_id=1319516445]
+custom_minimum_size = Vector2(140, 90)
 layout_mode = 2
-
-[node name="SpecialCharButton" type="Button" parent="UI/BottomHUD/HBoxContainer" unique_id=1319516445]
-custom_minimum_size = Vector2(110, 90)
-layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Special 
 Character"
 
+[node name="SpecialTimerContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer/VBoxContainer" unique_id=1624181972]
+layout_mode = 2
+
+[node name="SpecialTimerLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/VBoxContainer/SpecialTimerContainer" unique_id=1903001743]
+layout_mode = 2
+
 [node name="TowerSelection" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1013028664]
 layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="LaserButton" type="Button" parent="UI/BottomHUD/HBoxContainer/TowerSelection" unique_id=914881112]
 custom_minimum_size = Vector2(150, 90)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Laser Tower"
 
 [node name="CannonButton" type="Button" parent="UI/BottomHUD/HBoxContainer/TowerSelection" unique_id=231461069]
 custom_minimum_size = Vector2(150, 90)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Heavy Cannon"
 
-[node name="ResourceList" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=2142574579]
-custom_minimum_size = Vector2(180, 0)
+[node name="ResourceContainer" type="PanelContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1789818946]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_05a8c")
+
+[node name="ResourceList" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer/ResourceContainer" unique_id=2142574579]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 theme_override_constants/separation = 4
+alignment = 1
 
-[node name="BonesLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=1147830520]
+[node name="BonesLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1147830520]
 layout_mode = 2
 text = "Bones: 25"
 
-[node name="OrgansLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=1793141202]
+[node name="OrgansLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1793141202]
 layout_mode = 2
 text = "Organs: 15"
 
-[node name="EyeballsLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceList" unique_id=201943819]
+[node name="EyeballsLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=201943819]
 layout_mode = 2
 text = "Eyeballs: 5"
 
@@ -205,6 +234,7 @@ horizontal_alignment = 1
 [node name="RestartButton" type="Button" parent="UI/GameOverScreen/VBoxContainer" unique_id=884215370]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 20
 text = "RESTART"
 
@@ -221,6 +251,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_21xkr")
 value = 100.0
 
 [node name="WaveHUD" parent="UI" unique_id=236326957 instance=ExtResource("7_6bp64")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_s486e")
 
 [node name="VictoryScreen" type="Control" parent="UI" unique_id=379256304]
 layout_mode = 3
