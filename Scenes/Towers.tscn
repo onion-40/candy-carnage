@@ -20,4 +20,14 @@ uv = PackedVector2Array(-192, -88, -64, -88, -64, 16, -192, 16)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionArea" unique_id=743401285]
 shape = SubResource("RectangleShape2D_41ke1")
 
+[node name="LifetimeBar" type="ProgressBar" parent="." unique_id=986615651]
+offset_left = -40.0
+offset_top = -64.0
+offset_right = 40.0
+offset_bottom = -37.0
+mouse_filter = 2
+max_value = 90.0
+value = 90.0
+show_percentage = false
+
 [connection signal="input_event" from="SelectionArea" to="." method="_on_selection_area_input_event"]

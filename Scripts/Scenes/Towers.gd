@@ -20,6 +20,22 @@ var build_spot: Area2D
 
 @onready var attack_timer: Timer = $AttackTimer
 @onready var body: Polygon2D = $Body
+@onready var lifetime_bar: ProgressBar = $LifetimeBar
+# TOWER LIFETIME
+@export var starting_lifetime: float = 90.0
+@export var lifetime_per_upgrade: float = 30.0
+@export var decay_warning_time: float = 15.0
+
+var max_lifetime: float = 90.0
+var time_left: float = 90.0
+
+# REPAIR SYSTEM
+var is_repairing: bool = false
+var repair_held_time: float = 0.0
+var repair_duration: float = 6.0
+var repair_decay_multiplier: float = 0.5
+
+signal dissolved(spot: Area2D)
 
 
 func _ready() -> void:
@@ -32,10 +48,56 @@ func _ready() -> void:
 		])
 
 	apply_stats()
+	max_lifetime = starting_lifetime
+	lifetime_bar.max_value = max_lifetime
+	lifetime_bar.value = time_left
+	time_left = max_lifetime
 
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 	attack_timer.start()
 
+func _process(delta: float) -> void:
+	if is_sold:
+		return
+
+	var decay_speed = 1.0
+
+	if is_repairing:
+		decay_speed = repair_decay_multiplier
+		repair_held_time += delta
+
+	time_left -= delta * decay_speed
+	time_left = max(0.0, time_left)
+	lifetime_bar.max_value = max_lifetime
+	lifetime_bar.value = time_left
+	
+	if is_repairing:
+		var progress = clamp(repair_held_time / repair_duration, 0.0, 1.0)
+		var percentage = int(progress * 100.0)
+		# The tower information panel can display this progress.
+
+	# Show a warning when the tower is close to dissolving.
+	if time_left <= decay_warning_time:
+		body.modulate = Color(1.0, 0.4, 0.4)
+		lifetime_bar.modulate = Color(1.0, 0.3, 0.3)
+	else:
+		body.modulate = Color.WHITE
+		lifetime_bar.modulate = Color.WHITE
+
+	# Dissolve the tower when its lifetime expires.
+	if time_left <= 0.0:
+		_dissolve()
+		
+
+func _dissolve() -> void:
+	if is_sold:
+		return
+
+	is_sold = true
+	attack_timer.stop()
+
+	dissolved.emit(build_spot)
+	queue_free()
 
 func get_build_cost() -> Dictionary:
 	return build_cost_for(tower_type)
@@ -127,8 +189,18 @@ func upgrade() -> bool:
 			cost["eyeballs"]
 		):
 			level += 1
-			apply_stats()
-			success = true
+
+		# Increase maximum lifetime and restore it after upgrading.
+		max_lifetime = starting_lifetime + (
+			(level - 1) * lifetime_per_upgrade
+		)
+
+		time_left = max_lifetime
+		lifetime_bar.max_value = max_lifetime
+		lifetime_bar.value = time_left
+
+		apply_stats()
+		success = true
 
 	return success
 
@@ -284,3 +356,39 @@ func _on_selection_area_input_event(
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			get_tree().call_group("tower_selection", "select_tower", self)
+
+func begin_repair() -> void:
+	if is_sold or is_repairing:
+		return
+
+	is_repairing = true
+	repair_held_time = 0.0
+
+	# Towers cannot attack while being repaired.
+	attack_timer.stop()
+
+
+func end_repair() -> void:
+	if not is_repairing:
+		return
+
+	is_repairing = false
+
+	var repair_progress = clamp(
+		repair_held_time / repair_duration,
+		0.0,
+		1.0
+	)
+
+	var missing_lifetime = max_lifetime - time_left
+	var restored_lifetime = missing_lifetime * repair_progress
+
+	time_left = min(
+		max_lifetime,
+		time_left + restored_lifetime
+	)
+
+	repair_held_time = 0.0
+
+	# Resume attacking after the repair is released.
+	attack_timer.start()

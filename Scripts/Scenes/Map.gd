@@ -207,6 +207,8 @@ func build_tower_at(spot: Area2D, type: int) -> bool:
 				cost["eyeballs"]
 			):
 				tower.build_spot = spot
+				tower.dissolved.connect(_on_tower_dissolved)
+
 				add_child(tower)
 
 				# Force it right to the Area2D's global position
@@ -436,3 +438,19 @@ func _show_base_hit() -> void:
 		shake_tween.tween_property(self, "position", offset, 0.04)
 
 	shake_tween.tween_property(self, "position", Vector2.ZERO, 0.04)
+
+func _on_tower_dissolved(spot: Area2D) -> void:
+	if not is_instance_valid(spot): return
+	
+	#keep the spot unavailable during recovery
+	spot.set_meta("occupied", true)
+	spot.visible = false
+	spot.input_pickable = false
+	
+	#wait 4 seconds before allowing the rebuilding
+	await get_tree().create_timer(4.0).timeout
+	
+	if is_instance_valid(spot):
+		spot.set_meta("occupied", false)
+		spot.visible = true
+		spot.input_pickable = true
