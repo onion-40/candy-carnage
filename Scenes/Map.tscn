@@ -12,7 +12,6 @@ point_count = 36
 script = ExtResource("1_7yn8b")
 
 [node name="Background" type="Polygon2D" parent="." unique_id=1159532194]
-visible = false
 position = Vector2(480, 248)
 color = Color(0.395, 0.79, 0.59908336, 1)
 polygon = PackedVector2Array(800, -248, -480, -248, -480, 472, 800, 472)

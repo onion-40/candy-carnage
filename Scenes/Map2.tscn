@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://b6gj3dte3p5fe"]
+
+[ext_resource type="Script" uid="uid://dvscb6jvxjfvw" path="res://Scripts/Scenes/Map.gd" id="1_3kc4c"]
+
+[sub_resource type="Curve2D" id="Curve2D_3kc4c"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -8, 96, 0, 0, 0, 0, 56, 88, 0, 0, 0, 0, 144, 96, 0, 0, 0, 0, 174.71378, 102.88062, 0, 0, 0, 0, 200.72876, 122.24062, 0, 0, 0, 0, 224, 152, 0, 0, 0, 0, 240, 192, 0, 0, 0, 0, 255.17877, 237.19061, 0, 0, 0, 0, 252.15381, 266.23062, 0, 0, 0, 0, 228.55878, 296.48062, 0, 0, 0, 0, 200, 320, 0, 0, 0, 0, 172.89877, 333.38562, 0, 0, 0, 0, 136, 352, 0, 0, 0, 0, 112, 368, 0, 0, 0, 0, 88, 400, 0, 0, 0, 0, 80, 424, 0, 0, 0, 0, 88, 456, 0, 0, 0, 0, 99.088776, 476.77063, 0, 0, 0, 0, 120, 512, 0, 0, 0, 0, 142.04376, 539.08563, 0, 0, 0, 0, 168, 560, 0, 0, 0, 0, 216, 576, 0, 0, 0, 0, 264, 576, 0, 0, 0, 0, 304, 560, 0, 0, 0, 0, 344, 528, 0, 0, 0, 0, 360, 464, 0, 0, 0, 0, 368, 384, 0, 0, 0, 0, 368, 312, 0, 0, 0, 0, 356.2138, 263.20563, 0, 0, 0, 0, 352, 240, 0, 0, 0, 0, 344, 208, 0, 0, 0, 0, 336, 160, 0, 0, 0, 0, 333.5, 120, 0, 0, 0, 0, 336, 80, 0, 0, 0, 0, 328, 40, 0, 0, 0, 0, 328.5, 7, 0, 0, 0, 0, 344, -32, 0, 0, 0, 0, 369, -43, 0, 0, 0, 0, 398, -51.5, 0, 0, 0, 0, 448, -56, 0, 0, 0, 0, 487, -54.5, 0, 0, 0, 0, 536, -56, 0, 0, 0, 0, 576, -40, 0, 0, 0, 0, 600, -12.5, 0, 0, 0, 0, 611, 25, 0, 0, 0, 0, 612.5, 60.5, 0, 0, 0, 0, 600, 96, 0, 0, 0, 0, 585, 121, 0, 0, 0, 0, 565, 139.5, 0, 0, 0, 0, 527, 154, 0, 0, 0, 0, 504, 168, 0, 0, 0, 0, 480, 192, 0, 0, 0, 0, 464, 216, 0, 0, 0, 0, 456, 248, 0, 0, 0, 0, 456, 272, 0, 0, 0, 0, 453.95, 304.4672, 0, 0, 0, 0, 452.84998, 337.4672, 0, 0, 0, 0, 461.09998, 393.5672, 0, 0, 0, 0, 466.05, 431.51718, 0, 0, 0, 0, 464, 472, 0, 0, 0, 0, 472, 512, 0, 0, 0, 0, 496, 544, 0, 0, 0, 0, 516.64996, 561.3172, 0, 0, 0, 0, 560, 576, 0, 0, 0, 0, 608, 584, 0, 0, 0, 0, 651.39996, 581.66724, 0, 0, 0, 0, 688, 568, 0, 0, 0, 0, 705.43115, 541.5172, 0, 0, 0, 0, 710.38116, 506.31717, 0, 0, 0, 0, 715.3312, 454.6172, 0, 0, 0, 0, 718.0812, 386.9672, 0, 0, 0, 0, 723.5812, 346.26718, 0, 0, 0, 0, 725.7811, 297.8672, 0, 0, 0, 0, 730.73114, 244.5172, 0, 0, 0, 0, 741.18115, 202.71721, 0, 0, 0, 0, 752.18115, 175.7672, 0, 0, 0, 0, 776, 128, 0, 0, 0, 0, 808, 88, 0, 0, 0, 0, 847.88116, 58.067196, 0, 0, 0, 0, 888, 40, 0, 0, 0, 0, 928.73114, 39.36719, 0, 0, 0, 0, 961.73114, 42.667194, 0, 0, 0, 0, 992, 40, 0, 0, 0, 0, 1032, 32, 0, 0, 0, 0, 1203.3223, 32.767193, 0, 0, 0, 0, 1264, 32, 0, 0, 0, 0, 1312, 48, 0, 0, 0, 0, 1329.8223, 80.0672, 0, 0, 0, 0, 1346.8723, 115.8172, 0, 0, 0, 0, 1345.2223, 160.9172, 0, 0, 0, 0, 1326.5222, 191.71721, 0, 0, 0, 0, 1304, 216, 0, 0, 0, 0, 1264.3723, 227.46721, 0, 0, 0, 0, 1224, 232, 0, 0, 0, 0, 1168, 240, 0, 0, 0, 0, 1120, 240, 0, 0, 0, 0, 1080, 224, 0, 0, 0, 0, 1048, 208, 0, 0, 0, 0, 992, 168, 0, 0, 0, 0, 960, 152, 0, 0, 0, 0, 920, 144, 0, 0, 0, 0, 872, 160, 0, 0, 0, 0, 840, 192, 0, 0, 0, 0, 816, 216, 0, 0, 0, 0, 808, 240, 0, 0, 0, 0, 800, 288, 0, 0, 0, 0, 800, 328, 0, 0, 0, 0, 808, 368, 0, 0, 0, 0, 848, 408, 0, 0, 0, 0, 872, 424, 0, 0, 0, 0, 920, 424, 0, 0, 0, 0, 952, 416, 0, 0, 0, 0, 1000, 392, 0, 0, 0, 0, 1032, 360, 0, 0, 0, 0, 1064, 344, 0, 0, 0, 0, 1096, 336, 0, 0, 0, 0, 1128, 336, 0, 0, 0, 0, 1160, 352, 0, 0, 0, 0, 1192, 384, 0, 0, 0, 0, 1173.0723, 420.51718, 0, 0, 0, 0, 1136, 432, 0, 0, 0, 0, 1096, 440, 0, 0, 0, 0, 1072, 456, 0, 0, 0, 0, 1040, 480, 0, 0, 0, 0, 1008, 488, 0, 0, 0, 0, 967.3722, 500.26718, 0, 0, 0, 0, 944, 520, 0, 0, 0, 0, 936, 544, 0, 0, 0, 0, 936, 568, 0, 0, 0, 0, 952, 608, 0, 0, 0, 0, 984, 632, 0, 0, 0, 0, 1024, 648, 0, 0, 0, 0, 1056, 672, 0, 0, 0, 0, 1072, 696, 0, 0, 0, 0, 1072, 744)
+}
+point_count = 135
+
+[node name="Map" type="Node2D" unique_id=247315767]
+script = ExtResource("1_3kc4c")
+
+[node name="Background" type="Polygon2D" parent="." unique_id=1159532194]
+position = Vector2(480, 248)
+color = Color(0.395, 0.79, 0.59908336, 1)
+polygon = PackedVector2Array(800, -248, -480, -248, -480, 472, 800, 472)
+uv = PackedVector2Array(-192, -8, -336, 16, -200, 72, -80, 40)
+
+[node name="EnemySpawnTimer" type="Timer" parent="." unique_id=1517007706]
+
+[node name="DeploymentStartTimer" type="Timer" parent="." unique_id=1835504337]
+
+[node name="SpecialCoolddownTimer" type="Timer" parent="." unique_id=1430919574]
+
+[node name="DeploymentPreview" type="Polygon2D" parent="." unique_id=1844144699]
+
+[node name="WaveBreakTimer" type="Timer" parent="." unique_id=1576901491]
+
+[node name="EnemyPath" type="Path2D" parent="." unique_id=1565453727]
+position = Vector2(-8, 24)
+curve = SubResource("Curve2D_3kc4c")
+
+[node name="RoadVisual" type="Line2D" parent="EnemyPath" unique_id=2111448058]
+position = Vector2(32, -8)
+points = PackedVector2Array(1032, 752, 1032, 696, 1000, 664, 952.39307, 646.1947, 909.03625, 613.4934, 906.00305, 569.9909, 920, 528, 976, 496, 1024, 480, 1072, 448, 1136, 440, 1160, 408, 1144, 368, 1088, 344, 1020.9203, 360.55304, 958.4591, 404.271, 902.0211, 432, 832, 432, 792, 392, 776, 328, 776, 272, 792, 224, 848, 168, 901.0537, 157.11267, 962.7001, 175.05457, 1008, 208, 1074.58, 240, 1128, 240, 1192, 240, 1288, 216, 1312, 144, 1287.4731, 67.53491, 1243.7095, 40, 1160, 40, 1081.8572, 40.671204, 1014.74506, 41.02832, 952, 48, 896, 48, 841.23663, 54.96277, 784, 96, 744, 144, 703.68866, 224.1435, 688, 312, 688, 392, 681.75116, 452.28308, 684.53156, 509.89392, 660.5041, 566.53455, 611.3505, 592, 560, 592, 488, 568, 448, 528, 432, 452.2151, 432, 408, 428.8457, 354.68884, 426.79138, 267.8676, 448, 200, 496.91064, 163.03827, 536.2673, 146.17117, 560, 128, 576, 80, 568, -8, 520, -40, 408, -48, 320, -24, 296, 24, 303.80957, 97.36395, 303.57056, 169.35132, 310.7079, 200.79387, 328.36282, 278.57034, 329.27975, 396.27097, 317.2546, 504.11826, 302.40274, 536.5495, 264, 576, 192, 576, 144, 568, 112.31827, 552.5782, 76.253265, 490.59106, 49, 427, 81, 371, 169, 339, 217, 291, 199.15677, 217.26286, 186.1459, 151.8288, 153, 115, 82.558136, 101.8398, 41, 99, -63, 107)
+width = 70.0
+default_color = Color(0.9971667, 1, 0.83, 1)
+
+[node name="Spawnpoint" type="Marker2D" parent="." unique_id=1432358757]
+position = Vector2(-24, 120)
+
+[node name="Basepoint" type="Marker2D" parent="." unique_id=204707170]
+position = Vector2(1064, 768)
+
+[node name="TowerSpots" type="Node2D" parent="." unique_id=1184664649]
+position = Vector2(176, -120)
+
+[node name="Spot 1" type="Area2D" parent="TowerSpots" unique_id=1066199299]
+position = Vector2(-80, 376)
+
+[node name="SpotVisual" type="Polygon2D" parent="TowerSpots/Spot 1" unique_id=682064058]
+position = Vector2(0, 1)
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot 1" unique_id=774728351]
+position = Vector2(49, 12)
+polygon = PackedVector2Array(-99, -53, 8, -49, 10, 26, -102, 29)
+
+[node name="Spot2" type="Area2D" parent="TowerSpots" unique_id=1157242331]
+position = Vector2(48, 592)
+
+[node name="SpotVisual2" type="Polygon2D" parent="TowerSpots/Spot2" unique_id=1515385618]
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot2" unique_id=1656179951]
+position = Vector2(8, 10)
+polygon = PackedVector2Array(-59, -54, -60, 27, 48, 27, 52, -52)
+
+[node name="Spot3" type="Area2D" parent="TowerSpots" unique_id=691416052]
+position = Vector2(280, 200)
+
+[node name="SpotVisual3" type="Polygon2D" parent="TowerSpots/Spot3" unique_id=1860502525]
+position = Vector2(-1, 1)
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot3" unique_id=400707803]
+position = Vector2(1, 16.000011)
+scale = Vector2(1, 0.9910714)
+polygon = PackedVector2Array(-55, -48, 48, -48, 45, 22, -57, 21)
+
+[node name="Spot4" type="Area2D" parent="TowerSpots" unique_id=102690562]
+position = Vector2(992, 280)
+
+[node name="SpotVisual4" type="Polygon2D" parent="TowerSpots/Spot4" unique_id=410510767]
+position = Vector2(2, -1)
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot4" unique_id=111550300]
+position = Vector2(-8, 10)
+polygon = PackedVector2Array(-46, -49, 59, -49, 60, 22, -45, 23)
+
+[node name="Spot5" type="Area2D" parent="TowerSpots" unique_id=1241456773]
+position = Vector2(408, 472)
+
+[node name="SpotVisual5" type="Polygon2D" parent="TowerSpots/Spot5" unique_id=1893714008]
+position = Vector2(0, -17)
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot5" unique_id=317704447]
+position = Vector2(-7, 0)
+polygon = PackedVector2Array(-50, -47, 62, -43, 62, 29, -44, 31)
+
+[node name="Spot6" type="Area2D" parent="TowerSpots" unique_id=1147241548]
+position = Vector2(752, 424)
+
+[node name="SpotVisual6" type="Polygon2D" parent="TowerSpots/Spot6" unique_id=2011851015]
+position = Vector2(1, 1)
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot6" unique_id=808080999]
+position = Vector2(-16, 18)
+polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
+
+[node name="Spot7" type="Area2D" parent="TowerSpots" unique_id=1853250952]
+position = Vector2(944, 712)
+
+[node name="SpotVisual7" type="Polygon2D" parent="TowerSpots/Spot7" unique_id=57922712]
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot7" unique_id=2088063580]
+position = Vector2(-16, 16)
+polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
