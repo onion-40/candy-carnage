@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Candy Carnage"
-run/main_scene="uid://bde73uw6nvb7o"
+run/main_scene="uid://dvediuhwqwqn7"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
