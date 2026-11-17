@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 ResourceManager="*uid://b7ty26f4pbqmr"
+GameProgress="*uid://bd57xxt6ex5qg"
 
 [display]
 
