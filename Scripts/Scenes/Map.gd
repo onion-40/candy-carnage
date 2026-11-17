@@ -18,6 +18,15 @@ signal victory
 @export var starting_enemy_health: int = 50
 @export var enemy_health_increase_per_wave: int = 10
 
+@export_group("Enemy Introduction Waves")
+@export var mage_start_wave: int = 3
+@export var tank_start_wave: int = 6
+@export var healer_start_wave: int = 99
+
+@export_group("Special Enemy Counts")
+@export var tank_count_per_wave: int = 1
+@export var healer_count_per_wave: int = 1
+
 @onready var enemy_path: Path2D = $EnemyPath
 @onready var spawn_timer: Timer = $EnemySpawnTimer
 @onready var tower_spots: Node2D = $TowerSpots
@@ -36,7 +45,10 @@ var choosing_deployment_location: bool = false
 
 var current_wave: int = 0
 var enemies_to_spawn: int = 0
+var mages_to_spawn: int = 0
 var enemies_alive: int = 0
+var tanks_to_spawn: int = 0
+var healers_to_spawn: int = 0
 var wave_in_progress: bool = false
 
 
@@ -137,8 +149,39 @@ func _spawn_enemy() -> void:
 		return
 
 	var enemy = ENEMY_SCENE.instantiate()
-	
-	enemy.max_health = starting_enemy_health + ((current_wave - 1) * enemy_health_increase_per_wave)
+
+	var special_total = (
+		mages_to_spawn +
+		tanks_to_spawn +
+		healers_to_spawn
+	)
+
+	var selected_type = 0
+
+	# Randomly mix special enemies with regular enemies.
+	if special_total > 0:
+		if special_total >= enemies_to_spawn or randf() < (
+			float(special_total) / float(enemies_to_spawn)
+		):
+			var roll = randi_range(1, special_total)
+
+			if roll <= mages_to_spawn:
+				selected_type = 1
+				mages_to_spawn -= 1
+
+			elif roll <= mages_to_spawn + tanks_to_spawn:
+				selected_type = 2
+				tanks_to_spawn -= 1
+
+			else:
+				selected_type = 3
+				healers_to_spawn -= 1
+
+	enemy.enemy_type = selected_type
+
+	enemy.max_health = starting_enemy_health + (
+		(current_wave - 1) * enemy_health_increase_per_wave
+	)
 
 	enemy.reached_base.connect(_on_enemy_reached_base)
 	enemy.tree_exited.connect(_on_enemy_removed)
@@ -150,7 +193,6 @@ func _spawn_enemy() -> void:
 
 	if enemies_to_spawn > 0:
 		spawn_timer.start()
-
 func start_next_wave() -> void:
 	if is_game_over:
 		return
@@ -160,12 +202,45 @@ func start_next_wave() -> void:
 		return
 
 	current_wave += 1
-	enemies_to_spawn = enemies_per_wave + (current_wave - 1) * enemies_added_per_wave
+
+	enemies_to_spawn = enemies_per_wave + (
+		(current_wave - 1) * enemies_added_per_wave
+	)
+
+	mages_to_spawn = 0
+	tanks_to_spawn = 0
+	healers_to_spawn = 0
+
+	# Reserve at least one regular enemy in each wave.
+	var available_special_slots = maxi(0, enemies_to_spawn - 1)
+
+	# Tank allocation.
+	if current_wave >= tank_start_wave:
+		tanks_to_spawn = mini(
+			tank_count_per_wave,
+			available_special_slots
+		)
+		available_special_slots -= tanks_to_spawn
+
+	# Healer allocation.
+	if current_wave >= healer_start_wave:
+		healers_to_spawn = mini(
+			healer_count_per_wave,
+			available_special_slots
+		)
+		available_special_slots -= healers_to_spawn
+
+	# Mage allocation.
+	if current_wave >= mage_start_wave and available_special_slots > 0:
+		mages_to_spawn = randi_range(
+			1,
+			mini(2, available_special_slots)
+		)
+
 	wave_in_progress = true
 
 	spawn_timer.wait_time = spawn_interval
 	spawn_timer.start()
-
 
 func _on_enemy_removed() -> void:
 	# tree_exited also fires when the whole scene is torn down (quit, Restart);

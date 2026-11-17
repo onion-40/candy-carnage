@@ -46,7 +46,8 @@ func _ready() -> void:
 			Vector2(15, 15),
 			Vector2(-15, 15)
 		])
-
+	
+	add_to_group("towers")
 	apply_stats()
 	max_lifetime = starting_lifetime
 	lifetime_bar.max_value = max_lifetime
@@ -268,7 +269,7 @@ func _on_attack_timer_timeout() -> void:
 	if target != null:
 		# Read the position first: a killed enemy frees itself.
 		var target_position = target.global_position
-		target.take_damage(damage)
+		target.take_damage(damage, tower_type)
 		_show_attack(target_position)
 
 
@@ -392,3 +393,13 @@ func end_repair() -> void:
 
 	# Resume attacking after the repair is released.
 	attack_timer.start()
+
+func reduce_lifetime(amount: float) -> void:
+	if is_sold:
+		return
+
+	time_left = maxf(0.0, time_left - amount)
+	lifetime_bar.value = time_left
+
+	if time_left <= 0.0:
+		_dissolve()
