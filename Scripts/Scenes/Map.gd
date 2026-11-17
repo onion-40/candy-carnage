@@ -2,7 +2,7 @@ extends Node2D
 
 const TOWER_SCENE = preload("res://Scenes/Towers.tscn")
 const ENEMY_SCENE = preload("res://Scenes/Enemies.tscn")
-const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/SpecialCharacters.tscn")
+const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/Levels/SpecialCharacters.tscn")
 signal player_health_changed(current_hp: int, max_hp: int)
 signal game_over
 signal victory
