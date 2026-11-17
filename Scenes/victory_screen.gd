@@ -13,6 +13,7 @@ var backdrop: ColorRect
 var panel: PanelContainer
 var stats_label: Label
 var play_again_button: Button
+var main_menu_button: Button
 
 
 func _ready() -> void:
@@ -33,6 +34,9 @@ func _ready() -> void:
 
 func _on_victory() -> void:
 	get_tree().paused = true
+	
+	#Once player won level 1, level 2 will be unlocked.
+	GameProgress.unlock_level_2()
 
 	stats_label.text = "Waves cleared: %d / %d\nBase HP left: %d / %d" % [
 		map.current_wave,
@@ -61,6 +65,11 @@ func _on_play_again_pressed() -> void:
 	get_tree().paused = false
 	ResourceManager.reset()
 	get_tree().reload_current_scene()
+	
+func _on_main_menu_pressed() -> void:
+	get_tree().paused = false
+	ResourceManager.reset()
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 
 
 # =====================================
@@ -118,10 +127,18 @@ func _build_ui() -> void:
 	stats_label.add_theme_color_override("font_color", Color.WHITE)
 	box.add_child(stats_label)
 
+	
+	# Button container
+	var button_container = HBoxContainer.new()
+	button_container.add_theme_constant_override("separation", 12)
+	button_container.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.add_child(button_container)
+
+	# Play Again button
 	play_again_button = Button.new()
 	play_again_button.text = "PLAY AGAIN"
-	play_again_button.custom_minimum_size = Vector2(0, 50)
-	play_again_button.add_theme_font_size_override("font_size", 20)
+	play_again_button.custom_minimum_size = Vector2(180, 50)
+	play_again_button.add_theme_font_size_override("font_size", 18)
 	play_again_button.add_theme_stylebox_override("normal", _button_style(Color(0.6, 0.15, 0.45)))
 	play_again_button.add_theme_stylebox_override("hover", _button_style(Color(0.8, 0.25, 0.6)))
 	play_again_button.add_theme_stylebox_override("pressed", _button_style(Color(0.4, 0.08, 0.3)))
@@ -129,7 +146,22 @@ func _build_ui() -> void:
 	play_again_button.add_theme_color_override("font_color", Color.WHITE)
 	play_again_button.add_theme_color_override("font_hover_color", Color.WHITE)
 	play_again_button.pressed.connect(_on_play_again_pressed)
-	box.add_child(play_again_button)
+	button_container.add_child(play_again_button)
+
+	# Main Menu button
+	main_menu_button = Button.new()
+	main_menu_button.text = "MAIN MENU"
+	main_menu_button.custom_minimum_size = Vector2(180, 50)
+	main_menu_button.add_theme_font_size_override("font_size", 18)
+	main_menu_button.add_theme_stylebox_override("normal", _button_style(Color(0.25, 0.12, 0.35)))
+	main_menu_button.add_theme_stylebox_override("hover", _button_style(Color(0.4, 0.2, 0.5)))
+	main_menu_button.add_theme_stylebox_override("pressed", _button_style(Color(0.15, 0.06, 0.25)))
+	main_menu_button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	main_menu_button.add_theme_color_override("font_color", Color.WHITE)
+	main_menu_button.add_theme_color_override("font_hover_color", Color.WHITE)
+	main_menu_button.pressed.connect(_on_main_menu_pressed)
+	button_container.add_child(main_menu_button)
+
 
 
 func _button_style(color: Color) -> StyleBoxFlat:

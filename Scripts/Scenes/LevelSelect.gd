@@ -8,8 +8,13 @@ func _ready() -> void:
 	level_1_button.pressed.connect(_on_level_1_pressed)
 	back_button.pressed.connect(_on_back_pressed)
 
-	# Level 2 is not available yet.
-	level_2_button.disabled = true
+	# Level 2 is available only after completing Level 1.
+	level_2_button.disabled = not GameProgress.level_2_unlocked
+
+	if GameProgress.level_2_unlocked:
+		level_2_button.text = "LEVEL 2"
+	else:
+		level_2_button.text = "LEVEL 2 - LOCKED"
 
 
 func _on_level_1_pressed() -> void:
