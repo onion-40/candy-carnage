@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dvediuhwqwqn7"]
 
 [ext_resource type="Script" uid="uid://cupfbh4qrke7e" path="res://Scripts/Scenes/MainMenu.gd" id="1_tt5f1"]
-[ext_resource type="Theme" path="res://Scenes/MenuTheme.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://7c5llkklwkcf" path="res://Scenes/MenuTheme.tres" id="2_theme"]
 [ext_resource type="Script" uid="uid://dv85tc6838wi0" path="res://Scripts/Menu/MenuBackground.gd" id="3_bg"]
 
 [node name="MainMenu" type="Control" unique_id=692343600]
@@ -96,4 +96,3 @@ custom_minimum_size = Vector2(320, 54)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "QUIT"
-
