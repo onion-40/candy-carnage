@@ -55,6 +55,10 @@ bg_color = Color(0.030482212, 0.030482212, 0.030482212, 0.4745098)
 [node name="Main" type="Node2D" unique_id=295096930]
 
 [node name="Map" parent="." unique_id=247315767 instance=ExtResource("1_ehjmi")]
+total_waves = 8
+mage_start_wave = 2
+tank_start_wave = 3
+healer_start_wave = 5
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=594782264]
 
