@@ -6,6 +6,7 @@ extends Control
 
 func _ready() -> void:
 	level_1_button.pressed.connect(_on_level_1_pressed)
+	level_2_button.pressed.connect(_on_level_2_pressed)
 	back_button.pressed.connect(_on_back_pressed)
 
 	# Level 2 is available only after completing Level 1.
@@ -19,6 +20,9 @@ func _ready() -> void:
 
 func _on_level_1_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Main.tscn")
+	
+func _on_level_2_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Level2.tscn")
 
 
 func _on_back_pressed() -> void:

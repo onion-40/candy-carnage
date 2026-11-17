@@ -1,0 +1,350 @@
+[gd_scene format=3 uid="uid://bywc322u3rthj"]
+
+[ext_resource type="PackedScene" uid="uid://cnqasxkoa17kc" path="res://Scenes/Map.tscn" id="1_ehjmi"]
+[ext_resource type="Script" uid="uid://liaq03gdcccy" path="res://Scenes/tower_information.gd" id="2_p4u3k"]
+[ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="3_70df5"]
+[ext_resource type="Script" uid="uid://d36s1hgw7srlt" path="res://Scenes/game_over_screen.gd" id="4_ejprb"]
+[ext_resource type="PackedScene" uid="uid://dwm1ogo4gq0a" path="res://Scenes/WaveHUD.tscn" id="5_au75x"]
+[ext_resource type="Script" uid="uid://rln2sh71lq43" path="res://Scenes/victory_screen.gd" id="6_62f1r"]
+[ext_resource type="Script" uid="uid://b7udtmxic72u7" path="res://Scenes/how_to_play.gd" id="7_1je60"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41ke1"]
+content_margin_left = 25.0
+content_margin_top = 25.0
+content_margin_right = 25.0
+content_margin_bottom = 25.0
+bg_color = Color(0.55300546, 0.43429998, 0.6825022, 0.90588236)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i6558"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.60784316, 0.47843137, 0.7490196, 0)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05a8c"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.004019165, 0.004019165, 0.004019165, 0.5176471)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_21xkr"]
+bg_color = Color(0.0115433065, 0.3884842, 1.92523e-07, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s486e"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.030482212, 0.030482212, 0.030482212, 0.4745098)
+
+[node name="Main" type="Node2D" unique_id=295096930]
+
+[node name="Map2" parent="." unique_id=247315767 instance=ExtResource("1_ehjmi")]
+
+[node name="RoadVisual" parent="Map2/EnemyPath" parent_id_path=PackedInt32Array(247315767, 1743500542) index="0" unique_id=225370499]
+points = PackedVector2Array(-335, 267, 172.7959, 267.00003, 337, 155, 516.4668, 155.00003, 661.71643, 155.00003, 779.25244, 188.70493, 857, 211, 897.77747, 260.51547, 882.36633, 346.31528, 753, 443, 670.57605, 447.84842, 522.83704, 449.5756, 363.57874, 441.09866, 249, 419, 145, 451, 90.7334, 509.78897, 89.81549, 576.098, 134.19812, 630.5182, 252.39423, 644.573, 361, 659, 486.3982, 654.6759, 545, 659, 657, 603, 785, 563, 857, 547, 921, 499, 969.26526, 454.94327, 1001, 379, 1041, 315, 1097, 291, 1169, 283, 1209, 307, 1241, 355, 1249, 435, 1217, 523, 1131.504, 601.92944, 1077.6764, 665.2606, 1051.0122, 709.2704, 1041, 819)
+
+[node name="Spawnpoint" parent="Map2" index="2" unique_id=368093591]
+position = Vector2(-256, 232)
+
+[node name="Basepoint" parent="Map2" index="3" unique_id=1396467857]
+position = Vector2(1040, 768)
+
+[node name="Spot 1" parent="Map2/TowerSpots" parent_id_path=PackedInt32Array(247315767, 1036671354) index="0" unique_id=2087351000]
+position = Vector2(8, 208)
+
+[node name="SpotVisual" parent="Map2/TowerSpots/Spot 1" index="0" unique_id=2111016405]
+position = Vector2(0, -8)
+
+[node name="CollisionPolygon2D" parent="Map2/TowerSpots/Spot 1" index="1" unique_id=602957720]
+position = Vector2(48, 8)
+
+[node name="Spot2" parent="Map2/TowerSpots" parent_id_path=PackedInt32Array(247315767, 1036671354) index="1" unique_id=1621219341]
+position = Vector2(248, 344)
+
+[node name="CollisionPolygon2D" parent="Map2/TowerSpots/Spot2" index="1" unique_id=2024332708]
+position = Vector2(8, 16)
+
+[node name="Spot3" parent="Map2/TowerSpots" parent_id_path=PackedInt32Array(247315767, 1036671354) index="2" unique_id=1594441110]
+position = Vector2(856, 264)
+
+[node name="SpotVisual3" parent="Map2/TowerSpots/Spot3" index="0" unique_id=912947380]
+position = Vector2(0, 0)
+
+[node name="CollisionPolygon2D" parent="Map2/TowerSpots/Spot3" index="1" unique_id=156237745]
+position = Vector2(8, 16.000015)
+
+[node name="Spot4" parent="Map2/TowerSpots" parent_id_path=PackedInt32Array(247315767, 1036671354) index="3" unique_id=1931615020]
+position = Vector2(552, 400)
+
+[node name="SpotVisual4" parent="Map2/TowerSpots/Spot4" index="0" unique_id=1242529457]
+position = Vector2(0, 0)
+
+[node name="CollisionPolygon2D" parent="Map2/TowerSpots/Spot4" index="1" unique_id=518153689]
+position = Vector2(-7.9999847, 16)
+scale = Vector2(1.0247642, 1)
+
+[node name="Spot5" parent="Map2/TowerSpots" parent_id_path=PackedInt32Array(247315767, 1036671354) index="4" unique_id=255735884]
+position = Vector2(88, 616)
+
+[node name="SpotVisual5" parent="Map2/TowerSpots/Spot5" index="0" unique_id=1100856899]
+position = Vector2(0, 0)
+
+[node name="CollisionPolygon2D" parent="Map2/TowerSpots/Spot5" index="1" unique_id=819079759]
+position = Vector2(-8, 8)
+
+[node name="Spot6" parent="Map2/TowerSpots" parent_id_path=PackedInt32Array(247315767, 1036671354) index="5" unique_id=1925645619]
+position = Vector2(928, 528)
+
+[node name="SpotVisual6" parent="Map2/TowerSpots/Spot6" index="0" unique_id=757307729]
+position = Vector2(5.800049, 1.5)
+
+[node name="CollisionPolygon2D" parent="Map2/TowerSpots/Spot6" index="1" unique_id=798454240]
+position = Vector2(-10.199951, 17.5)
+
+[node name="Spot7" type="Area2D" parent="Map2/TowerSpots" parent_id_path=PackedInt32Array(247315767, 1036671354) index="6" unique_id=1768406087]
+position = Vector2(624, 760)
+
+[node name="SpotVisual7" type="Polygon2D" parent="Map2/TowerSpots/Spot7" unique_id=2056886641]
+color = Color(0.22000003, 0.5450001, 1, 0.5137255)
+polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
+uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Map2/TowerSpots/Spot7" unique_id=1380311604]
+position = Vector2(-16, 16)
+polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=594782264]
+visible = false
+
+[node name="TowerInformation" type="PanelContainer" parent="UI" unique_id=1176694789]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -282.0
+offset_top = -168.0
+offset_right = -11.0
+offset_bottom = 174.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_41ke1")
+script = ExtResource("2_p4u3k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/TowerInformation" unique_id=1267824022]
+custom_minimum_size = Vector2(0, 420)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CloseButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=539067282]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "X"
+flat = true
+alignment = 2
+text_overrun_behavior = 1
+
+[node name="TowerName" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=536312716]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Eyecing - Laser Tower"
+
+[node name="TowerLevel" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=1335638192]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Level 1/3
+"
+
+[node name="TowerStats" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=2094449366]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Damage: 6
+Range: 140
+"
+
+[node name="UpgradeCost" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=95164993]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Upgrade Cost: 5 Bones, 2 Eyes
+"
+
+[node name="UpgradeButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1478025024]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 17
+text = "UPGRADE TOWER"
+
+[node name="SellButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=353303708]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 17
+text = "SELL TOWER"
+
+[node name="RepairButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1629869088]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "HOLD TO REPAIR"
+
+[node name="RepairProgressBar" type="ProgressBar" parent="UI/TowerInformation/VBoxContainer" unique_id=720635341]
+visible = false
+layout_mode = 2
+
+[node name="BottomHUD" type="PanelContainer" parent="UI" unique_id=394023048]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -630.0
+offset_top = -120.0
+offset_right = 157.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_i6558")
+script = ExtResource("3_70df5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/BottomHUD" unique_id=180391323]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=845649566]
+layout_mode = 2
+
+[node name="SpecialCharButton" type="Button" parent="UI/BottomHUD/HBoxContainer/VBoxContainer" unique_id=1319516445]
+custom_minimum_size = Vector2(140, 90)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Special 
+Character"
+
+[node name="SpecialTimerContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer/VBoxContainer" unique_id=1624181972]
+layout_mode = 2
+
+[node name="SpecialTimerLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/VBoxContainer/SpecialTimerContainer" unique_id=1903001743]
+layout_mode = 2
+
+[node name="TowerSelection" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1013028664]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LaserButton" type="Button" parent="UI/BottomHUD/HBoxContainer/TowerSelection" unique_id=914881112]
+custom_minimum_size = Vector2(150, 90)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Laser Tower"
+
+[node name="CannonButton" type="Button" parent="UI/BottomHUD/HBoxContainer/TowerSelection" unique_id=231461069]
+custom_minimum_size = Vector2(150, 90)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Heavy Cannon"
+
+[node name="ResourceContainer" type="PanelContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1789818946]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_05a8c")
+
+[node name="ResourceList" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer/ResourceContainer" unique_id=2142574579]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="BonesLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1147830520]
+layout_mode = 2
+text = "Bones: 25"
+
+[node name="OrgansLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1793141202]
+layout_mode = 2
+text = "Organs: 15"
+
+[node name="EyeballsLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=201943819]
+layout_mode = 2
+text = "Eyeballs: 5"
+
+[node name="GameOverScreen" type="PanelContainer" parent="UI" unique_id=1749263380]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -100.0
+offset_right = 180.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_41ke1")
+script = ExtResource("4_ejprb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverScreen" unique_id=420881716]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="UI/GameOverScreen/VBoxContainer" unique_id=1973506221]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="UI/GameOverScreen/VBoxContainer" unique_id=884215370]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 20
+text = "RESTART"
+
+[node name="HealthBar" type="ProgressBar" parent="UI" unique_id=434133851]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -125.0
+offset_top = 17.0
+offset_right = 125.0
+offset_bottom = 44.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_21xkr")
+value = 100.0
+
+[node name="WaveHUD" parent="UI" unique_id=236326957 instance=ExtResource("5_au75x")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_s486e")
+
+[node name="VictoryScreen" type="Control" parent="UI" unique_id=379256304]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_62f1r")
+
+[node name="HowToPlay" type="Control" parent="UI" unique_id=908107822]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_1je60")
+
+[editable path="Map2"]
