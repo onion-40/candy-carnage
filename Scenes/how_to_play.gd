@@ -91,8 +91,13 @@ func close_popup() -> void:
 	pause_button.show()
 	get_tree().paused = false
 
+# The end screens own the pause from here on.
 func _on_game_ended() -> void:
-	# The end screens own the pause from here on.
+	overlay.hide()
+	game_menu_overlay.hide()
+	help_button.hide()
+	pause_button.hide()
+	return_to_game_menu = false
 	overlay.hide()
 	help_button.hide()
 
