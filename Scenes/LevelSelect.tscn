@@ -1,46 +1,161 @@
 [gd_scene format=3 uid="uid://cv0nnd44p2nie"]
 
 [ext_resource type="Script" uid="uid://168tkfyw0f4m" path="res://Scripts/Scenes/LevelSelect.gd" id="1_chbko"]
+[ext_resource type="Theme" path="res://Scenes/MenuTheme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://dv85tc6838wi0" path="res://Scripts/Menu/MenuBackground.gd" id="3_bg"]
 
 [node name="LevelSelect" type="Control" unique_id=1658387703]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_chbko")
 
-[node name="Background" type="ColorRect" parent="." unique_id=878567838]
+[node name="Background" type="Control" parent="." unique_id=878567838]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.39215687, 0.52156866, 0.6392157, 1)
+mouse_filter = 2
+script = ExtResource("3_bg")
+candy_count = 18
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=252619928]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=2040794921]
 layout_mode = 2
+theme_override_constants/separation = 34
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1205453761]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.55, 0.8, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.55)
+theme_override_colors/font_outline_color = Color(0.28, 0.02, 0.17, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 72
 text = "SELECT LEVEL"
 horizontal_alignment = 1
 
 [node name="LevelButtons" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=534522675]
 layout_mode = 2
+theme_override_constants/separation = 56
+alignment = 1
 
 [node name="Level1Button" type="Button" parent="CenterContainer/VBoxContainer/LevelButtons" unique_id=1967922423]
+custom_minimum_size = Vector2(270, 270)
 layout_mode = 2
+theme_type_variation = &"LevelCard"
+
+[node name="Content" type="VBoxContainer" parent="CenterContainer/VBoxContainer/LevelButtons/Level1Button" unique_id=301847261]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="NumberLabel" type="Label" parent="CenterContainer/VBoxContainer/LevelButtons/Level1Button/Content" unique_id=1592038417]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.25, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_colors/font_outline_color = Color(0.25, 0.02, 0.12, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 110
+text = "1"
+horizontal_alignment = 1
+
+[node name="LockIcon" type="Control" parent="CenterContainer/VBoxContainer/LevelButtons/Level1Button/Content" unique_id=862095143]
+visible = false
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="CenterContainer/VBoxContainer/LevelButtons/Level1Button/Content" unique_id=1120384756]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.98, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0, 0.08, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 30
 text = "LEVEL 1"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/VBoxContainer/LevelButtons/Level1Button/Content" unique_id=2039485761]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.55, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Ready to fight"
+horizontal_alignment = 1
 
 [node name="Level2Button" type="Button" parent="CenterContainer/VBoxContainer/LevelButtons" unique_id=970988429]
+custom_minimum_size = Vector2(270, 270)
 layout_mode = 2
-disabled = true
-text = "LEVEL 2 - LOCKED"
+theme_type_variation = &"LevelCard"
+
+[node name="Content" type="VBoxContainer" parent="CenterContainer/VBoxContainer/LevelButtons/Level2Button" unique_id=745210396]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="NumberLabel" type="Label" parent="CenterContainer/VBoxContainer/LevelButtons/Level2Button/Content" unique_id=1834507291]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.25, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5)
+theme_override_colors/font_outline_color = Color(0.25, 0.02, 0.12, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 110
+text = "2"
+horizontal_alignment = 1
+
+[node name="LockIcon" type="Control" parent="CenterContainer/VBoxContainer/LevelButtons/Level2Button/Content" unique_id=619283047]
+visible = false
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="CenterContainer/VBoxContainer/LevelButtons/Level2Button/Content" unique_id=1475920386]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.98, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0, 0.08, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 30
+text = "LEVEL 2"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CenterContainer/VBoxContainer/LevelButtons/Level2Button/Content" unique_id=928374615]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.55, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Ready to fight"
+horizontal_alignment = 1
 
 [node name="BackButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=600642846]
+custom_minimum_size = Vector2(240, 54)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "BACK"

@@ -1,6 +1,12 @@
-
 extends Control
 
+const PINK: Color = Color(1.0, 0.45, 0.75)
+const GOLD: Color = Color(1.0, 0.84, 0.25)
+
+@onready var menu_box: VBoxContainer = $CenterContainer/VBoxContainer
+@onready var title_box: VBoxContainer = $CenterContainer/VBoxContainer/TitleBox
+@onready var candy_label: Label = $CenterContainer/VBoxContainer/TitleBox/CandyLabel
+@onready var carnage_label: Label = $CenterContainer/VBoxContainer/TitleBox/CarnageLabel
 @onready var play_button: Button = $CenterContainer/VBoxContainer/PlayButton
 @onready var how_to_play_button: Button = $CenterContainer/VBoxContainer/HowToPlayButton
 @onready var quit_button: Button = $CenterContainer/VBoxContainer/QuitButton
@@ -13,7 +19,20 @@ func _ready() -> void:
 	how_to_play_button.pressed.connect(_on_how_to_play_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 
+	for button in [play_button, how_to_play_button, quit_button]:
+		MenuFx.setup_hover(button)
+
+	for control in [title_box, candy_label, carnage_label]:
+		MenuFx.keep_pivot_centered(control)
+
 	_create_tutorial_popup()
+	_play_intro()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and tutorial_overlay.visible:
+		tutorial_overlay.hide()
+		get_viewport().set_input_as_handled()
 
 
 func _on_play_pressed() -> void:
@@ -27,6 +46,32 @@ func _on_quit_pressed() -> void:
 func _on_how_to_play_pressed() -> void:
 	tutorial_overlay.show()
 
+
+func _play_intro() -> void:
+	menu_box.modulate.a = 0.0
+	title_box.scale = Vector2(0.6, 0.6)
+
+	var intro := create_tween().set_parallel()
+	intro.tween_property(menu_box, "modulate:a", 1.0, 0.5)
+	intro.tween_property(title_box, "scale", Vector2.ONE, 0.7) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	# "CANDY" wobbles gently, "CARNAGE" beats like a heart.
+	var wobble := create_tween().set_loops()
+	wobble.tween_property(candy_label, "rotation_degrees", 2.0, 1.6) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	wobble.tween_property(candy_label, "rotation_degrees", -2.0, 1.6) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	var heartbeat := create_tween().set_loops()
+	heartbeat.tween_property(carnage_label, "scale", Vector2(1.05, 1.05), 0.12)
+	heartbeat.tween_property(carnage_label, "scale", Vector2.ONE, 0.16)
+	heartbeat.tween_property(carnage_label, "scale", Vector2(1.03, 1.03), 0.1)
+	heartbeat.tween_property(carnage_label, "scale", Vector2.ONE, 0.2)
+	heartbeat.tween_interval(1.0)
+
+
+# --- How to play popup ------------------------------------------------------
 
 func _create_tutorial_popup() -> void:
 	tutorial_overlay = ColorRect.new()
@@ -42,7 +87,7 @@ func _create_tutorial_popup() -> void:
 	var panel = PanelContainer.new()
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color(0.12, 0.04, 0.14, 0.98)
-	style.border_color = Color(1.0, 0.45, 0.75)
+	style.border_color = PINK
 	style.set_border_width_all(3)
 	style.set_corner_radius_all(12)
 	style.set_content_margin_all(26)
@@ -57,7 +102,7 @@ func _create_tutorial_popup() -> void:
 	title.text = "HOW TO PLAY"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 32)
-	title.add_theme_color_override("font_color", Color(1.0, 0.84, 0.25))
+	title.add_theme_color_override("font_color", GOLD)
 	box.add_child(title)
 
 	_add_tutorial_section(box, "Goal",
@@ -77,7 +122,8 @@ func _create_tutorial_popup() -> void:
 
 	var close_button = Button.new()
 	close_button.text = "BACK TO MENU"
-	close_button.custom_minimum_size = Vector2(0, 46)
+	close_button.custom_minimum_size = Vector2(0, 50)
+	close_button.add_theme_font_size_override("font_size", 22)
 	close_button.pressed.connect(func(): tutorial_overlay.hide())
 	box.add_child(close_button)
 
@@ -87,7 +133,7 @@ func _create_tutorial_popup() -> void:
 func _add_tutorial_section(box: VBoxContainer, heading: String, description: String) -> void:
 	var heading_label = Label.new()
 	heading_label.text = heading
-	heading_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.75))
+	heading_label.add_theme_color_override("font_color", PINK)
 	heading_label.add_theme_font_size_override("font_size", 18)
 	box.add_child(heading_label)
 
