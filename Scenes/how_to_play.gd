@@ -13,13 +13,18 @@ const TEXT_WIDTH: float = 620.0
 static var shown_on_launch: bool = false
 
 var map: Node
+
 var help_button: Button
+var pause_button: Button
+
 var overlay: Control
 var close_button: Button
 
+var game_menu_overlay: Control
+var return_to_game_menu: bool = false
+
 
 func _ready() -> void:
-	# Keeps working while the tree is paused (by this popup or by game over).
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -27,8 +32,12 @@ func _ready() -> void:
 	map = owner.get_node_or_null("Map")
 
 	_build_help_button()
+	_build_pause_button()
 	_build_popup()
+	_build_game_menu()
+
 	overlay.hide()
+	game_menu_overlay.hide()
 
 	if map:
 		map.game_over.connect(_on_game_ended)
@@ -40,9 +49,20 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if overlay.visible and event.is_action_pressed("ui_cancel"):
+	if not event.is_action_pressed("ui_cancel"):
+		return
+
+	if _game_has_ended():
+		return
+
+	if overlay.visible:
 		close_popup()
-		get_viewport().set_input_as_handled()
+	elif game_menu_overlay.visible:
+		close_game_menu()
+	else:
+		open_game_menu()
+
+	get_viewport().set_input_as_handled()
 
 
 func open_popup() -> void:
@@ -52,6 +72,7 @@ func open_popup() -> void:
 	get_tree().paused = true
 	overlay.show()
 	help_button.hide()
+	pause_button.hide()
 	close_button.grab_focus.call_deferred()
 
 
@@ -61,9 +82,14 @@ func close_popup() -> void:
 	if _game_has_ended():
 		return
 
-	help_button.show()
-	get_tree().paused = false
+	if return_to_game_menu:
+		return_to_game_menu = false
+		game_menu_overlay.show()
+		return
 
+	help_button.show()
+	pause_button.show()
+	get_tree().paused = false
 
 func _on_game_ended() -> void:
 	# The end screens own the pause from here on.
@@ -100,6 +126,29 @@ func _build_help_button() -> void:
 	help_button.add_theme_color_override("font_hover_color", Color.WHITE)
 	help_button.pressed.connect(open_popup)
 	add_child(help_button)
+
+func _build_pause_button() -> void:
+	pause_button = Button.new()
+	pause_button.text = "Ⅱ"
+	pause_button.tooltip_text = "Pause Menu"
+	pause_button.custom_minimum_size = Vector2(44, 44)
+
+	# Immediately to the left of the How to Play button.
+	pause_button.anchor_left = 1.0
+	pause_button.anchor_right = 1.0
+	pause_button.offset_left = -112.0
+	pause_button.offset_right = -68.0
+	pause_button.offset_top = 16.0
+	pause_button.offset_bottom = 60.0
+	pause_button.add_theme_font_size_override("font_size", 22)
+	pause_button.add_theme_stylebox_override("normal", _round_style(Color(0.6, 0.48, 0.75)))
+	pause_button.add_theme_stylebox_override("hover", _round_style(Color(0.72, 0.6, 0.88)))
+	pause_button.add_theme_stylebox_override("pressed", _round_style(Color(0.45, 0.35, 0.6)))
+	pause_button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	pause_button.add_theme_color_override("font_color", Color.WHITE)
+
+	pause_button.pressed.connect(open_game_menu)
+	add_child(pause_button)
 
 
 func _build_popup() -> void:
@@ -168,6 +217,102 @@ func _build_popup() -> void:
 	close_button.add_theme_color_override("font_hover_color", Color.WHITE)
 	close_button.pressed.connect(close_popup)
 	box.add_child(close_button)
+
+
+func open_game_menu() -> void:
+	if _game_has_ended() or overlay.visible:
+		return
+
+	get_tree().paused = true
+	game_menu_overlay.show()
+	help_button.hide()
+	pause_button.hide()
+
+
+func close_game_menu() -> void:
+	game_menu_overlay.hide()
+
+	if _game_has_ended():
+		return
+
+	help_button.show()
+	pause_button.show()
+	get_tree().paused = false
+
+
+func _on_game_menu_how_to_play() -> void:
+	return_to_game_menu = true
+	game_menu_overlay.hide()
+	open_popup()
+
+
+func _on_restart_pressed() -> void:
+	get_tree().paused = false
+	ResourceManager.reset()
+	get_tree().reload_current_scene()
+
+
+func _on_main_menu_pressed() -> void:
+	get_tree().paused = false
+	ResourceManager.reset()
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+
+
+func _build_game_menu() -> void:
+	game_menu_overlay = Control.new()
+	game_menu_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	game_menu_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(game_menu_overlay)
+
+	var backdrop = ColorRect.new()
+	backdrop.color = Color(0.05, 0.02, 0.08, 0.8)
+	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	game_menu_overlay.add_child(backdrop)
+
+	var center = CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	game_menu_overlay.add_child(center)
+
+	var panel = PanelContainer.new()
+	var panel_style = StyleBoxFlat.new()
+	panel_style.bg_color = Color(0.12, 0.04, 0.14, 0.97)
+	panel_style.border_color = CANDY_PINK
+	panel_style.set_border_width_all(3)
+	panel_style.set_corner_radius_all(12)
+	panel_style.set_content_margin_all(30)
+	panel.add_theme_stylebox_override("panel", panel_style)
+	center.add_child(panel)
+
+	var box = VBoxContainer.new()
+	box.add_theme_constant_override("separation", 14)
+	panel.add_child(box)
+
+	var title = Label.new()
+	title.text = "GAME MENU"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 38)
+	title.add_theme_color_override("font_color", GOLD)
+	box.add_child(title)
+
+	_add_game_menu_button(box, "RESUME", close_game_menu)
+	_add_game_menu_button(box, "RESTART LEVEL", _on_restart_pressed)
+	_add_game_menu_button(box, "HOW TO PLAY", _on_game_menu_how_to_play)
+	_add_game_menu_button(box, "MAIN MENU", _on_main_menu_pressed)
+
+
+func _add_game_menu_button(box: VBoxContainer, button_text: String, callback: Callable) -> void:
+	var button = Button.new()
+	button.text = button_text
+	button.custom_minimum_size = Vector2(260, 48)
+	button.add_theme_font_size_override("font_size", 19)
+	button.add_theme_stylebox_override("normal", _button_style(Color(0.6, 0.15, 0.45)))
+	button.add_theme_stylebox_override("hover", _button_style(Color(0.8, 0.25, 0.6)))
+	button.add_theme_stylebox_override("pressed", _button_style(Color(0.4, 0.08, 0.3)))
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	button.add_theme_color_override("font_color", Color.WHITE)
+	button.pressed.connect(callback)
+	box.add_child(button)
 
 
 func _add_section(box: VBoxContainer, heading: String, body: String) -> void:
