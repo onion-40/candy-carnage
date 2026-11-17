@@ -1,17 +1,57 @@
-
 extends Node2D
+
+const MAX_LEVEL: int = 3
+
+# Applied on top of the exported base stats below. Level 1 is the base character.
+const LEVEL_STATS: Dictionary = {
+	1: {"damage_mult": 1.0, "range_mult": 1.0, "lifetime_bonus": 0.0, "cooldown_reduction": 0.0},
+	2: {"damage_mult": 1.5, "range_mult": 1.2, "lifetime_bonus": 0.0, "cooldown_reduction": 0.0},
+	3: {"damage_mult": 2.0, "range_mult": 1.2, "lifetime_bonus": 5.0, "cooldown_reduction": 3.0},
+}
+
+# Cost to reach each level.
+const UPGRADE_COSTS: Dictionary = {
+	2: {"bones": 10, "organs": 5, "eyeballs": 0},
+	3: {"bones": 15, "organs": 10, "eyeballs": 5},
+}
+
+# Shown on the HUD button so the player knows what they are paying for.
+const UPGRADE_SUMMARIES: Dictionary = {
+	2: "+50% damage, +20% range",
+	3: "x2 damage, +5 s duration, -3 s cooldown",
+}
 
 @export var attack_range: float = 150.0
 @export var attack_damage: int = 10
 @export var attack_interval: float = 1.5
+@export var lifetime: float = 10.0
 
+var level: int = 1
 var is_active: bool = false
 var attack_timer: float = 0.0
 
 
-@export var lifetime: float = 10.0
+# Static so the Map and HUD can read stats and prices without instancing a character.
+static func stats_for_level(for_level: int) -> Dictionary:
+	return LEVEL_STATS[clampi(for_level, 1, MAX_LEVEL)]
 
-func activate() -> void: 
+
+static func upgrade_cost_for(next_level: int) -> Dictionary:
+	return UPGRADE_COSTS.get(next_level, {})
+
+
+# Call once on a fresh instance, before activate(): it scales the base stats.
+func apply_level(new_level: int) -> void:
+	level = clampi(new_level, 1, MAX_LEVEL)
+	var stats := stats_for_level(level)
+
+	attack_damage = roundi(attack_damage * stats["damage_mult"])
+	attack_range *= stats["range_mult"]
+	lifetime += stats["lifetime_bonus"]
+	$AOEVisual.scale = Vector2.ONE * stats["range_mult"]
+
+
+func activate() -> void:
 	is_active = true
 	attack_timer = 0.0
 
