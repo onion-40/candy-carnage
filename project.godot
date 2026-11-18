@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 ResourceManager="*uid://b7ty26f4pbqmr"
 GameProgress="*uid://bd57xxt6ex5qg"
+MusicManager="*uid://bpqc27r68sr4t"
 
 [display]
 

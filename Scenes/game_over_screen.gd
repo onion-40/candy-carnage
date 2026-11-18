@@ -28,6 +28,7 @@ func _ready() -> void:
 
 
 func _on_game_over() -> void:
+	MusicManager.play_gameover_sound()
 	get_tree().paused = true
 
 	# Draw above every other UI element (health bar, HUD, wave info).
