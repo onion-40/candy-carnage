@@ -57,7 +57,9 @@ func _ready() -> void:
 	player_hp = max_player_hp
 	player_health_changed.connect(update_health_bar)
 	player_health_changed.emit(player_hp, max_player_hp)
-	
+	_texture_road()
+	_scatter_decor()
+
 	for spot in tower_spots.get_children():
 		if spot is Area2D:
 			spot.set_meta("occupied", false)
@@ -111,23 +113,101 @@ func _on_enemy_reached_base(damage: int) -> void:
 # =====================================
 
 func _create_spot_visual(spot: Area2D) -> void:
-	if spot.has_node("SpotVisual"):
+	# The scenes still hold the old placeholder rectangles.
+	for child in spot.get_children():
+		if child is Polygon2D:
+			child.visible = false
+
+	var visual = Sprite2D.new()
+	visual.name = "SpotSprite"
+	visual.texture = preload("res://Assets/Sprites/tower_spot_vacant.png")
+	visual.position = Vector2(0, 14) # the tower stands on the back of the pad
+	spot.add_child(visual)
+
+
+# =====================================
+# MAP DECOR
+# =====================================
+
+const DECOR_SPRITES = [
+	preload("res://Assets/Sprites/tree_1.png"),
+	preload("res://Assets/Sprites/tree_2.png"),
+	preload("res://Assets/Sprites/tree_3.png"),
+	preload("res://Assets/Sprites/bush_1.png"),
+	preload("res://Assets/Sprites/bush_2.png"),
+	preload("res://Assets/Sprites/bush_3.png"),
+	preload("res://Assets/Sprites/grass_1.png"),
+	preload("res://Assets/Sprites/grass_2.png"),
+	preload("res://Assets/Sprites/grass_3.png"),
+]
+
+
+func _texture_road() -> void:
+	var road: Line2D = enemy_path.get_node_or_null("RoadVisual")
+
+	if road == null:
 		return
 
-	var visual = Polygon2D.new()
-	visual.name = "SpotVisual"
+	road.texture = preload("res://Assets/Sprites/road_1.png")
+	road.texture_mode = Line2D.LINE_TEXTURE_TILE
+	road.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	road.default_color = Color.WHITE
+	road.joint_mode = Line2D.LINE_JOINT_ROUND
 
-	visual.polygon = PackedVector2Array([
-		Vector2(-25, -25),
-		Vector2(25, -25),
-		Vector2(25, 25),
-		Vector2(-25, 25)
-	])
 
-	visual.color = Color(0.2, 0.8, 0.3, 0.65)
-	visual.z_index = -1
+# Scatters trees, bushes and grass on the free ground, the same way on every run.
+func _scatter_decor() -> void:
+	var rng = RandomNumberGenerator.new()
+	rng.seed = 7
+	var road: Line2D = enemy_path.get_node_or_null("RoadVisual")
+	var placed: Array[Vector2] = []
 
-	spot.add_child(visual)
+	for attempt in range(400):
+		if placed.size() >= 24:
+			break
+
+		var point = Vector2(rng.randf_range(20, 1260), rng.randf_range(20, 600))
+		var texture: Texture2D = DECOR_SPRITES[rng.randi() % DECOR_SPRITES.size()]
+		var clearance = texture.get_size().length() * 0.5
+
+		if road and _distance_to_line(road, road.to_local(to_global(point))) < 40.0 + clearance:
+			continue
+
+		var near_spot = false
+
+		for spot in tower_spots.get_children():
+			if spot is Area2D and to_local(spot.global_position).distance_to(point) < 80.0 + clearance:
+				near_spot = true
+
+		if near_spot:
+			continue
+
+		var crowded = false
+
+		for other in placed:
+			if other.distance_to(point) < 45.0 + clearance:
+				crowded = true
+
+		if crowded:
+			continue
+
+		var sprite = Sprite2D.new()
+		sprite.texture = texture
+		sprite.position = point
+		sprite.flip_h = rng.randf() < 0.5
+		add_child(sprite)
+		move_child(sprite, 1) # right above the background
+		placed.append(point)
+
+
+func _distance_to_line(line: Line2D, point: Vector2) -> float:
+	var best = INF
+
+	for i in range(line.get_point_count() - 1):
+		var closest = Geometry2D.get_closest_point_to_segment(point, line.get_point_position(i), line.get_point_position(i + 1))
+		best = minf(best, closest.distance_to(point))
+
+	return best
 
 
 # =====================================
