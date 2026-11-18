@@ -1,6 +1,11 @@
 extends PathFollow2D
 
 const BODY_PART_SCRIPT = preload("res://Scripts/Scenes/BodyPart.gd")
+const BLOOD_SPLATTERS = [
+	preload("res://Assets/Sprites/blood_splatter_1.png"),
+	preload("res://Assets/Sprites/blood_splatter_2.png"),
+	preload("res://Assets/Sprites/blood_splatter_3.png"),
+]
 
 enum EnemyType {
 	REGULAR,
@@ -37,26 +42,29 @@ func _ready() -> void:
 
 	loop = false
 	rotates = false
+	rotation = 0.0 # undo the tilt the path gave before rotates was turned off
+	$Body.texture = preload("res://Assets/Sprites/enemy_bunny.png")
 
 	match enemy_type:
 		EnemyType.MAGE:
 			max_health = maxi(1, roundi(max_health * 0.6))
-			$Body.color = Color(0.7, 0.3, 1.0)
+			$Body.texture = preload("res://Assets/Sprites/enemy_skunk.png")
 			_create_mage_timer()
 
 		EnemyType.TANK:
 			max_health = maxi(1, roundi(max_health * 2.5))
 			move_speed *= 0.5
-			$Body.color = Color(0.35, 0.35, 0.4)
+			$Body.texture = preload("res://Assets/Sprites/enemy_bear.png")
 
 		EnemyType.HEALER:
-			$Body.color = Color(0.3, 0.9, 0.45)
+			$Body.texture = preload("res://Assets/Sprites/enemy_dog.png")
 			_create_healer_timer()
 
 	health = max_health
 
 func _process(delta: float) -> void:
 	progress += move_speed * delta
+	$Body.rotation = sin(progress * 0.08) * 0.12 # waddle while walking
 
 	if progress_ratio >= 1.0:
 		reached_base.emit(base_damage)
@@ -202,41 +210,59 @@ func _heal_enemy(target: Node) -> void:
 # VISUAL FEEDBACK
 # =====================================
 
-const HEALTH_BAR_SIZE: Vector2 = Vector2(28, 4)
-const HEALTH_BAR_OFFSET: float = -18.0
+const HEALTH_BAR_SIZE: Vector2 = Vector2(40, 6)
+const HEALTH_BAR_OFFSET: float = -40.0
 const DEATH_BURST_COLOR: Color = Color(0.85, 0.05, 0.1)
 
 
-# Small health bar above the enemy, only once it has been hit.
+# A soft shadow under the feet (drawn below the Body sprite), and a health
+# bar above the enemy once it has been hit.
 func _draw() -> void:
+	var feet = $Body.texture.get_height() * 0.45
+	draw_set_transform(Vector2(0, feet), 0.0, Vector2(1.0, 0.35))
+	draw_circle(Vector2.ZERO, 22.0, Color(0, 0, 0, 0.22))
+	draw_set_transform(Vector2.ZERO)
+
 	if health >= max_health:
 		return
 
 	var top_left = Vector2(-HEALTH_BAR_SIZE.x / 2.0, HEALTH_BAR_OFFSET)
 	var ratio = clampf(float(health) / float(max_health), 0.0, 1.0)
 
-	draw_rect(Rect2(top_left, HEALTH_BAR_SIZE), Color(0.1, 0.1, 0.1, 0.8))
+	draw_rect(Rect2(top_left, HEALTH_BAR_SIZE).grow(1.5), Color(0.12, 0.04, 0.14, 0.9))
 	draw_rect(
 		Rect2(top_left, Vector2(HEALTH_BAR_SIZE.x * ratio, HEALTH_BAR_SIZE.y)),
 		Color(0.2, 0.9, 0.3).lerp(Color(0.95, 0.2, 0.1), 1.0 - ratio)
 	)
 
 
-# Briefly turns the body white when it takes a hit.
+# Briefly turns the body red when it takes a hit.
 func _flash_hit() -> void:
-	var body: Polygon2D = $Body
-	var base_color = body.get_meta("base_color", body.color)
-	body.set_meta("base_color", base_color)
-
-	body.color = Color.WHITE
+	var body: Sprite2D = $Body
+	body.modulate = Color(1.0, 0.35, 0.35)
 	var tween = body.create_tween()
-	tween.tween_property(body, "color", base_color, 0.12)
+	tween.tween_property(body, "modulate", Color.WHITE, 0.12)
 
 
 # A few shards fly out and fade where the enemy died.
 func _spawn_death_burst() -> void:
 	var scene = get_tree().current_scene
 	var origin = scene.to_local(global_position)
+
+	# A blood stain stays on the road for a few seconds.
+	var stain = Sprite2D.new()
+	stain.texture = BLOOD_SPLATTERS.pick_random()
+	stain.position = position
+	stain.rotation = randf_range(-0.4, 0.4)
+	# On the path, right above the road, so walking enemies stay on top of it.
+	get_parent().add_child.call_deferred(stain)
+	get_parent().move_child.call_deferred(stain, 1)
+	stain.ready.connect(func() -> void:
+		var fade = stain.create_tween()
+		fade.tween_interval(4.0)
+		fade.tween_property(stain, "modulate:a", 0.0, 1.0)
+		fade.tween_callback(stain.queue_free)
+	, CONNECT_ONE_SHOT)
 
 	for i in range(6):
 		var shard = Polygon2D.new()
@@ -291,16 +317,6 @@ func _spawn_body_part(
 	part.organs = organ_amount
 	part.eyeballs = eyeball_amount
 
-	# The Body polygon is drawn offset from the node origin, so drop the
-	# part where the enemy is actually visible.
-	var body: Polygon2D = $Body
-	var center = Vector2.ZERO
-
-	for point in body.polygon:
-		center += point
-
-	center /= body.polygon.size()
-
 	var scene = get_tree().current_scene
-	part.position = scene.to_local(body.to_global(center))
+	part.position = scene.to_local(global_position)
 	scene.add_child.call_deferred(part)

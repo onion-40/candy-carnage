@@ -10,6 +10,17 @@ enum TowerType {
 
 const LASER_COLOR: Color = Color(0.4, 0.9, 1.0)
 const CANNON_FLASH_COLOR: Color = Color(1.0, 0.75, 0.2)
+# [new, decay] sprite per tower type.
+const SPRITES = {
+	TowerType.LASER: [
+		preload("res://Assets/Sprites/amblin_ranged_tower_new.png"),
+		preload("res://Assets/Sprites/amblin_ranged_tower_decay.png"),
+	],
+	TowerType.HEAVY_CANNON: [
+		preload("res://Assets/Sprites/fibroxy_artillery_tower_new.png"),
+		preload("res://Assets/Sprites/fibroxy_artillery_tower_decay.png"),
+	],
+}
 
 var level: int = 1
 var attack_range: float
@@ -19,7 +30,7 @@ var is_sold: bool = false
 var build_spot: Area2D
 
 @onready var attack_timer: Timer = $AttackTimer
-@onready var body: Polygon2D = $Body
+@onready var body: Sprite2D = $Body
 @onready var lifetime_bar: ProgressBar = $LifetimeBar
 # TOWER LIFETIME
 @export var starting_lifetime: float = 90.0
@@ -39,14 +50,6 @@ signal dissolved(spot: Area2D)
 
 
 func _ready() -> void:
-	if body.polygon.is_empty():
-		body.polygon = PackedVector2Array([
-			Vector2(-15, -15),
-			Vector2(15, -15),
-			Vector2(15, 15),
-			Vector2(-15, 15)
-		])
-	
 	add_to_group("towers")
 	apply_stats()
 	max_lifetime = starting_lifetime
@@ -76,6 +79,9 @@ func _process(delta: float) -> void:
 		var progress = clamp(repair_held_time / repair_duration, 0.0, 1.0)
 		var percentage = int(progress * 100.0)
 		# The tower information panel can display this progress.
+
+	# The tower looks rotten once half its lifetime is gone.
+	body.texture = SPRITES[tower_type][1 if time_left <= max_lifetime * 0.5 else 0]
 
 	# Show a warning when the tower is close to dissolving.
 	if time_left <= decay_warning_time:
@@ -229,13 +235,11 @@ func apply_stats() -> void:
 		attack_range = 220.0 + (level - 1) * 20.0
 		damage = 10 + (level - 1) * 2
 		attack_interval = 0.6
-		body.color = Color(0.1, 0.4, 1.0)
 
 	elif tower_type == TowerType.HEAVY_CANNON:
 		attack_range = 150.0 + (level - 1) * 10.0
 		damage = 25 + (level - 1) * 10
 		attack_interval = 1.5
-		body.color = Color(1.0, 0.2, 0.1)
 	else:
 		return
 
