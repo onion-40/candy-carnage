@@ -5,7 +5,4 @@
 [node name="Enemies" type="PathFollow2D" unique_id=764811963]
 script = ExtResource("1_77025")
 
-[node name="Body" type="Polygon2D" parent="." unique_id=1725503669]
-color = Color(0.75, 0, 0, 1)
-polygon = PackedVector2Array(-8.14492, 0, -3.0517578e-05, -8.14489, 8.144859, 0, -3.0517578e-05, 8.14489)
-uv = PackedVector2Array(-152, -16, -112, -56, -72, -16, -112, 24)
+[node name="Body" type="Sprite2D" parent="." unique_id=1725503669]

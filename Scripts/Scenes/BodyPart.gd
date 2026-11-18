@@ -39,44 +39,16 @@ func _ready() -> void:
 
 
 func _create_visual() -> void:
+	var sprite = Sprite2D.new()
+
 	if eyeballs > 0:
-		add_child(_circle_polygon(11.0, Color(0.97, 0.97, 0.95)))
-		add_child(_circle_polygon(5.0, Color(0.15, 0.45, 0.9)))
-		add_child(_circle_polygon(2.5, Color.BLACK))
-
+		sprite.texture = preload("res://Assets/Sprites/tissue_resource.png")
 	elif organs > 0:
-		var organ = _circle_polygon(12.0, Color(0.85, 0.2, 0.35))
-		organ.scale = Vector2(1.0, 0.8)
-		add_child(organ)
-
+		sprite.texture = preload("res://Assets/Sprites/muscle_resource.png")
 	else:
-		var bone = Polygon2D.new()
-		bone.polygon = PackedVector2Array([
-			Vector2(-14, -3), Vector2(14, -3), Vector2(14, 3), Vector2(-14, 3)
-		])
-		bone.color = Color(0.95, 0.93, 0.85)
-		add_child(bone)
+		sprite.texture = preload("res://Assets/Sprites/bone_resource.png")
 
-		for x in [-14.0, 14.0]:
-			for y in [-4.0, 4.0]:
-				var knob = _circle_polygon(4.5, bone.color)
-				knob.position = Vector2(x, y)
-				add_child(knob)
-
-
-func _circle_polygon(radius: float, color: Color) -> Polygon2D:
-	var points = PackedVector2Array()
-	var segments = 20
-
-	for i in range(segments):
-		var angle = TAU * float(i) / float(segments)
-		points.append(Vector2(cos(angle), sin(angle)) * radius)
-
-	var polygon = Polygon2D.new()
-	polygon.polygon = points
-	polygon.color = color
-
-	return polygon
+	add_child(sprite)
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
