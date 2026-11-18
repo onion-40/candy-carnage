@@ -2,37 +2,46 @@ extends Control
 
 const PINK: Color = Color(1.0, 0.45, 0.75)
 const GOLD: Color = Color(1.0, 0.84, 0.25)
+const UPGRADE_SCREEN_SCRIPT = preload("res://Scripts/Menu/UpgradeScreen.gd")
 
 @onready var menu_box: VBoxContainer = $CenterContainer/VBoxContainer
 @onready var title_box: VBoxContainer = $CenterContainer/VBoxContainer/TitleBox
 @onready var candy_label: Label = $CenterContainer/VBoxContainer/TitleBox/CandyLabel
 @onready var carnage_label: Label = $CenterContainer/VBoxContainer/TitleBox/CarnageLabel
 @onready var play_button: Button = $CenterContainer/VBoxContainer/PlayButton
+@onready var upgrades_button: Button = $CenterContainer/VBoxContainer/UpgradesButton
 @onready var how_to_play_button: Button = $CenterContainer/VBoxContainer/HowToPlayButton
 @onready var quit_button: Button = $CenterContainer/VBoxContainer/QuitButton
 
 var tutorial_overlay: ColorRect
+var upgrade_screen: ColorRect
 
 
 func _ready() -> void:
 	play_button.pressed.connect(_on_play_pressed)
+	upgrades_button.pressed.connect(_on_upgrades_pressed)
 	how_to_play_button.pressed.connect(_on_how_to_play_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 
-	for button in [play_button, how_to_play_button, quit_button]:
+	for button in [play_button, upgrades_button, how_to_play_button, quit_button]:
 		MenuFx.setup_hover(button)
 
 	for control in [title_box, candy_label, carnage_label]:
 		MenuFx.keep_pivot_centered(control)
 
 	_create_tutorial_popup()
+	upgrade_screen = UPGRADE_SCREEN_SCRIPT.new()
+	add_child(upgrade_screen)
 	_play_intro()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and tutorial_overlay.visible:
-		tutorial_overlay.hide()
-		get_viewport().set_input_as_handled()
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	for overlay in [tutorial_overlay, upgrade_screen]:
+		if overlay.visible:
+			overlay.hide()
+			get_viewport().set_input_as_handled()
 
 
 func _on_play_pressed() -> void:
@@ -41,6 +50,10 @@ func _on_play_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_upgrades_pressed() -> void:
+	upgrade_screen.open()
 
 
 func _on_how_to_play_pressed() -> void:
@@ -119,6 +132,9 @@ func _create_tutorial_popup() -> void:
 
 	_add_tutorial_section(box, "Special Character",
 		"Wait for the ability to become available, then select a location to deploy your special character.")
+
+	_add_tutorial_section(box, "Sucream & Upgrades",
+		"Beat a level to earn Sucream. Spend it in Upgrades to make your special character stronger in every level.")
 
 	var close_button = Button.new()
 	close_button.text = "BACK TO MENU"

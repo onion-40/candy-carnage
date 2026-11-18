@@ -208,7 +208,7 @@ func _build_popup() -> void:
 	_add_section(box, "Upgrade or sell",
 		"Click a tower to open its panel. Upgrade it up to level 3, or sell it to get back half of its build cost.")
 	_add_section(box, "Special character",
-		"When it is ready, press Special Character and left-click on the map to deploy it (right-click cancels). It attacks nearby enemies for a while, then needs time to recharge.")
+		"When it is ready, press Special Character and left-click on the map to deploy it (right-click cancels). It attacks nearby enemies for a while, then needs time to recharge. Beat levels to earn Sucream and upgrade it from the main menu.")
 
 	close_button = Button.new()
 	close_button.text = "LET'S GO!"
