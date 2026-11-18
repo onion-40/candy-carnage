@@ -5,10 +5,6 @@ var sfx_player: AudioStreamPlayer
 
 const MENU_MUSIC = preload("res://Assets/Music/Menu.mp3")
 const GAME_MUSIC = preload("res://Assets/Music/Lvl1.mp3")
-const VICTORY_SOUND = preload("res://Assets/Music/victory.mp3")
-const GAMEOVER_SOUND = preload("res://Assets/Music/GameOver.mp3")
-
-
 
 func _ready() -> void:
 	music_player = AudioStreamPlayer.new()
@@ -31,14 +27,6 @@ func play_music(music: AudioStream) -> void:
 	music_player.stream = music
 	music_player.play()
 
-
-func play_victory_sound() -> void:
-	sfx_player.stream = VICTORY_SOUND
-	sfx_player.play()
-
-func play_gameover_sound() -> void:
-	sfx_player.stream = GAMEOVER_SOUND
-	sfx_player.play()
 
 func stop_music() -> void:
 	music_player.stop()

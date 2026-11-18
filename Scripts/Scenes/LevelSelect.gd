@@ -36,12 +36,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_level_1_pressed() -> void:
-	MusicManager.play_music(MusicManager.LEVEL_1_MUSIC)
+	MusicManager.play_music(MusicManager.GAME_MUSIC)
 	get_tree().change_scene_to_file("res://Scenes/main.tscn")
 
 
 func _on_level_2_pressed() -> void:
-	MusicManager.play_music(MusicManager.LEVEL_2_MUSIC)
+	MusicManager.play_music(MusicManager.GAME_MUSIC)
 	get_tree().change_scene_to_file("res://Scenes/Level2.tscn")
 
 

@@ -35,7 +35,6 @@ func _ready() -> void:
 
 func _on_victory() -> void:
 	get_tree().paused = true
-	MusicManager.play_victory_sound()
 	
 	#Once player won level 1, level 2 will be unlocked.
 	GameProgress.unlock_level_2()

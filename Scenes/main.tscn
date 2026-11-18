@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="5_kry3j"]
 [ext_resource type="Script" uid="uid://d36s1hgw7srlt" path="res://Scenes/game_over_screen.gd" id="6_gmovr"]
 [ext_resource type="PackedScene" uid="uid://dwm1ogo4gq0a" path="res://Scenes/WaveHUD.tscn" id="7_6bp64"]
-[ext_resource type="AudioStream" uid="uid://1v2usftdea7b" path="res://Assets/Music/Lvl1.mp3" id="8_344ge"]
+[ext_resource type="AudioStream" uid="uid://dywk22q2ek12v" path="res://Assets/Music/Lvl1.mp3" id="8_344ge"]
 [ext_resource type="Script" uid="uid://rln2sh71lq43" path="res://Scenes/victory_screen.gd" id="8_vctry"]
 [ext_resource type="Script" uid="uid://b7udtmxic72u7" path="res://Scenes/how_to_play.gd" id="9_howto"]
 
