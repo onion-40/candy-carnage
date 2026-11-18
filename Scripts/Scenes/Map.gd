@@ -7,7 +7,6 @@ const SPECIAL_CHARACTER_SCRIPT = preload("res://Scenes/special_characters.gd")
 signal player_health_changed(current_hp: int, max_hp: int)
 signal game_over
 signal victory
-signal special_upgraded(level: int)
 
 @export var deployment_start_delay: float = 10.0
 @export var special_cooldown: float = 15.0
@@ -43,7 +42,6 @@ var is_victory: bool = false
 
 var selected_spot: Area2D = null
 var can_deploy_special: bool = false
-var special_level: int = 1
 var choosing_deployment_location: bool = false
 
 var current_wave: int = 0
@@ -444,14 +442,14 @@ func _deploy_special_character(location: Vector2) -> void:
 	
 	add_child(character)
 	character.global_position = location
-	character.apply_level(special_level)
+	character.apply_level(GameProgress.special_level)
 	character.activate()
 	
 	can_deploy_special = false
 	choosing_deployment_location = false
 	deployment_preview.visible = false
 	
-	var stats = SPECIAL_CHARACTER_SCRIPT.stats_for_level(special_level)
+	var stats = SPECIAL_CHARACTER_SCRIPT.stats_for_level(GameProgress.special_level)
 	special_cooldown_timer.wait_time = maxf(1.0, special_cooldown - stats["cooldown_reduction"])
 	special_cooldown_timer.start()
 	
@@ -459,31 +457,6 @@ func _cancel_special_placement() -> void:
 	choosing_deployment_location = false
 	deployment_preview.visible = false
 	
-func is_special_max_level() -> bool:
-	return special_level >= SPECIAL_CHARACTER_SCRIPT.MAX_LEVEL
-
-
-# Empty when the special character is already at max level.
-func get_special_upgrade_cost() -> Dictionary:
-	return SPECIAL_CHARACTER_SCRIPT.upgrade_cost_for(special_level + 1)
-
-
-# Upgrades apply to the next deployment, not to a character already on the map.
-func upgrade_special() -> bool:
-	if is_special_max_level():
-		return false
-
-	var cost = get_special_upgrade_cost()
-	if not ResourceManager.spend_resources(cost["bones"], cost["organs"], cost["eyeballs"]):
-		return false
-
-	special_level += 1
-	var stats = SPECIAL_CHARACTER_SCRIPT.stats_for_level(special_level)
-	deployment_preview.scale = Vector2.ONE * stats["range_mult"]
-	special_upgraded.emit(special_level)
-	return true
-
-
 func _create_deployment_preview() -> void:
 	var points = PackedVector2Array()
 	var radius = 150.0
@@ -496,6 +469,9 @@ func _create_deployment_preview() -> void:
 	deployment_preview.polygon = points
 	deployment_preview.color = Color(1.0, 0.2, 0.2, 0.25)
 	deployment_preview.visible = false
+	# Match the range upgrade bought in the main menu.
+	var stats = SPECIAL_CHARACTER_SCRIPT.stats_for_level(GameProgress.special_level)
+	deployment_preview.scale = Vector2.ONE * stats["range_mult"]
 	deployment_preview.z_index = 10
 
 func update_health_bar(current_hp: int, max_hp: int) -> void:

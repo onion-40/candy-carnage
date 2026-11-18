@@ -9,13 +9,14 @@ const LEVEL_STATS: Dictionary = {
 	3: {"damage_mult": 2.0, "range_mult": 1.2, "lifetime_bonus": 5.0, "cooldown_reduction": 3.0},
 }
 
-# Cost to reach each level.
+# Sucream needed to reach each level. Upgrades are bought from the main menu
+# (GameProgress.upgrade_special) and kept between runs.
 const UPGRADE_COSTS: Dictionary = {
-	2: {"bones": 10, "organs": 5, "eyeballs": 0},
-	3: {"bones": 15, "organs": 10, "eyeballs": 5},
+	2: 50,
+	3: 100,
 }
 
-# Shown on the HUD button so the player knows what they are paying for.
+# Shown in the main menu upgrade screen.
 const UPGRADE_SUMMARIES: Dictionary = {
 	2: "+50% damage, +20% range",
 	3: "x2 damage, +5 s duration, -3 s cooldown",
@@ -31,13 +32,14 @@ var is_active: bool = false
 var attack_timer: float = 0.0
 
 
-# Static so the Map and HUD can read stats and prices without instancing a character.
+# Static so the Map and menus can read stats and prices without instancing a character.
 static func stats_for_level(for_level: int) -> Dictionary:
 	return LEVEL_STATS[clampi(for_level, 1, MAX_LEVEL)]
 
 
-static func upgrade_cost_for(next_level: int) -> Dictionary:
-	return UPGRADE_COSTS.get(next_level, {})
+# 0 when there is no such level.
+static func upgrade_cost_for(next_level: int) -> int:
+	return UPGRADE_COSTS.get(next_level, 0)
 
 
 # Call once on a fresh instance, before activate(): it scales the base stats.

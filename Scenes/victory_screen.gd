@@ -12,6 +12,7 @@ var map: Node
 var backdrop: ColorRect
 var panel: PanelContainer
 var stats_label: Label
+var reward_label: Label
 var play_again_button: Button
 var main_menu_button: Button
 
@@ -37,6 +38,10 @@ func _on_victory() -> void:
 	
 	#Once player won level 1, level 2 will be unlocked.
 	GameProgress.unlock_level_2()
+
+	# Sucream is spent on special character upgrades in the main menu.
+	var reward = GameProgress.award_level_reward(get_tree().current_scene.scene_file_path)
+	reward_label.text = "+%d Sucream   (total: %d)" % [reward, GameProgress.sucream]
 
 	stats_label.text = "Waves cleared: %d / %d\nBase HP left: %d / %d" % [
 		map.current_wave,
@@ -126,6 +131,21 @@ func _build_ui() -> void:
 	stats_label.add_theme_font_size_override("font_size", 20)
 	stats_label.add_theme_color_override("font_color", Color.WHITE)
 	box.add_child(stats_label)
+
+	reward_label = Label.new()
+	reward_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	reward_label.add_theme_font_size_override("font_size", 26)
+	reward_label.add_theme_color_override("font_color", CANDY_PINK)
+	reward_label.add_theme_color_override("font_outline_color", Color(0.25, 0.02, 0.15))
+	reward_label.add_theme_constant_override("outline_size", 6)
+	box.add_child(reward_label)
+
+	var reward_hint = Label.new()
+	reward_hint.text = "Spend it in Upgrades on the main menu"
+	reward_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	reward_hint.add_theme_font_size_override("font_size", 14)
+	reward_hint.add_theme_color_override("font_color", Color(0.95, 0.85, 0.92, 0.8))
+	box.add_child(reward_hint)
 
 	
 	# Button container

@@ -85,6 +85,12 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 30
 text = "PLAY"
 
+[node name="UpgradesButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1093847261]
+custom_minimum_size = Vector2(320, 54)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "UPGRADES"
+
 [node name="HowToPlayButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=202053209]
 custom_minimum_size = Vector2(320, 54)
 layout_mode = 2
