@@ -42,6 +42,7 @@ func _ready() -> void:
 
 	loop = false
 	rotates = false
+	rotation = 0.0 # undo the tilt the path gave before rotates was turned off
 	$Body.texture = preload("res://Assets/Sprites/enemy_bunny.png")
 
 	match enemy_type:
@@ -209,20 +210,26 @@ func _heal_enemy(target: Node) -> void:
 # VISUAL FEEDBACK
 # =====================================
 
-const HEALTH_BAR_SIZE: Vector2 = Vector2(28, 4)
+const HEALTH_BAR_SIZE: Vector2 = Vector2(40, 6)
 const HEALTH_BAR_OFFSET: float = -40.0
 const DEATH_BURST_COLOR: Color = Color(0.85, 0.05, 0.1)
 
 
-# Small health bar above the enemy, only once it has been hit.
+# A soft shadow under the feet (drawn below the Body sprite), and a health
+# bar above the enemy once it has been hit.
 func _draw() -> void:
+	var feet = $Body.texture.get_height() * 0.45
+	draw_set_transform(Vector2(0, feet), 0.0, Vector2(1.0, 0.35))
+	draw_circle(Vector2.ZERO, 22.0, Color(0, 0, 0, 0.22))
+	draw_set_transform(Vector2.ZERO)
+
 	if health >= max_health:
 		return
 
 	var top_left = Vector2(-HEALTH_BAR_SIZE.x / 2.0, HEALTH_BAR_OFFSET)
 	var ratio = clampf(float(health) / float(max_health), 0.0, 1.0)
 
-	draw_rect(Rect2(top_left, HEALTH_BAR_SIZE), Color(0.1, 0.1, 0.1, 0.8))
+	draw_rect(Rect2(top_left, HEALTH_BAR_SIZE).grow(1.5), Color(0.12, 0.04, 0.14, 0.9))
 	draw_rect(
 		Rect2(top_left, Vector2(HEALTH_BAR_SIZE.x * ratio, HEALTH_BAR_SIZE.y)),
 		Color(0.2, 0.9, 0.3).lerp(Color(0.95, 0.2, 0.1), 1.0 - ratio)

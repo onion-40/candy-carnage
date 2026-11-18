@@ -1,14 +1,41 @@
 [gd_scene format=3 uid="uid://g1ucg4fd4k67"]
 
 [ext_resource type="Script" uid="uid://ct4aybvx0drpe" path="res://Scripts/Scenes/Towers.gd" id="1_wd6hp"]
+[ext_resource type="Texture2D" uid="uid://c03vydl0uis6i" path="res://Assets/Sprites/tower_spot_occupied.png" id="2_pad"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_41ke1"]
-size = Vector2(67, 60)
+size = Vector2(100, 100)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.12, 0.04, 0.14, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.02, 0.08, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(1, 0.45, 0.75, 1)
+border_width_bottom = 2
+border_color = Color(1, 0.84, 0.25, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Towers" type="Node2D" unique_id=1501200458]
 script = ExtResource("1_wd6hp")
 
+[node name="Pad" type="Sprite2D" parent="."]
+position = Vector2(0, 40)
+texture = ExtResource("2_pad")
+
 [node name="Body" type="Sprite2D" parent="." unique_id=1527430392]
+position = Vector2(0, -4)
 
 [node name="AttackTimer" type="Timer" parent="." unique_id=162020024]
 
@@ -18,11 +45,13 @@ script = ExtResource("1_wd6hp")
 shape = SubResource("RectangleShape2D_41ke1")
 
 [node name="LifetimeBar" type="ProgressBar" parent="." unique_id=986615651]
-offset_left = -40.0
-offset_top = -64.0
-offset_right = 40.0
-offset_bottom = -37.0
+offset_left = -32.0
+offset_top = -82.0
+offset_right = 32.0
+offset_bottom = -72.0
 mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
 max_value = 90.0
 value = 90.0
 show_percentage = false
