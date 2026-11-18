@@ -1,6 +1,6 @@
 class_name MenuBackground
 extends Control
-## Animated menu backdrop: dark gradient, blood dripping from the top and
+## Animated menu backdrop: dark gradient, blood dripping from the top an
 ## candies (plus the odd eyeball) slowly raining down.
 
 const GRADIENT_TOP: Color = Color(0.07, 0.02, 0.1)
