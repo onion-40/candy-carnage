@@ -14,6 +14,8 @@ signal sucream_changed(amount: int)
 signal special_upgraded(level: int)
 
 var level_2_unlocked: bool = false
+var level_1_cleared: bool = false
+var level_2_cleared: bool = false
 var sucream: int = 0
 var special_level: int = 1
 
@@ -23,6 +25,7 @@ func _ready() -> void:
 
 
 func unlock_level_2() -> void:
+	level_1_cleared = true
 	level_2_unlocked = true
 	save_progress()
 
@@ -64,11 +67,16 @@ func upgrade_special() -> bool:
 	special_upgraded.emit(special_level)
 	return true
 
+func mark_level_2_cleared() -> void:
+	level_2_cleared = true
+	save_progress()
 
 func save_progress() -> void:
 	var config := ConfigFile.new()
 
 	config.set_value("Progress", "level_2_unlocked", level_2_unlocked)
+	config.set_value("Progress", "level_1_cleared", level_1_cleared)
+	config.set_value("Progress", "level_2_cleared", level_2_cleared)
 	config.set_value("Progress", "sucream", sucream)
 	config.set_value("Progress", "special_level", special_level)
 
@@ -84,14 +92,24 @@ func load_progress() -> void:
 	var error := config.load(SAVE_PATH)
 
 	if error == OK:
-		level_2_unlocked = config.get_value("Progress", "level_2_unlocked", false)
+		level_1_cleared = config.get_value("Progress", "level_1_cleared", false)
+		level_2_unlocked = config.get_value("Progress", "level_2_unlocked", level_1_cleared)
+		level_2_cleared = config.get_value("Progress", "level_2_cleared", false)
+
+		# Keep Level 2 unlocked if Level 1 has been cleared.
+		if level_1_cleared:
+			level_2_unlocked = true
+
 		sucream = config.get_value("Progress", "sucream", 0)
+
 		special_level = clampi(
 			config.get_value("Progress", "special_level", 1),
 			1,
 			SPECIAL_CHARACTER_SCRIPT.MAX_LEVEL
 		)
 	else:
+		level_1_cleared = false
 		level_2_unlocked = false
+		level_2_cleared = false
 		sucream = 0
 		special_level = 1

@@ -18,14 +18,16 @@ func _ready() -> void:
 		MenuFx.setup_hover(button, 1.06)
 	MenuFx.setup_hover(back_button)
 
+	# Level 1 completion status.
 	_setup_card(level_1_button, true,
-		"Cleared!" if GameProgress.level_2_unlocked else "Ready to fight")
+		"Cleared!" if GameProgress.level_1_cleared else "Ready to fight")
 
-	# Level 2 is available only after completing Level 1.
+	# Level 2 unlock and completion status.
 	level_2_button.disabled = not GameProgress.level_2_unlocked
 	_setup_card(level_2_button, GameProgress.level_2_unlocked,
-		"Ready to fight" if GameProgress.level_2_unlocked else "Beat Level 1 to unlock")
-
+		"Cleared!" if GameProgress.level_2_cleared else
+		"Ready to fight" if GameProgress.level_2_unlocked else
+		"Beat Level 1 to unlock")
 	_play_intro()
 
 

@@ -12,12 +12,19 @@ func _ready() -> void:
 	add_child(music_player)
 	music_player.volume_db = -8.0
 
+	music_player.finished.connect(_on_music_finished)
+
 	sfx_player = AudioStreamPlayer.new()
 	sfx_player.name = "SFXPlayer"
 	sfx_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(sfx_player)
 
 	play_music(MENU_MUSIC)
+	
+
+#when the music ends early, it will automatically replay
+func _on_music_finished() -> void:
+	music_player.play()
 
 
 func play_music(music: AudioStream) -> void:

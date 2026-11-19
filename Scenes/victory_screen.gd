@@ -35,12 +35,17 @@ func _ready() -> void:
 
 func _on_victory() -> void:
 	get_tree().paused = true
-	
-	#Once player won level 1, level 2 will be unlocked.
-	GameProgress.unlock_level_2()
+
+	var scene_path: String = get_tree().current_scene.scene_file_path
+
+	# Record level completion and unlock Level 2 after Level 1.
+	if scene_path == "res://Scenes/main.tscn":
+		GameProgress.unlock_level_2()
+	elif scene_path == "res://Scenes/Level2.tscn":
+		GameProgress.mark_level_2_cleared()
 
 	# Sucream is spent on special character upgrades in the main menu.
-	var reward = GameProgress.award_level_reward(get_tree().current_scene.scene_file_path)
+	var reward = GameProgress.award_level_reward(scene_path)
 	reward_label.text = "+%d Sucream   (total: %d)" % [reward, GameProgress.sucream]
 
 	stats_label.text = "Waves cleared: %d / %d\nBase HP left: %d / %d" % [
@@ -65,13 +70,13 @@ func _on_victory() -> void:
 	tween.tween_property(panel, "scale", Vector2.ONE, FADE_TIME) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-
 func _on_play_again_pressed() -> void:
 	get_tree().paused = false
 	ResourceManager.reset()
 	get_tree().reload_current_scene()
 	
 func _on_main_menu_pressed() -> void:
+	MusicManager.play_music(MusicManager.MENU_MUSIC)
 	get_tree().paused = false
 	ResourceManager.reset()
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
