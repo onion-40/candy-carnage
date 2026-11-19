@@ -20,6 +20,7 @@ A **How to Play** popup opens when the game starts. Reopen it any time with the 
 - Towers shoot the nearest enemy in range. A killed enemy drops a random body part on the ground: bones (60%), organs (35%) or eyeballs (5%). **Click it to collect it**, otherwise it is collected automatically after 8 seconds.
 - **Click a tower** to open its panel, then **Upgrade** (up to level 3) or **Sell** (refunds half the build cost).
 - **Click the Special Character Button** to enable special character ability/deployment.
+- **Right-Click to cancel Special Character deployment** if you chose not to deploy.
 - **Use your cursor to choose where to deploy your special character**
 - **Click on the chosen area** to deploy your special character
 
@@ -43,3 +44,11 @@ Work in Progress:
 - How to Play popup on launch (the game waits until you close it), reopenable with the ? button
 - Enemies now deal 2 damage to the base (was 1): you could win 6 waves without building a single tower
 - Code cleanup: removed debug logs and unused files
+
+## UPDATE 1.4.0
+- **Level 2 map is now live**
+- **New enemies have been introduced (Blacksmith Bear, Rogue Skunk, & Healer Dog)**
+- Sucream and Special Character Upgrade system has been implemented 
+- Main Menu, Level Select, and Game Menu has been implemented (with design)
+- Inserted Assets and Sprites, icons for tower and special character buttons are not present yet
+- Inserted Menu Music and Game Music
