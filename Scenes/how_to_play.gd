@@ -258,6 +258,7 @@ func _on_restart_pressed() -> void:
 
 
 func _on_main_menu_pressed() -> void:
+	MusicManager.play_music(MusicManager.MENU_MUSIC)
 	get_tree().paused = false
 	ResourceManager.reset()
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
