@@ -135,3 +135,9 @@ uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.0
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot7" unique_id=2088063580]
 position = Vector2(-16, 16)
 polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
+
+[node name="Spot8" type="Area2D" parent="TowerSpots"]
+position = Vector2(634, 660)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot8"]
+polygon = PackedVector2Array(-55, -60, 55, -60, 55, 45, -55, 45)

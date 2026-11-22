@@ -4,6 +4,9 @@ const TOWER_SCENE = preload("res://Scenes/Towers.tscn")
 const ENEMY_SCENE = preload("res://Scenes/Enemies.tscn")
 const SPECIAL_CHARACTER_SCENE = preload("res://Scenes/SpecialCharacters.tscn")
 const SPECIAL_CHARACTER_SCRIPT = preload("res://Scenes/special_characters.gd")
+const TOWER_SCRIPT = preload("res://Scripts/Scenes/Towers.gd")
+const BOTTOM_HUD_SCRIPT = preload("res://Scenes/bottom_hud.gd")
+const MENU_THEME = preload("res://Scenes/MenuTheme.tres")
 signal player_health_changed(current_hp: int, max_hp: int)
 signal game_over
 signal victory
@@ -298,7 +301,7 @@ func start_next_wave() -> void:
 	# Tank allocation.
 	if current_wave >= tank_start_wave:
 		tanks_to_spawn = mini(
-			tank_count_per_wave,
+			tank_count_per_wave + _extra_specials(tank_start_wave),
 			available_special_slots
 		)
 		available_special_slots -= tanks_to_spawn
@@ -306,7 +309,7 @@ func start_next_wave() -> void:
 	# Healer allocation.
 	if current_wave >= healer_start_wave:
 		healers_to_spawn = mini(
-			healer_count_per_wave,
+			healer_count_per_wave + _extra_specials(healer_start_wave),
 			available_special_slots
 		)
 		available_special_slots -= healers_to_spawn
@@ -315,13 +318,19 @@ func start_next_wave() -> void:
 	if current_wave >= mage_start_wave and available_special_slots > 0:
 		mages_to_spawn = randi_range(
 			1,
-			mini(2, available_special_slots)
+			mini(2 + _extra_specials(mage_start_wave), available_special_slots)
 		)
 
 	wave_in_progress = true
 
 	spawn_timer.wait_time = spawn_interval
 	spawn_timer.start()
+
+# One more special enemy of a type every two waves after it first appears,
+# so later waves keep changing.
+func _extra_specials(start_wave: int) -> int:
+	return maxi(0, floori((current_wave - start_wave) / 2.0))
+
 
 func _on_enemy_removed() -> void:
 	# tree_exited also fires when the whole scene is torn down (quit, Restart);
@@ -424,6 +433,60 @@ func select_spot(spot: Area2D) -> void:
 	if selected_spot:
 		selected_spot.modulate = SPOT_SELECTED_MODULATE
 
+	_show_build_menu(selected_spot)
+
+
+var build_menu: Control = null
+
+
+# Players struggled with "click a spot, then a HUD button": the tower choice
+# now pops up right on the selected spot. The HUD buttons still work too.
+func _show_build_menu(spot: Area2D) -> void:
+	if is_instance_valid(build_menu):
+		build_menu.queue_free()
+
+	build_menu = null
+
+	if spot == null:
+		return
+
+	build_menu = HBoxContainer.new()
+	build_menu.theme = MENU_THEME
+	build_menu.z_index = 20
+	build_menu.add_theme_constant_override("separation", 8)
+
+	var titles = {TOWER_SCRIPT.TowerType.LASER: "Laser", TOWER_SCRIPT.TowerType.HEAVY_CANNON: "Cannon"}
+
+	for type in titles:
+		var cost = TOWER_SCRIPT.build_cost_for(type)
+		var button = Button.new()
+		button.theme_type_variation = &"LevelCard"
+		button.custom_minimum_size = Vector2(130, 120)
+		button.icon = TOWER_SCRIPT.SPRITES[type][0]
+		button.expand_icon = true
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+		button.add_theme_font_size_override("font_size", 14)
+		button.add_theme_constant_override("outline_size", 4)
+		button.text = "%s\n%s" % [titles[type], BOTTOM_HUD_SCRIPT.format_cost(cost)]
+		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		button.disabled = not ResourceManager.can_afford(cost["bones"], cost["organs"], cost["eyeballs"])
+		button.pressed.connect(build_tower_at.bind(spot, type))
+		build_menu.add_child(button)
+
+	add_child(build_menu)
+	build_menu.reset_size()
+
+	# Above the spot, or below it when there is no room at the top of the screen.
+	var menu_size = build_menu.size
+	var position_on_map = spot.global_position + Vector2(-menu_size.x / 2.0, -menu_size.y - 50.0)
+
+	if position_on_map.y < 8.0:
+		position_on_map.y = spot.global_position.y + 50.0
+
+	position_on_map.x = clampf(position_on_map.x, 8.0, 1272.0 - menu_size.x)
+	build_menu.global_position = position_on_map
+
 
 func build_laser_on_selected_spot() -> bool:
 	var success = false
@@ -503,6 +566,10 @@ func begin_special_placement() -> void:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if not choosing_deployment_location:
+		# Clicking anywhere else drops the spot selection and its build menu.
+		# Clicking another spot selects it right after (physics picking runs later).
+		if selected_spot and event is InputEventMouseButton and event.pressed:
+			select_spot(null)
 		return
 	
 	if event is InputEventMouseButton:

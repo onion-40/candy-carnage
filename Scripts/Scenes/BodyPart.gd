@@ -4,7 +4,9 @@ extends Area2D
 # A body part dropped by a dead enemy. Click it to collect it;
 # it collects itself after AUTO_COLLECT_TIME so loot is never lost.
 
-const AUTO_COLLECT_TIME: float = 8.0
+const AUTO_COLLECT_TIME: float = 5.0
+# The first drops of a session say they can be clicked: players missed it.
+static var click_hints_left: int = 3
 const PICK_RADIUS: float = 18.0
 
 var bones: int = 0
@@ -37,9 +39,36 @@ func _ready() -> void:
 	tween.tween_property(self, "scale", Vector2.ONE, 0.25) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
+	_start_pulse()
+
+	if click_hints_left > 0:
+		click_hints_left -= 1
+		_show_click_hint()
+
+
+# The sprite keeps pulsing so the loot catches the eye.
+func _start_pulse() -> void:
+	var sprite: Sprite2D = $Sprite
+	var pulse = sprite.create_tween().set_loops()
+	pulse.tween_property(sprite, "scale", Vector2(1.2, 1.2), 0.4).set_trans(Tween.TRANS_SINE)
+	pulse.tween_property(sprite, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_SINE)
+
+
+func _show_click_hint() -> void:
+	var label = Label.new()
+	label.name = "ClickHint"
+	label.text = "CLICK!"
+	label.position = Vector2(-26, -44)
+	label.add_theme_font_size_override("font_size", 16)
+	label.add_theme_color_override("font_color", Color(1, 0.84, 0.25))
+	label.add_theme_color_override("font_outline_color", Color(0.12, 0.04, 0.14))
+	label.add_theme_constant_override("outline_size", 5)
+	add_child(label)
+
 
 func _create_visual() -> void:
 	var sprite = Sprite2D.new()
+	sprite.name = "Sprite"
 
 	if eyeballs > 0:
 		sprite.texture = preload("res://Assets/Sprites/tissue_resource.png")
@@ -63,6 +92,9 @@ func collect() -> void:
 
 	collected = true
 	input_pickable = false
+
+	if has_node("ClickHint"):
+		$ClickHint.queue_free()
 	ResourceManager.add_resources(bones, organs, eyeballs)
 
 	_show_gain_text()

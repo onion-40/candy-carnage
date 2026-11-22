@@ -10,6 +10,8 @@ extends PanelContainer
 @onready var repair_button: Button = $VBoxContainer/RepairButton
 @onready var repair_progress_bar: ProgressBar = $VBoxContainer/RepairProgressBar
 
+const REPAIR_TEXT: String = "REPAIR (6 s, no attacks)"
+
 var selected_tower: Node2D = null
 
 
@@ -20,8 +22,7 @@ func _ready() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 	upgrade_button.pressed.connect(_on_upgrade_pressed)
 	sell_button.pressed.connect(_on_sell_pressed)
-	repair_button.button_down.connect(_on_repair_button_down)
-	repair_button.button_up.connect(_on_repair_button_up)
+	repair_button.pressed.connect(_on_repair_pressed)
 
 	# Loot picked up while the panel is open can make the upgrade affordable.
 	ResourceManager.inventory_changed.connect(_on_inventory_changed)
@@ -34,6 +35,13 @@ func _on_inventory_changed(_bones: int, _organs: int, _eyeballs: int) -> void:
 func _on_close_pressed() -> void:
 	_set_selected_tower(null)
 	hide()
+
+
+# Any click outside the panel closes it (the panel itself eats its own clicks).
+# Clicking another tower still works: it selects it again right after.
+func _unhandled_input(event: InputEvent) -> void:
+	if visible and event is InputEventMouseButton and event.pressed:
+		_on_close_pressed()
 
 func select_tower(tower: Node2D) -> void:
 	if not is_instance_valid(tower):
@@ -52,7 +60,7 @@ func _set_selected_tower(tower: Node2D) -> void:
 	selected_tower = tower
 	repair_progress_bar.value = 0
 	repair_progress_bar.hide()
-	repair_button.text = "HOLD TO REPAIR"
+	repair_button.text = REPAIR_TEXT
 
 	if is_instance_valid(selected_tower) and selected_tower.has_method("set_range_visible"):
 		selected_tower.set_range_visible(true)
@@ -63,11 +71,6 @@ func _refresh_panel() -> void:
 		hide()
 		return
 
-	repair_button.disabled = (
-		selected_tower.time_left >= selected_tower.max_lifetime
-		or selected_tower.is_repairing
-	)
-	
 	var tower_type_name = "Laser Tower"
 
 	if selected_tower.tower_type == 1:
@@ -80,6 +83,17 @@ func _refresh_panel() -> void:
 		selected_tower.attack_range,
 		selected_tower.attack_interval
 	]
+
+	# Show what the next upgrade gives, next to the current values.
+	if selected_tower.level < 3:
+		var next = selected_tower.stats_for(selected_tower.tower_type, selected_tower.level + 1)
+		tower_stats_label.text = "Damage: %d → %d\nRange: %d → %d\nAttack Interval: %.1fs" % [
+			selected_tower.damage,
+			next["damage"],
+			selected_tower.attack_range,
+			next["attack_range"],
+			selected_tower.attack_interval
+		]
 
 	if selected_tower.level >= 3:
 		upgrade_cost_label.text = "Max level reached"
@@ -105,6 +119,12 @@ func _refresh_panel() -> void:
 
 func _process(_delta: float) -> void:
 	if not is_instance_valid(selected_tower): return
+	# Every frame: a repair ends on its own, and lifetime keeps dropping.
+	repair_button.disabled = (
+		selected_tower.is_repairing
+		or selected_tower.time_left >= selected_tower.max_lifetime - 0.5
+	)
+
 	if selected_tower.is_repairing:
 		var progress = (
 			selected_tower.repair_held_time /
@@ -115,7 +135,7 @@ func _process(_delta: float) -> void:
 	else:
 		repair_progress_bar.value = 0
 		repair_progress_bar.hide()
-		repair_button.text = "HOLD TO REPAIR"
+		repair_button.text = REPAIR_TEXT
 
 func _on_upgrade_pressed() -> void:
 	if not is_instance_valid(selected_tower):
@@ -139,17 +159,6 @@ func _on_sell_pressed() -> void:
 		_set_selected_tower(null)
 		hide()
 
-func _on_repair_button_down() -> void:
+func _on_repair_pressed() -> void:
 	if is_instance_valid(selected_tower):
 		selected_tower.begin_repair()
-
-
-func _on_repair_button_up() -> void:
-	if is_instance_valid(selected_tower):
-		selected_tower.end_repair()
-
-	repair_progress_bar.value = 0
-	repair_progress_bar.hide()
-	repair_button.text = "HOLD TO REPAIR"
-
-	_refresh_panel()

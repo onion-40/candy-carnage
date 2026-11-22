@@ -122,3 +122,15 @@ polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
 [node name="DeploymentPreview" type="Polygon2D" parent="." unique_id=1844144699]
 
 [node name="WaveBreakTimer" type="Timer" parent="." unique_id=1576901491]
+
+[node name="Spot7" type="Area2D" parent="TowerSpots"]
+position = Vector2(594, 350)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot7"]
+polygon = PackedVector2Array(-55, -60, 55, -60, 55, 45, -55, 45)
+
+[node name="Spot8" type="Area2D" parent="TowerSpots"]
+position = Vector2(244, 570)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot8"]
+polygon = PackedVector2Array(-55, -60, 55, -60, 55, 45, -55, 45)

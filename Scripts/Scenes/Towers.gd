@@ -10,6 +10,8 @@ enum TowerType {
 
 const LASER_COLOR: Color = Color(0.4, 0.9, 1.0)
 const CANNON_FLASH_COLOR: Color = Color(1.0, 0.75, 0.2)
+const CANNON_PROJECTILE = preload("res://Assets/Sprites/fibroxy_artillery_tower_projectile.png")
+const DRAINED_COLOR: Color = Color(0.75, 0.35, 1.0)
 # [new, decay] sprite per tower type.
 const SPRITES = {
 	TowerType.LASER: [
@@ -70,16 +72,14 @@ func _process(delta: float) -> void:
 		decay_speed = repair_decay_multiplier
 		repair_held_time += delta
 
+		if repair_held_time >= repair_duration:
+			_finish_repair()
+
 	time_left -= delta * decay_speed
 	time_left = max(0.0, time_left)
 	lifetime_bar.max_value = max_lifetime
 	lifetime_bar.value = time_left
 	
-	if is_repairing:
-		var progress = clamp(repair_held_time / repair_duration, 0.0, 1.0)
-		var percentage = int(progress * 100.0)
-		# The tower information panel can display this progress.
-
 	# The tower looks rotten once half its lifetime is gone.
 	body.texture = SPRITES[tower_type][1 if time_left <= max_lifetime * 0.5 else 0]
 
@@ -230,18 +230,27 @@ func sell() -> void:
 		queue_free()
 
 
-func apply_stats() -> void:
-	if tower_type == TowerType.LASER:
-		attack_range = 220.0 + (level - 1) * 20.0
-		damage = 10 + (level - 1) * 2
-		attack_interval = 0.6
+# Static so the tower panel can preview the next level without touching the tower.
+static func stats_for(type: int, for_level: int) -> Dictionary:
+	if type == TowerType.HEAVY_CANNON:
+		return {
+			"attack_range": 150.0 + (for_level - 1) * 10.0,
+			"damage": 25 + (for_level - 1) * 10,
+			"attack_interval": 1.5,
+		}
 
-	elif tower_type == TowerType.HEAVY_CANNON:
-		attack_range = 150.0 + (level - 1) * 10.0
-		damage = 25 + (level - 1) * 10
-		attack_interval = 1.5
-	else:
-		return
+	return {
+		"attack_range": 220.0 + (for_level - 1) * 20.0,
+		"damage": 10 + (for_level - 1) * 2,
+		"attack_interval": 0.6,
+	}
+
+
+func apply_stats() -> void:
+	var stats = stats_for(tower_type, level)
+	attack_range = stats["attack_range"]
+	damage = stats["damage"]
+	attack_interval = stats["attack_interval"]
 
 	attack_timer.wait_time = attack_interval
 	queue_redraw() # range circle follows upgrades
@@ -305,10 +314,26 @@ func _show_laser(target_position: Vector2) -> void:
 	tween.tween_callback(beam.queue_free)
 
 
-# A muzzle flash on the tower and a bigger blast on the target.
+# A muzzle flash, a shell flying to the target, then a bigger blast there.
+# The damage is already dealt: the shell is only feedback.
 func _show_cannon_flash(target_position: Vector2) -> void:
 	_spawn_flash(global_position, 14.0, 0.15)
-	_spawn_flash(target_position, 22.0 + level * 4.0, 0.25)
+
+	var shell = Sprite2D.new()
+	shell.texture = CANNON_PROJECTILE
+	shell.top_level = true
+	shell.z_index = 10
+	add_child(shell)
+	shell.global_position = global_position + Vector2(0, -30)
+
+	var tween = shell.create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(shell, "global_position", target_position, 0.25)
+	tween.tween_property(shell, "rotation", TAU, 0.25)
+	tween.chain().tween_callback(func() -> void:
+		_spawn_flash(target_position, 22.0 + level * 4.0, 0.25)
+		shell.queue_free()
+	)
 
 
 func _spawn_flash(at: Vector2, radius: float, duration: float) -> void:
@@ -362,6 +387,8 @@ func _on_selection_area_input_event(
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			get_tree().call_group("tower_selection", "select_tower", self)
 
+# One click starts a repair; it always runs to the end (all or nothing),
+# so it can't be spammed in short bursts and works on touchpads.
 func begin_repair() -> void:
 	if is_sold or is_repairing:
 		return
@@ -373,29 +400,10 @@ func begin_repair() -> void:
 	attack_timer.stop()
 
 
-func end_repair() -> void:
-	if not is_repairing:
-		return
-
+func _finish_repair() -> void:
 	is_repairing = false
-
-	var repair_progress = clamp(
-		repair_held_time / repair_duration,
-		0.0,
-		1.0
-	)
-
-	var missing_lifetime = max_lifetime - time_left
-	var restored_lifetime = missing_lifetime * repair_progress
-
-	time_left = min(
-		max_lifetime,
-		time_left + restored_lifetime
-	)
-
 	repair_held_time = 0.0
-
-	# Resume attacking after the repair is released.
+	time_left = max_lifetime
 	attack_timer.start()
 
 func reduce_lifetime(amount: float) -> void:
@@ -404,6 +412,10 @@ func reduce_lifetime(amount: float) -> void:
 
 	time_left = maxf(0.0, time_left - amount)
 	lifetime_bar.value = time_left
+
+	# Purple flash so the player sees the mage draining this tower.
+	modulate = DRAINED_COLOR
+	create_tween().tween_property(self, "modulate", Color.WHITE, 0.5)
 
 	if time_left <= 0.0:
 		_dissolve()

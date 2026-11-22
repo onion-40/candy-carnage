@@ -56,6 +56,9 @@ bg_color = Color(0.030482212, 0.030482212, 0.030482212, 0.4745098)
 [node name="Main" type="Node2D" unique_id=295096930]
 
 [node name="Map" parent="." unique_id=353263559 instance=ExtResource("1_8gbba")]
+mage_start_wave = 2
+tank_start_wave = 4
+healer_start_wave = 5
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=594782264]
 
@@ -127,7 +130,7 @@ text = "SELL TOWER"
 [node name="RepairButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1629869088]
 layout_mode = 2
 mouse_default_cursor_shape = 2
-text = "HOLD TO REPAIR"
+text = "REPAIR"
 
 [node name="RepairProgressBar" type="ProgressBar" parent="UI/TowerInformation/VBoxContainer" unique_id=720635341]
 visible = false

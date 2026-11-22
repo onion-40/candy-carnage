@@ -124,6 +124,25 @@ func _on_mage_attack_timeout() -> void:
 
 	if target != null:
 		target.reduce_lifetime(mage_lifetime_reduction)
+		_show_drain_beam(target.global_position)
+
+
+# A purple beam from the mage to the tower it drains, so players see why
+# their tower is losing lifetime.
+func _show_drain_beam(tower_position: Vector2) -> void:
+	var beam = Line2D.new()
+	beam.top_level = true # points are in world coordinates
+	beam.z_index = 10
+	beam.width = 5.0
+	beam.default_color = Color(0.75, 0.35, 1.0, 0.9)
+	beam.begin_cap_mode = Line2D.LINE_CAP_ROUND
+	beam.end_cap_mode = Line2D.LINE_CAP_ROUND
+	beam.points = PackedVector2Array([global_position, tower_position])
+	add_child(beam)
+
+	var tween = beam.create_tween()
+	tween.tween_property(beam, "modulate:a", 0.0, 0.5)
+	tween.tween_callback(beam.queue_free)
 
 
 func find_nearest_tower() -> Node2D:
@@ -294,11 +313,11 @@ func drop_random_resource() -> void:
 	var roll = randi_range(1, 100)
 
 	if roll <= 60:
-		var bone_amount = randi_range(3, 8)
+		var bone_amount = randi_range(5, 10)
 		_spawn_body_part(bone_amount, 0, 0)
 
 	elif roll <= 95:
-		var organ_amount = randi_range(1, 4)
+		var organ_amount = randi_range(2, 5)
 		_spawn_body_part(0, organ_amount, 0)
 
 	else:
