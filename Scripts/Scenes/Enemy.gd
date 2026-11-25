@@ -34,6 +34,7 @@ signal reached_base(damage: int)
 
 var health: int
 var mage_attack_timer: Timer
+var mage_cooldown_left: float = 0.0
 var healer_timer: Timer
 
 
@@ -107,9 +108,15 @@ func take_damage(
 # MAGE ABILITY
 # =====================================
 
+# The timer only polls: a mage attacks as soon as a tower is in range, then
+# waits mage_attack_interval. A plain 4 s timer fired too late, since mages
+# usually die within 3-5 s, so they almost never attacked.
+const MAGE_POLL_INTERVAL: float = 0.25
+
+
 func _create_mage_timer() -> void:
 	mage_attack_timer = Timer.new()
-	mage_attack_timer.wait_time = mage_attack_interval
+	mage_attack_timer.wait_time = MAGE_POLL_INTERVAL
 	mage_attack_timer.one_shot = false
 	add_child(mage_attack_timer)
 	mage_attack_timer.timeout.connect(_on_mage_attack_timeout)
@@ -120,11 +127,28 @@ func _on_mage_attack_timeout() -> void:
 	if health <= 0:
 		return
 
+	mage_cooldown_left -= MAGE_POLL_INTERVAL
+
+	if mage_cooldown_left > 0.0:
+		return
+
 	var target = find_nearest_tower()
 
 	if target != null:
+		mage_cooldown_left = mage_attack_interval
 		target.reduce_lifetime(mage_lifetime_reduction)
 		_show_drain_beam(target.global_position)
+		_show_cast_pop()
+
+
+# The mage swells and glows purple as it casts, so players see who attacks.
+func _show_cast_pop() -> void:
+	var body: Sprite2D = $Body
+	body.modulate = Color(1.3, 0.7, 1.6)
+	body.scale = Vector2(1.35, 1.35)
+	var tween = body.create_tween().set_parallel(true)
+	tween.tween_property(body, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(body, "modulate", Color.WHITE, 0.35)
 
 
 # A purple beam from the mage to the tower it drains, so players see why

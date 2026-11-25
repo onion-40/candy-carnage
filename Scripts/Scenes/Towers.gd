@@ -413,9 +413,24 @@ func reduce_lifetime(amount: float) -> void:
 	time_left = maxf(0.0, time_left - amount)
 	lifetime_bar.value = time_left
 
-	# Purple flash so the player sees the mage draining this tower.
+	# Purple flash and a floating "-3.5 s" so the player sees the mage draining this tower.
 	modulate = DRAINED_COLOR
 	create_tween().tween_property(self, "modulate", Color.WHITE, 0.5)
+
+	var label = Label.new()
+	label.text = "-%.1f s" % amount
+	label.position = Vector2(-24, -110)
+	label.z_index = 11
+	label.add_theme_font_size_override("font_size", 18)
+	label.add_theme_color_override("font_color", Color(0.85, 0.55, 1.0))
+	label.add_theme_color_override("font_outline_color", Color(0.12, 0.04, 0.14))
+	label.add_theme_constant_override("outline_size", 5)
+	add_child(label)
+
+	var float_up = label.create_tween().set_parallel(true)
+	float_up.tween_property(label, "position:y", label.position.y - 30.0, 0.9)
+	float_up.tween_property(label, "modulate:a", 0.0, 0.9).set_delay(0.3)
+	float_up.chain().tween_callback(label.queue_free)
 
 	if time_left <= 0.0:
 		_dissolve()
