@@ -2,9 +2,9 @@ extends PanelContainer
 
 const TOWER_SCRIPT = preload("res://Scripts/Scenes/Towers.gd")
 
-@onready var bones_label: Label = $HBoxContainer/ResourceContainer/ResourceList/BonesLabel
-@onready var organs_label: Label = $HBoxContainer/ResourceContainer/ResourceList/OrgansLabel
-@onready var eyeballs_label: Label = $HBoxContainer/ResourceContainer/ResourceList/EyeballsLabel
+@onready var bones_label: Label = $HBoxContainer/ResourceContainer/ResourceList/BonesContainer/BonesLabel
+@onready var organs_label: Label = $HBoxContainer/ResourceContainer/ResourceList/OrgansContainer/OrgansLabel
+@onready var eyeballs_label: Label = $HBoxContainer/ResourceContainer/ResourceList/EyeballsContainer/EyeballsLabel
 @onready var special_character_button: Button = $HBoxContainer/VBoxContainer/SpecialCharButton
 @onready var special_timer_label: Label = $HBoxContainer/VBoxContainer/SpecialTimerContainer/SpecialTimerLabel
 @onready var laser_button: Button = $HBoxContainer/TowerSelection/LaserButton
@@ -57,12 +57,12 @@ func update_resources(
 	organ_amount: int,
 	eyeball_amount: int
 ) -> void:
-	bones_label.text = "Bones: %d" % bone_amount
-	organs_label.text = "Organs: %d" % organ_amount
-	eyeballs_label.text = "Eyeballs: %d" % eyeball_amount
+	bones_label.text = str(bone_amount)
+	organs_label.text = str(organ_amount)
+	eyeballs_label.text = str(eyeball_amount)
+
 	_update_build_button(laser_button, "Laser Tower", TOWER_SCRIPT.TowerType.LASER)
 	_update_build_button(cannon_button, "Heavy Cannon", TOWER_SCRIPT.TowerType.HEAVY_CANNON)
-
 
 # Shows the price on the button and greys it out when the player can't pay,
 # otherwise a refused build looks like a broken button.

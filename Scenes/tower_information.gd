@@ -4,7 +4,14 @@ extends PanelContainer
 @onready var tower_name_label: Label = $VBoxContainer/TowerName
 @onready var tower_level_label: Label = $VBoxContainer/TowerLevel
 @onready var tower_stats_label: Label = $VBoxContainer/TowerStats
-@onready var upgrade_cost_label: Label = $VBoxContainer/UpgradeCost
+@onready var upgrade_cost_container: VBoxContainer = $VBoxContainer/UpgradeCostContainer
+@onready var upgrade_cost_title: Label = $VBoxContainer/UpgradeCostContainer/UpgradeCost
+@onready var bones_container: HBoxContainer = $VBoxContainer/UpgradeCostContainer/ResourceList/BonesContainer
+@onready var organs_container: HBoxContainer = $VBoxContainer/UpgradeCostContainer/ResourceList/OrgansContainer
+@onready var eyeballs_container: HBoxContainer = $VBoxContainer/UpgradeCostContainer/ResourceList/EyeballsContainer
+@onready var bones_amount: Label = $VBoxContainer/UpgradeCostContainer/ResourceList/BonesContainer/BonesAmount
+@onready var organs_amount: Label = $VBoxContainer/UpgradeCostContainer/ResourceList/OrgansContainer/OrgansAmount
+@onready var eyeballs_amount: Label = $VBoxContainer/UpgradeCostContainer/ResourceList/EyeballsContainer/EyeballsAmount
 @onready var upgrade_button: Button = $VBoxContainer/UpgradeButton
 @onready var sell_button: Button = $VBoxContainer/SellButton
 @onready var repair_button: Button = $VBoxContainer/RepairButton
@@ -96,17 +103,15 @@ func _refresh_panel() -> void:
 		]
 
 	if selected_tower.level >= 3:
-		upgrade_cost_label.text = "Max level reached"
+		upgrade_cost_title.text = "Max level reached"
+		upgrade_cost_container.get_node("ResourceList").hide()
 		upgrade_button.text = "MAX LEVEL"
 		upgrade_button.disabled = true
 		return
 
 	var cost = selected_tower.get_upgrade_cost()
-	upgrade_cost_label.text = "Upgrade Cost:\n%d Bones, %d Organs, %d Eyeballs" % [
-		cost["bones"],
-		cost["organs"],
-		cost["eyeballs"]
-	]
+	upgrade_cost_container.get_node("ResourceList").show()
+	_update_upgrade_cost_display(cost)
 
 	# Greyed out when unaffordable, otherwise the click silently does nothing.
 	var affordable = ResourceManager.can_afford(
@@ -116,6 +121,18 @@ func _refresh_panel() -> void:
 	)
 	upgrade_button.text = "UPGRADE TOWER" if affordable else "NOT ENOUGH RESOURCES"
 	upgrade_button.disabled = not affordable
+
+func _update_upgrade_cost_display(cost: Dictionary) -> void:
+	upgrade_cost_title.text = "Upgrade Cost:"
+
+	bones_amount.text = str(cost["bones"])
+	organs_amount.text = str(cost["organs"])
+	eyeballs_amount.text = str(cost["eyeballs"])
+
+	# Hide resources that are not required.
+	bones_container.visible = cost["bones"] > 0
+	organs_container.visible = cost["organs"] > 0
+	eyeballs_container.visible = cost["eyeballs"] > 0
 
 func _process(_delta: float) -> void:
 	if not is_instance_valid(selected_tower): return

@@ -89,16 +89,15 @@ position = Vector2(-8, 10)
 polygon = PackedVector2Array(-46, -49, 59, -49, 60, 22, -45, 23)
 
 [node name="Spot5" type="Area2D" parent="TowerSpots" unique_id=255735884]
-position = Vector2(612, 592)
+position = Vector2(600, 584)
 
 [node name="SpotVisual5" type="Polygon2D" parent="TowerSpots/Spot5" unique_id=1100856899]
-position = Vector2(0, -17)
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
 polygon = PackedVector2Array(-68, -52, 68, -52, 68, 52, -68, 52)
 uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.000008)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot5" unique_id=819079759]
-position = Vector2(-7, 0)
+position = Vector2(-8, 8)
 polygon = PackedVector2Array(-50, -47, 62, -43, 62, 29, -44, 31)
 
 [node name="Spot6" type="Area2D" parent="TowerSpots" unique_id=1925645619]
@@ -113,6 +112,18 @@ uv = PackedVector2Array(-128, -98, 8, -96, 8.0000305, 8.000008, -127.999985, 8.0
 position = Vector2(-16, 16)
 polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
 
+[node name="Spot7" type="Area2D" parent="TowerSpots" unique_id=1390996723]
+position = Vector2(594, 350)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot7" unique_id=1588797425]
+polygon = PackedVector2Array(-55, -60, 55, -60, 55, 45, -55, 45)
+
+[node name="Spot8" type="Area2D" parent="TowerSpots" unique_id=1065809855]
+position = Vector2(244, 570)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot8" unique_id=205763233]
+polygon = PackedVector2Array(-55, -60, 55, -60, 55, 45, -55, 45)
+
 [node name="EnemySpawnTimer" type="Timer" parent="." unique_id=1517007706]
 
 [node name="DeploymentStartTimer" type="Timer" parent="." unique_id=1835504337]
@@ -122,15 +133,3 @@ polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
 [node name="DeploymentPreview" type="Polygon2D" parent="." unique_id=1844144699]
 
 [node name="WaveBreakTimer" type="Timer" parent="." unique_id=1576901491]
-
-[node name="Spot7" type="Area2D" parent="TowerSpots"]
-position = Vector2(594, 350)
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot7"]
-polygon = PackedVector2Array(-55, -60, 55, -60, 55, 45, -55, 45)
-
-[node name="Spot8" type="Area2D" parent="TowerSpots"]
-position = Vector2(244, 570)
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TowerSpots/Spot8"]
-polygon = PackedVector2Array(-55, -60, 55, -60, 55, 45, -55, 45)

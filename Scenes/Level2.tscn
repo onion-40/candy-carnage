@@ -3,7 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://b6gj3dte3p5fe" path="res://Scenes/Map2.tscn" id="1_ehjmi"]
 [ext_resource type="Script" uid="uid://liaq03gdcccy" path="res://Scenes/tower_information.gd" id="2_p4u3k"]
 [ext_resource type="Script" uid="uid://cxfnol4rrkplv" path="res://Scenes/bottom_hud.gd" id="3_70df5"]
+[ext_resource type="Texture2D" uid="uid://c52jkcdby2xqq" path="res://Assets/Sprites/muscle_resource.png" id="3_ejprb"]
+[ext_resource type="Texture2D" uid="uid://cfa5j215a4sed" path="res://Assets/Sprites/bone_resource.png" id="4_au75x"]
 [ext_resource type="Script" uid="uid://d36s1hgw7srlt" path="res://Scenes/game_over_screen.gd" id="4_ejprb"]
+[ext_resource type="Texture2D" uid="uid://do37br6fh3pgk" path="res://Assets/Sprites/tissue_resource.png" id="5_62f1r"]
 [ext_resource type="PackedScene" uid="uid://dwm1ogo4gq0a" path="res://Scenes/WaveHUD.tscn" id="5_au75x"]
 [ext_resource type="Script" uid="uid://rln2sh71lq43" path="res://Scenes/victory_screen.gd" id="6_62f1r"]
 [ext_resource type="Script" uid="uid://b7udtmxic72u7" path="res://Scenes/how_to_play.gd" id="7_1je60"]
@@ -30,7 +33,7 @@ corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05a8c"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ejprb"]
 content_margin_left = 15.0
 content_margin_top = 15.0
 content_margin_right = 15.0
@@ -110,11 +113,78 @@ text = "Damage: 6
 Range: 140
 "
 
-[node name="UpgradeCost" type="Label" parent="UI/TowerInformation/VBoxContainer" unique_id=95164993]
+[node name="UpgradeCostContainer" type="VBoxContainer" parent="UI/TowerInformation/VBoxContainer" unique_id=2053325661]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.75, 0.75)
+
+[node name="UpgradeCost" type="Label" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer" unique_id=58389052]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -15)
+offset_transform_scale = Vector2(1.3, 1.3)
 theme_override_font_sizes/font_size = 17
-text = "Upgrade Cost: 5 Bones, 2 Eyes
+text = "Upgrade Cost:
 "
+
+[node name="ResourceList" type="HBoxContainer" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer" unique_id=2147039448]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-15, 15)
+
+[node name="OrgansContainer" type="HBoxContainer" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList" unique_id=1492414097]
+layout_mode = 2
+
+[node name="OrgansIcon" type="TextureRect" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList/OrgansContainer" unique_id=695188181]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(25, -15)
+offset_transform_scale = Vector2(1.75, 1.75)
+texture = ExtResource("3_ejprb")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="OrgansAmount" type="Label" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList/OrgansContainer" unique_id=1116626566]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(30, 0)
+offset_transform_scale = Vector2(1.75, 1.75)
+text = "5"
+
+[node name="BonesContainer" type="HBoxContainer" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList" unique_id=1958650187]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(65, -15)
+offset_transform_scale = Vector2(1.75, 1.75)
+
+[node name="BonesIcon" type="TextureRect" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList/BonesContainer" unique_id=1802745579]
+layout_mode = 2
+texture = ExtResource("4_au75x")
+
+[node name="BonesAmount" type="Label" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList/BonesContainer" unique_id=1436601772]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-7, 10)
+text = "0"
+
+[node name="EyeballsContainer" type="HBoxContainer" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList" unique_id=461737520]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(90, -15)
+offset_transform_scale = Vector2(1.75, 1.75)
+
+[node name="EyeballsIcon" type="TextureRect" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList/EyeballsContainer" unique_id=1141990331]
+layout_mode = 2
+offset_transform_enabled = true
+texture = ExtResource("5_62f1r")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="EyeballsAmount" type="Label" parent="UI/TowerInformation/VBoxContainer/UpgradeCostContainer/ResourceList/EyeballsContainer" unique_id=1033187346]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-3, 10)
+text = "2"
 
 [node name="UpgradeButton" type="Button" parent="UI/TowerInformation/VBoxContainer" unique_id=1478025024]
 layout_mode = 2
@@ -172,7 +242,72 @@ layout_mode = 2
 [node name="SpecialTimerLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/VBoxContainer/SpecialTimerContainer" unique_id=1903001743]
 layout_mode = 2
 
+[node name="ResourceContainer" type="PanelContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=2085616303]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-50, 0)
+offset_transform_scale = Vector2(0.75, 0.75)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ejprb")
+
+[node name="ResourceList" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer/ResourceContainer" unique_id=125688730]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="OrgansContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1634105963]
+layout_mode = 2
+
+[node name="OrgansIcon" type="TextureRect" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList/OrgansContainer" unique_id=661685317]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_ejprb")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="OrgansLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList/OrgansContainer" unique_id=827697918]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.5, 1.5)
+text = " 15"
+
+[node name="BonesContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=616103083]
+layout_mode = 2
+
+[node name="BonesIcon" type="TextureRect" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList/BonesContainer" unique_id=270077368]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_au75x")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="BonesLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList/BonesContainer" unique_id=416215880]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.5, 1.5)
+text = " 25"
+
+[node name="EyeballsContainer" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1742765378]
+layout_mode = 2
+
+[node name="EyeballsIcon" type="TextureRect" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList/EyeballsContainer" unique_id=615624658]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.7, 0.7)
+texture = ExtResource("5_62f1r")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="EyeballsLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList/EyeballsContainer" unique_id=1151771163]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.5, 1.5)
+text = " 5"
+
 [node name="TowerSelection" type="HBoxContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1013028664]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 8
 
@@ -187,28 +322,6 @@ custom_minimum_size = Vector2(150, 90)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Heavy Cannon"
-
-[node name="ResourceContainer" type="PanelContainer" parent="UI/BottomHUD/HBoxContainer" unique_id=1789818946]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_05a8c")
-
-[node name="ResourceList" type="VBoxContainer" parent="UI/BottomHUD/HBoxContainer/ResourceContainer" unique_id=2142574579]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-theme_override_constants/separation = 4
-alignment = 1
-
-[node name="BonesLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1147830520]
-layout_mode = 2
-text = "Bones: 25"
-
-[node name="OrgansLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=1793141202]
-layout_mode = 2
-text = "Organs: 15"
-
-[node name="EyeballsLabel" type="Label" parent="UI/BottomHUD/HBoxContainer/ResourceContainer/ResourceList" unique_id=201943819]
-layout_mode = 2
-text = "Eyeballs: 5"
 
 [node name="GameOverScreen" type="PanelContainer" parent="UI" unique_id=1749263380]
 anchors_preset = 8
