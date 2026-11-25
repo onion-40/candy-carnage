@@ -47,7 +47,7 @@ position = Vector2(1064, 768)
 position = Vector2(176, -120)
 
 [node name="Spot 1" type="Area2D" parent="TowerSpots" unique_id=1066199299]
-position = Vector2(-80, 376)
+position = Vector2(-83, 371)
 
 [node name="SpotVisual" type="Polygon2D" parent="TowerSpots/Spot 1" unique_id=682064058]
 position = Vector2(0, 1)
@@ -60,7 +60,7 @@ position = Vector2(49, 12)
 polygon = PackedVector2Array(-99, -53, 8, -49, 10, 26, -102, 29)
 
 [node name="Spot2" type="Area2D" parent="TowerSpots" unique_id=1157242331]
-position = Vector2(48, 592)
+position = Vector2(50, 575)
 
 [node name="SpotVisual2" type="Polygon2D" parent="TowerSpots/Spot2" unique_id=1515385618]
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
@@ -86,7 +86,7 @@ scale = Vector2(1, 0.9910714)
 polygon = PackedVector2Array(-55, -48, 48, -48, 45, 22, -57, 21)
 
 [node name="Spot4" type="Area2D" parent="TowerSpots" unique_id=102690562]
-position = Vector2(992, 280)
+position = Vector2(989, 260)
 
 [node name="SpotVisual4" type="Polygon2D" parent="TowerSpots/Spot4" unique_id=410510767]
 position = Vector2(2, -1)
@@ -111,7 +111,7 @@ position = Vector2(-7, 0)
 polygon = PackedVector2Array(-50, -47, 62, -43, 62, 29, -44, 31)
 
 [node name="Spot6" type="Area2D" parent="TowerSpots" unique_id=1147241548]
-position = Vector2(752, 424)
+position = Vector2(744, 418)
 
 [node name="SpotVisual6" type="Polygon2D" parent="TowerSpots/Spot6" unique_id=2011851015]
 position = Vector2(1, 1)
@@ -124,7 +124,7 @@ position = Vector2(-16, 18)
 polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
 
 [node name="Spot7" type="Area2D" parent="TowerSpots" unique_id=1853250952]
-position = Vector2(944, 712)
+position = Vector2(960, 715)
 
 [node name="SpotVisual7" type="Polygon2D" parent="TowerSpots/Spot7" unique_id=57922712]
 color = Color(0.22000003, 0.5450001, 1, 0.5137255)
@@ -136,7 +136,7 @@ position = Vector2(-16, 16)
 polygon = PackedVector2Array(-38, -51, 66, -50, 68, 22, -36, 24)
 
 [node name="Spot8" type="Area2D" parent="TowerSpots" unique_id=530383607]
-position = Vector2(634, 660)
+position = Vector2(640, 679)
 
 [node name="SpotVisual8" type="Polygon2D" parent="TowerSpots/Spot8" unique_id=1696315504]
 position = Vector2(-2, -4)
