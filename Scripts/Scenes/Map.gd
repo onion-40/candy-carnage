@@ -124,7 +124,7 @@ func _create_spot_visual(spot: Area2D) -> void:
 	var visual = Sprite2D.new()
 	visual.name = "SpotSprite"
 	visual.texture = preload("res://Assets/Sprites/tower_spot_vacant.png")
-	visual.position = Vector2(0, 14) # the tower stands on the back of the pad
+	visual.position = Vector2(0, 40) # same spot as the Pad in Towers.tscn, so building doesn't shift it
 	spot.add_child(visual)
 
 
