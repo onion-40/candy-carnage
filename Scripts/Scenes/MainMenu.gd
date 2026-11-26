@@ -6,8 +6,7 @@ const UPGRADE_SCREEN_SCRIPT = preload("res://Scripts/Menu/UpgradeScreen.gd")
 
 @onready var menu_box: VBoxContainer = $CenterContainer/VBoxContainer
 @onready var title_box: VBoxContainer = $CenterContainer/VBoxContainer/TitleBox
-@onready var candy_label: Label = $CenterContainer/VBoxContainer/TitleBox/CandyLabel
-@onready var carnage_label: Label = $CenterContainer/VBoxContainer/TitleBox/CarnageLabel
+@onready var logo: TextureRect = $CenterContainer/VBoxContainer/TitleBox/Logo
 @onready var play_button: Button = $CenterContainer/VBoxContainer/PlayButton
 @onready var upgrades_button: Button = $CenterContainer/VBoxContainer/UpgradesButton
 @onready var how_to_play_button: Button = $CenterContainer/VBoxContainer/HowToPlayButton
@@ -26,7 +25,7 @@ func _ready() -> void:
 	for button in [play_button, upgrades_button, how_to_play_button, quit_button]:
 		MenuFx.setup_hover(button)
 
-	for control in [title_box, candy_label, carnage_label]:
+	for control in [title_box, logo]:
 		MenuFx.keep_pivot_centered(control)
 
 	_create_tutorial_popup()
@@ -69,18 +68,18 @@ func _play_intro() -> void:
 	intro.tween_property(title_box, "scale", Vector2.ONE, 0.7) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-	# "CANDY" wobbles gently, "CARNAGE" beats like a heart.
+	# The logo sways gently and beats like a heart.
 	var wobble := create_tween().set_loops()
-	wobble.tween_property(candy_label, "rotation_degrees", 2.0, 1.6) \
+	wobble.tween_property(logo, "rotation_degrees", 2.0, 1.6) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	wobble.tween_property(candy_label, "rotation_degrees", -2.0, 1.6) \
+	wobble.tween_property(logo, "rotation_degrees", -2.0, 1.6) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 	var heartbeat := create_tween().set_loops()
-	heartbeat.tween_property(carnage_label, "scale", Vector2(1.05, 1.05), 0.12)
-	heartbeat.tween_property(carnage_label, "scale", Vector2.ONE, 0.16)
-	heartbeat.tween_property(carnage_label, "scale", Vector2(1.03, 1.03), 0.1)
-	heartbeat.tween_property(carnage_label, "scale", Vector2.ONE, 0.2)
+	heartbeat.tween_property(logo, "scale", Vector2(1.05, 1.05), 0.12)
+	heartbeat.tween_property(logo, "scale", Vector2.ONE, 0.16)
+	heartbeat.tween_property(logo, "scale", Vector2(1.03, 1.03), 0.1)
+	heartbeat.tween_property(logo, "scale", Vector2.ONE, 0.2)
 	heartbeat.tween_interval(1.0)
 
 
