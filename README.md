@@ -7,7 +7,7 @@ A 2D tower-defense prototype made with Godot 4.7.
 ## Run it
 
 1. **Download this repo as ZIP**
-2. Extract the ZIP file to access the .exe file (**Candy Carnage.exe**)
+2. Extract the ZIP file and open **Candy Carnage.exe**. Keep **Candy Carnage.pck** in the same folder: it holds the game itself, and the .exe won't start without it.
 3. Play and Enjoy :)
 
 ## How to play
